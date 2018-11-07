@@ -13,10 +13,17 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import coursesitegenerator.CourseSiteGenerator;
 import static coursesitegenerator.CourseSitePropertyType.CSG_ALL_RADIO_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_GRAD_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import coursesitegenerator.data.TimeSlot.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.scene.control.ComboBox;
 
 /**
  * This is the data component for TAManagerApp. It has all the data needed
@@ -36,7 +43,9 @@ public class CourseSiteData implements AppDataComponent {
     // NOTE THAT THIS DATA STRUCTURE WILL DIRECTLY STORE THE
     // DATA IN THE ROWS OF THE TABLE VIEW
     ObservableList<TeachingAssistantPrototype> teachingAssistants;
-    ObservableList<TimeSlot> officeHours;    
+    ObservableList<TimeSlot> officeHours;
+    ObservableList<String> endHours;
+
 
     // THESE ARE THE TIME BOUNDS FOR THE OFFICE HOURS GRID. NOTE
     // THAT THESE VALUES CAN BE DIFFERENT FOR DIFFERENT FILES, BUT
@@ -44,10 +53,10 @@ public class CourseSiteData implements AppDataComponent {
     // NO MEANS FOR CHANGING THESE VALUES
     int startHour;
     int endHour;
-    
+     
     // DEFAULT VALUES FOR START AND END HOURS IN MILITARY HOURS
-    public static final int MIN_START_HOUR = 9;
-    public static final int MAX_END_HOUR = 20;
+    public static final int MIN_START_HOUR = 8;
+    public static final int MAX_END_HOUR = 22;
 
     /**
      * This constructor will setup the required data structures for
@@ -87,6 +96,9 @@ public class CourseSiteData implements AppDataComponent {
         return endHour;
     }
     
+    public ObservableList<String> getEndTimes(){
+        return endHours;
+    }
     // PRIVATE HELPER METHODS
     
     private void sortTAs() {
@@ -108,7 +120,60 @@ public class CourseSiteData implements AppDataComponent {
                                                     this.getTimeString(i+1, true));
             officeHours.add(halfTimeSlot);
         }
+        ComboBox startTimeComboBox = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+        ComboBox endTimeComboBox = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        startTimeComboBox.setValue(startHour+":00am");
+        endTimeComboBox.setValue(endHour-11+":00pm");
+        endHours=(endTimeComboBox.getItems());
+        System.out.println(endHours);
     }
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mma");
+    
+    public void setTimeRanges (int start, int end){
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+        ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        System.out.println("start: " +start+"end: "+end);
+        if(start>=end)
+            return;
+        
+        FilteredList<TimeSlot> filteredTimeslots = new FilteredList<>(officeHours, p -> true);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mma");
+        filteredTimeslots.setPredicate(slot -> {
+            int slotTime=Integer.parseInt(slot.getStartTime().substring(0,slot.getStartTime().indexOf(":")));
+            if (slot.getStartTime().charAt(slot.getStartTime().length() - 2) == 'p' && slotTime != 12) {
+                slotTime += 12;
+            }
+            System.out.println(slotTime);
+            if (slotTime>=start && slotTime<end)
+                return true;
+            else 
+                return false;
+        });
+
+        TableView<TimeSlot> officeHoursTableView = (TableView) gui.getGUINode(CSG_OFFICE_HOURS_TABLE_VIEW);
+        SortedList<TimeSlot> sortedTime = new SortedList<>(filteredTimeslots);
+        sortedTime.comparatorProperty().bind(officeHoursTableView.comparatorProperty());
+        officeHoursTableView.setItems(sortedTime);
+        
+        if(start<12)
+            startTime.setValue(start+":00am");
+        else if (start == 12)
+            startTime.setValue(start + ":00pm");
+        else
+            startTime.setValue(start-12+":00pm");
+        if (end < 12) 
+            endTime.setValue(end + ":00am");
+        else if(end==12)
+            endTime.setValue(end + ":00pm");
+        else 
+            endTime.setValue(end-12 + ":00pm");
+        
+        startHour=start;
+        endHour=end;
+    }
+                
+    
     
     private String getTimeString(int militaryHour, boolean onHour) {
         String minutesText = "00";
@@ -360,6 +425,18 @@ public class CourseSiteData implements AppDataComponent {
     public void updateTAs() {
         TAType type = getSelectedType();
         selectTAs(type);
+    }
+    
+    public void changeTimeRange(LocalTime startTime, LocalTime endTime){
+        officeHours.clear();
+        Iterator<TimeSlot> timeSlotIt = this.officeHoursIterator();
+        while (timeSlotIt.hasNext()) {
+            TimeSlot timeslot = timeSlotIt.next();
+            if (timeslot.getLocalTime().isAfter(startTime)&&timeslot.getLocalTime().isBefore(endTime)) {
+                officeHours.add(timeslot);
+            }
+        }
+
     }
     
     public void selectTAs(TAType type) {

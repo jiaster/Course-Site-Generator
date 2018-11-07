@@ -1,5 +1,7 @@
 package coursesitegenerator.data;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import javafx.beans.property.StringProperty;
  * @author Richard McKenna
  */
 public class TimeSlot {
+
 
     public enum DayOfWeek {
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY
@@ -35,6 +38,14 @@ public class TimeSlot {
     }
 
     // ACCESSORS AND MUTATORS
+    
+    public LocalTime getLocalTime() {
+        LocalTime localTime = LocalTime.parse(startTime.toString(),
+            DateTimeFormatter.ofPattern("hh:mm a"));
+        System.out.println(localTime);
+        return localTime;
+    }
+        
     public String getStartTime() {
         return startTime.getValue();
     }

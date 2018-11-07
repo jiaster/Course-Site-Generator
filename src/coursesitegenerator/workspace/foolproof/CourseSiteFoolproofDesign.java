@@ -7,10 +7,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import static coursesitegenerator.CourseSitePropertyType.CSG_ADD_TA_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TEXT_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
 import coursesitegenerator.data.CourseSiteData;
 import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_TEXT_FIELD;
 import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_TEXT_FIELD_ERROR;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.scene.control.ComboBox;
 
 public class CourseSiteFoolproofDesign implements FoolproofDesign {
 
@@ -24,6 +32,40 @@ public class CourseSiteFoolproofDesign implements FoolproofDesign {
     public void updateControls() {
         updateAddTAFoolproofDesign();
         updateEditTAFoolproofDesign();
+        updateTimeFoolproofDesign();
+    }
+    
+    private void updateTimeFoolproofDesign(){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+        ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        ObservableList<String> endHours = data.getEndTimes();
+        //ObservableList<String> endHourList = endTime.getItems();
+        FilteredList<String> filteredEndHours = new FilteredList<>(endHours, p -> true);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
+        LocalTime startLocalTime;
+        if (startTime.getValue().toString().substring(0, 2).contains(":"))
+            startLocalTime=LocalTime.parse("0"+startTime.getValue().toString().toUpperCase(), formatter);
+        else
+            startLocalTime=LocalTime.parse(startTime.getValue().toString().toUpperCase(), formatter);
+        filteredEndHours.setPredicate(time -> {
+            LocalTime endLocalTime;
+            if (time.substring(0, 2).contains(":"))//if one digit hour add a 0
+                endLocalTime=LocalTime.parse("0"+time.toUpperCase(), formatter);
+            else
+                endLocalTime=LocalTime.parse(time.toUpperCase(), formatter);
+            
+            if (endLocalTime.isAfter(startLocalTime)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        SortedList<String> sortedTime = new SortedList<>(filteredEndHours);
+        //SortedList.comparatorProperty().bind(endTime.comparatorProperty());
+        endTime.setItems(sortedTime);
     }
 
     private void updateAddTAFoolproofDesign() {

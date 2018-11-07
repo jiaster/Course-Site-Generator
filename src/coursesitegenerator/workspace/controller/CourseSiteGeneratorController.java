@@ -7,11 +7,13 @@ package coursesitegenerator.workspace.controller;
 
 import coursesitegenerator.CourseSiteGenerator;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TEXT_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_FOOLPROOF_SETTINGS;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_CONTENT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_TITLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TA_EDIT_DIALOG;
 import coursesitegenerator.data.CourseSiteData;
@@ -27,8 +29,10 @@ import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import coursesitegenerator.dialogs.TADialog;
 import coursesitegenerator.transactions.AddTA_Transaction;
+import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
+import javafx.scene.control.ComboBox;
 
 /**
  *
@@ -64,7 +68,7 @@ public class CourseSiteGeneratorController {
     }
 
     public void processVerifyTA() {
-
+        
     }
 
     public void processToggleOfficeHours() {
@@ -131,5 +135,24 @@ public class CourseSiteGeneratorController {
         AppGUIModule gui = app.getGUIModule();
         TableView<TimeSlot> officeHoursTableView = (TableView) gui.getGUINode(CSG_OFFICE_HOURS_TABLE_VIEW);
         officeHoursTableView.refresh();
+    }
+    
+    public void processSelectTimeRange(){
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+        ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        CourseSiteData data = (CourseSiteData)app.getDataComponent();
+        //endTime.getItems().clear();
+        if (startTime.getValue()==null||endTime.getValue()==null)
+            return;
+        int startHour=Integer.parseInt(startTime.getValue().toString().substring(0, startTime.getValue().toString().indexOf(":")));
+        int endHour=Integer.parseInt(endTime.getValue().toString().substring(0, endTime.getValue().toString().indexOf(":")));
+        if (startTime.getValue().toString().charAt(startTime.getValue().toString().length()-2)=='p'&&startHour!=12)
+            startHour+=12;
+        if (endTime.getValue().toString().charAt(endTime.getValue().toString().length()-2)=='p'&&endHour!=12)
+            endHour+=12;
+        ChangeTimeRangeTransaction changeTime = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
+                ,startHour,endHour);
+        app.processTransaction(changeTime);
     }
 }

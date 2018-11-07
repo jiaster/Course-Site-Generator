@@ -17,6 +17,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_UNDERGRAD_RADIO_BUT
 import static coursesitegenerator.CourseSitePropertyType.CSG_ALL_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TEXT_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_LABEL;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_FRIDAY_TABLE_COLUMN;
@@ -231,9 +232,12 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         csjBuilder.buildLabel(CSG_START_TIME_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
         ComboBox startTime = csjBuilder.buildComboBox(CSG_START_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
         startTime.setEditable(true);
+        //remove later
         csjBuilder.buildLabel(CSG_END_TIME_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
-        ComboBox endTime = csjBuilder.buildComboBox(CSG_START_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
+        ComboBox endTime = csjBuilder.buildComboBox(CSG_END_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
         endTime.setEditable(true);
+        //remove later
+        endTime.setValue("11:00pm");
         TableView<TimeSlot> officeHoursTable = csjBuilder.buildTableView(CSG_OFFICE_HOURS_TABLE_VIEW, officeVBox, CLASS_CSG_OFFICE_HOURS_TABLE_VIEW, ENABLED);
         officeHoursLabel.prefWidthProperty().bind(officePane.widthProperty().multiply(1.0 / 5.0));
         officeHoursHeaderBox.setAlignment(Pos.CENTER);
@@ -367,7 +371,15 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         undergradRadio.setOnAction(e -> {
             controller.processSelectUndergradTAs();
         });
-
+        
+        ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+        startTime.setOnAction(e -> {
+            controller.processSelectTimeRange();
+        });
+        ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        endTime.setOnAction(e -> {
+            controller.processSelectTimeRange();
+        });
 
     }
 
