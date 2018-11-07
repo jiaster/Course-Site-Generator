@@ -144,6 +144,10 @@
 .csj_column {
     
 }
+.table-row-cell {
+    -fx-cell-size: 50px;
+    -fx-font-size: 20pt;
+}
 .csj_centered_column {
     -fx-alignment: CENTER;
 }

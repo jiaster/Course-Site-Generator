@@ -17,6 +17,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_UNDERGRAD_RADIO_BUT
 import static coursesitegenerator.CourseSitePropertyType.CSG_ALL_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TEXT_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_LABEL;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_FRIDAY_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_GRAD_UNDERGRAD_TAS_PANE;
@@ -28,6 +29,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_HEADER_LABEL;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_HEADER_PANE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_PANE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_TAB;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_TA_PANE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_RIGHT_PANE;
@@ -36,6 +38,10 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_BANNER_BOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_PANE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_TAB;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SLOTS_TABLE_COLUMN;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_DEFAULT;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_LABEL;
+import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_OPTIONS;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_TAB;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_HEADER_PANE;
@@ -73,6 +79,12 @@ import coursesitegenerator.workspace.foolproof.CourseSiteFoolproofDesign;
 import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_OFFICE_HOURS_TABLE_VIEW;
 import properties_manager.PropertiesManager;
 import static coursesitegenerator.workspace.style.CSGStyle.*;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.GridPane;
 
@@ -142,15 +154,17 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         tabPane.tabMinWidthProperty().bind(tabPane.widthProperty().multiply(1.0 / 5.5));
         
-        BorderPane sitePane = new BorderPane();
+        GridPane sitePane = new GridPane();
         siteTab.setContent(sitePane);
-        BorderPane syllabusPane = new BorderPane();
+        GridPane syllabusPane = new GridPane();
         syllabusTab.setContent(syllabusPane);
-        BorderPane meetingPane = new BorderPane();
+        GridPane meetingPane = new GridPane();
         meetingTab.setContent(meetingPane);
-        BorderPane officePane = new BorderPane();
+        GridPane officePane = new GridPane();
         officeTab.setContent(officePane);
-        BorderPane schedulePane = new BorderPane();
+        GridPane.setHgrow(officePane, Priority.ALWAYS);
+        //GridPane.setVgrow(officePane, Priority.ALWAYS);
+        GridPane schedulePane = new GridPane();
         scheduleTab.setContent(schedulePane);
         
         
@@ -158,17 +172,30 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         GridPane siteBannerBox = csjBuilder.buildGridPane(CSG_SITE_BANNER_BOX, siteVBox, CLASS_CSG_BOX, ENABLED);
         csjBuilder.buildLabel(CourseSitePropertyType.CSG_SITE_BANNER_BOX, siteBannerBox, CLASS_CSG_HEADER_LABEL, ENABLED);
         
-        HBox tasHeaderBox = csjBuilder.buildHBox(CSG_OFFICE_TA_PANE, officePane, CLASS_CSG_BOX, ENABLED);
-        csjBuilder.buildLabel(CourseSitePropertyType.CSG_TAS_HEADER_LABEL, tasHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
+        //Office Tab UI
+        VBox officeVBox = csjBuilder.buildVBox(CSG_OFFICE_PANE, officePane, CLASS_CSG_PANE, ENABLED);
         
-        HBox typeHeaderBox = csjBuilder.buildHBox(CSG_GRAD_UNDERGRAD_TAS_PANE, tasHeaderBox, CLASS_CSG_RADIO_BOX, ENABLED);
+        HBox tasHeaderBox = csjBuilder.buildHBox(CSG_OFFICE_TA_PANE, officeVBox, CLASS_CSG_BOX, ENABLED);
+        csjBuilder.buildLabel(CourseSitePropertyType.CSG_TAS_HEADER_LABEL, tasHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
+        //tasHeaderBox.prefWidthProperty().bind(officePane.widthProperty());
+                
+        officePane.setAlignment(Pos.CENTER);
+        officeVBox.prefWidthProperty().bind(officePane.widthProperty());
+        
+        //HBox typeHeaderBox = csjBuilder.buildHBox(CSG_GRAD_UNDERGRAD_TAS_PANE, tasHeaderBox, CLASS_CSG_RADIO_BOX, ENABLED);
         ToggleGroup tg = new ToggleGroup();
-        csjBuilder.buildRadioButton(CSG_ALL_RADIO_BUTTON, typeHeaderBox, CLASS_CSG_RADIO_BUTTON, ENABLED, tg, true);
-        csjBuilder.buildRadioButton(CSG_GRAD_RADIO_BUTTON, typeHeaderBox, CLASS_CSG_RADIO_BUTTON, ENABLED, tg, false);
-        csjBuilder.buildRadioButton(CSG_UNDERGRAD_RADIO_BUTTON, typeHeaderBox, CLASS_CSG_RADIO_BUTTON, ENABLED, tg, false);
+        csjBuilder.buildRadioButton(CSG_ALL_RADIO_BUTTON, tasHeaderBox, CLASS_CSG_RADIO_BUTTON, ENABLED, tg, true);
+        csjBuilder.buildRadioButton(CSG_GRAD_RADIO_BUTTON, tasHeaderBox, CLASS_CSG_RADIO_BUTTON, ENABLED, tg, false);
+        csjBuilder.buildRadioButton(CSG_UNDERGRAD_RADIO_BUTTON, tasHeaderBox, CLASS_CSG_RADIO_BUTTON, ENABLED, tg, false);
 
+        
+       
         // MAKE THE TABLE AND SETUP THE DATA MODEL
-        TableView<TeachingAssistantPrototype> taTable = csjBuilder.buildTableView(CSG_TAS_TABLE_VIEW, officePane, CLASS_CSG_TABLE_VIEW, ENABLED);
+        //VBox officeHoursVBox = new VBox();
+        //officeHoursScrollPane.setContent(officeHoursVBox);
+        
+        
+        TableView<TeachingAssistantPrototype> taTable = csjBuilder.buildTableView(CSG_TAS_TABLE_VIEW, officeVBox, CLASS_CSG_TABLE_VIEW, ENABLED);
         taTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         TableColumn nameColumn = csjBuilder.buildTableColumn(CSG_NAME_TABLE_COLUMN, taTable, CLASS_CSG_COLUMN);
         TableColumn emailColumn = csjBuilder.buildTableColumn(CSG_EMAIL_TABLE_COLUMN, taTable, CLASS_CSG_COLUMN);
@@ -184,23 +211,35 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         slotsColumn.prefWidthProperty().bind(taTable.widthProperty().multiply(1.0 / 5.0));
         typeColumn.prefWidthProperty().bind(taTable.widthProperty().multiply(1.0 / 5.0));
 
-
+        
+        
         // ADD BOX FOR ADDING A TA
         HBox taBox = csjBuilder.buildHBox(CSG_ADD_TA_PANE, officePane, CLASS_CSG_PANE, ENABLED);
         csjBuilder.buildTextField(CSG_NAME_TEXT_FIELD, taBox, CLASS_CSG_TEXT_FIELD, ENABLED);
         csjBuilder.buildTextField(CSG_EMAIL_TEXT_FIELD, taBox, CLASS_CSG_TEXT_FIELD, ENABLED);
         csjBuilder.buildTextButton(CSG_ADD_TA_BUTTON, taBox, CLASS_CSG_BUTTON, !ENABLED);
 
+        officeVBox.getChildren().add(taBox);
+        
         // MAKE SURE IT'S THE TABLE THAT ALWAYS GROWS IN THE LEFT PANE
         VBox.setVgrow(taTable, Priority.ALWAYS);
 
         // INIT THE HEADER ON THE RIGHT
-        VBox rightPane = csjBuilder.buildVBox(CSG_RIGHT_PANE, null, CLASS_CSG_PANE, ENABLED);
-        HBox officeHoursHeaderBox = csjBuilder.buildHBox(CSG_OFFICE_HOURS_HEADER_PANE, rightPane, CLASS_CSG_PANE, ENABLED);
-        csjBuilder.buildLabel(CSG_OFFICE_HOURS_HEADER_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
-
+        //VBox rightPane = csjBuilder.buildVBox(CSG_RIGHT_PANE, null, CLASS_CSG_PANE, ENABLED);
+        HBox officeHoursHeaderBox = csjBuilder.buildHBox(CSG_OFFICE_HOURS_HEADER_PANE, officeVBox, CLASS_CSG_PANE, ENABLED);
+        Label officeHoursLabel=csjBuilder.buildLabel(CSG_OFFICE_HOURS_HEADER_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
+        csjBuilder.buildLabel(CSG_START_TIME_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
+        ComboBox startTime = csjBuilder.buildComboBox(CSG_START_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
+        startTime.setEditable(true);
+        csjBuilder.buildLabel(CSG_END_TIME_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
+        ComboBox endTime = csjBuilder.buildComboBox(CSG_START_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
+        endTime.setEditable(true);
+        TableView<TimeSlot> officeHoursTable = csjBuilder.buildTableView(CSG_OFFICE_HOURS_TABLE_VIEW, officeVBox, CLASS_CSG_OFFICE_HOURS_TABLE_VIEW, ENABLED);
+        officeHoursLabel.prefWidthProperty().bind(officePane.widthProperty().multiply(1.0 / 5.0));
+        officeHoursHeaderBox.setAlignment(Pos.CENTER);
+        
+        
         // SETUP THE OFFICE HOURS TABLE
-        TableView<TimeSlot> officeHoursTable = csjBuilder.buildTableView(CSG_OFFICE_HOURS_TABLE_VIEW, rightPane, CLASS_CSG_OFFICE_HOURS_TABLE_VIEW, ENABLED);
         setupOfficeHoursColumn(CSG_START_TIME_TABLE_COLUMN, officeHoursTable, CLASS_CSG_TIME_COLUMN, "startTime");
         setupOfficeHoursColumn(CSG_END_TIME_TABLE_COLUMN, officeHoursTable, CLASS_CSG_TIME_COLUMN, "endTime");
         setupOfficeHoursColumn(CSG_MONDAY_TABLE_COLUMN, officeHoursTable, CLASS_CSG_DAY_OF_WEEK_COLUMN, "monday");
@@ -210,8 +249,15 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         setupOfficeHoursColumn(CSG_FRIDAY_TABLE_COLUMN, officeHoursTable, CLASS_CSG_DAY_OF_WEEK_COLUMN, "friday");
 
         // MAKE SURE IT'S THE TABLE THAT ALWAYS GROWS IN THE LEFT PANE
-        VBox.setVgrow(officeHoursTable, Priority.ALWAYS);
-
+        
+        officeVBox.prefHeightProperty().bind(officePane.heightProperty());
+        tasHeaderBox.prefHeightProperty().bind(officeVBox.heightProperty().multiply(1.0/14.0));
+        taTable.prefHeightProperty().bind(officeVBox.heightProperty().multiply(4.0/14.0));
+        taBox.prefHeightProperty().bind(officeVBox.heightProperty().multiply(1.0/14.0));
+        officeHoursHeaderBox.prefHeightProperty().bind(officeVBox.heightProperty().multiply(1.0/14.0));
+        officeHoursTable.prefHeightProperty().bind(officeVBox.heightProperty().multiply(7.0/14.0));
+        
+        officeVBox.setVgrow(officeHoursTable, Priority.ALWAYS);
         // BOTH PANES WILL NOW GO IN A SPLIT PANE
         //SplitPane sPane = new SplitPane(leftPane, rightPane);
         //sPane.setDividerPositions(.4);

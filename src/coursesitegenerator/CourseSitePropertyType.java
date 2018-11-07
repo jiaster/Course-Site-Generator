@@ -105,5 +105,10 @@ public enum CourseSitePropertyType {
     
     
     
-    CSG_OFFICE_TA_PANE
+    CSG_OFFICE_TA_PANE,
+    CSG_START_TIME_COMBOBOX,
+    CSG_START_TIME_OPTIONS,
+    CSG_START_TIME_DEFAULT,
+    CSG_START_TIME_LABEL,
+    CSG_END_TIME_LABEL
 }
