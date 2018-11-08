@@ -230,23 +230,45 @@
             <option>French</option>
         </property_options>
 		
-		<property_options name="CSG_START_TIME_OPTIONS">
+	<property_options name="CSG_START_TIME_OPTIONS">
             <option>8:00am</option>
-			<option>9:00am</option>
-			<option>10:00am</option>
-			<option>11:00am</option>
-			<option>12:00pm</option>
-			<option>1:00pm</option>
-			<option>2:00pm</option>
-			<option>3:00pm</option>
-			<option>4:00pm</option>
-			<option>5:00pm</option>
-			<option>6:00pm</option>
-			<option>7:00pm</option>
-			<option>8:00pm</option>
-			<option>9:00pm</option>
-			<option>10:00pm</option>
-			<option>11:00pm</option>
+            <option>9:00am</option>
+            <option>10:00am</option>
+            <option>11:00am</option>
+            <option>12:00pm</option>
+            <option>1:00pm</option>
+            <option>2:00pm</option>
+            <option>3:00pm</option>
+            <option>4:00pm</option>
+            <option>5:00pm</option>
+            <option>6:00pm</option>
+            <option>7:00pm</option>
+            <option>8:00pm</option>
+            <option>9:00pm</option>
+            <option>10:00pm</option>
+        </property_options>
+        <property_options name="CSG_START_TIME_DEFAULT">
+            <option>8:00am</option>
+        </property_options>
+        <property_options name="CSG_END_TIME_OPTIONS">
+            <option>9:00am</option>
+            <option>10:00am</option>
+            <option>11:00am</option>
+            <option>12:00pm</option>
+            <option>1:00pm</option>
+            <option>2:00pm</option>
+            <option>3:00pm</option>
+            <option>4:00pm</option>
+            <option>5:00pm</option>
+            <option>6:00pm</option>
+            <option>7:00pm</option>
+            <option>8:00pm</option>
+            <option>9:00pm</option>
+            <option>10:00pm</option>
+            <option>11:00pm</option>
+        </property_options>
+        <property_options name="CSG_END_TIME_DEFAULT">
+            <option>11:00pm</option>
         </property_options>
 		
         <property_options name="CSG_SUBJECT_OPTIONS">

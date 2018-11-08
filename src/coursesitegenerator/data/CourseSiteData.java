@@ -21,6 +21,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import coursesitegenerator.data.TimeSlot.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
@@ -57,6 +58,9 @@ public class CourseSiteData implements AppDataComponent {
     // DEFAULT VALUES FOR START AND END HOURS IN MILITARY HOURS
     public static final int MIN_START_HOUR = 8;
     public static final int MAX_END_HOUR = 22;
+    
+    //public String oldStartTime="8:00am";
+    //public String oldEndTime="11:00pm";
 
     /**
      * This constructor will setup the required data structures for
@@ -91,7 +95,23 @@ public class CourseSiteData implements AppDataComponent {
     public int getStartHour() {
         return startHour;
     }
+    /*
+    public String getOldStartTime() {
+        return oldStartTime;
+    }
 
+    public String getOldEndTime() {
+        return oldEndTime;
+    }
+
+    public void setOldStartTime(String time) {
+        oldStartTime = time;
+    }
+
+    public void setOldEndTime(String time) {
+        oldEndTime = time;
+    }
+*/
     public int getEndHour() {
         return endHour;
     }
@@ -124,7 +144,8 @@ public class CourseSiteData implements AppDataComponent {
         ComboBox endTimeComboBox = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
         startTimeComboBox.setValue(startHour+":00am");
         endTimeComboBox.setValue(endHour-11+":00pm");
-        endHours=(endTimeComboBox.getItems());
+        //endHours=(endTimeComboBox.getItems());
+        endHours=FXCollections.observableArrayList(endTimeComboBox.getItems());
         //System.out.println(endHours);
     }
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mma");
@@ -156,22 +177,35 @@ public class CourseSiteData implements AppDataComponent {
         sortedTime.comparatorProperty().bind(officeHoursTableView.comparatorProperty());
         officeHoursTableView.setItems(sortedTime);
         
-        if(start<12)
+        if(start<12){
             startTime.setValue(start+":00am");
-        else if (start == 12)
+            //oldStartTime=start+":00am";
+        }
+        else if (start == 12){
             startTime.setValue(start + ":00pm");
-        else
+            //oldStartTime=start+":00pm";
+        }
+        else{
             startTime.setValue(start-12+":00pm");
-        if (end < 12) 
+            //oldStartTime=start-12+":00pm";
+        }
+        if (end < 12) {
             endTime.setValue(end + ":00am");
-        else if(end==12)
+            //oldEndTime=start+":00am";
+        }
+        else if(end==12){
             endTime.setValue(end + ":00pm");
-        else 
+            //oldEndTime=start+":00pm";
+        }
+        else {
             endTime.setValue(end-12 + ":00pm");
+            //oldEndTime=start+":00pm";
+        }
         
-        startHour=start;
-        endHour=end;
+        //startHour=start;
+        //endHour=end;
     }
+    
                 
     
     

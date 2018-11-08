@@ -33,6 +33,10 @@ import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
 
 /**
@@ -42,11 +46,27 @@ import javafx.scene.control.ComboBox;
 public class CourseSiteGeneratorController {
 
     CourseSiteGenerator app;
-
+    public String oldStartTime="8:00am";
+    public String oldEndTime="11:00pm";
+            
     public CourseSiteGeneratorController(CourseSiteGenerator initApp) {
         app = initApp;
+        oldStartTime="8:00am";
+        oldEndTime="11:00pm";
     }
-
+    public String getOldStartTime(){
+        return oldStartTime;
+    }
+    public String getOldEndTime(){
+        return oldEndTime;
+    }
+    public void setOldStartTime(String time){
+        oldStartTime=time;
+    }
+    public void setOldEndTime(String time){
+        oldEndTime=time;
+    }
+    
     public void processAddTA() {
         AppGUIModule gui = app.getGUIModule();
         TextField nameTF = (TextField) gui.getGUINode(CSG_NAME_TEXT_FIELD);
@@ -149,8 +169,9 @@ public class CourseSiteGeneratorController {
         TableView<TimeSlot> officeHoursTableView = (TableView) gui.getGUINode(CSG_OFFICE_HOURS_TABLE_VIEW);
         officeHoursTableView.refresh();
     }
-    
     public void processSelectTimeRange(){
+        //TODO FIX
+        //fills up transaction queue
         AppGUIModule gui = app.getGUIModule();
         ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
         ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
@@ -164,8 +185,11 @@ public class CourseSiteGeneratorController {
             startHour+=12;
         if (endTime.getValue().toString().charAt(endTime.getValue().toString().length()-2)=='p'&&endHour!=12)
             endHour+=12;
-        ChangeTimeRangeTransaction transaction = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
-                ,startHour,endHour);
-        app.processTransaction(transaction);
+        data.setTimeRanges(startHour, endHour);
+        app.getFoolproofModule().updateControls(CSG_FOOLPROOF_SETTINGS);
+        //ChangeTimeRangeTransaction transaction = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
+        //        ,startHour,endHour);
+        //app.processTransaction(transaction);
+       
     }
 }

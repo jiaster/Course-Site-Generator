@@ -79,6 +79,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_TYPE_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_WEDNESDAY_TABLE_COLUMN;
 import static coursesitegenerator.CourseSitePropertyType.CSG_YEAR_DEFAULT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_YEAR_OPTIONS;
+import coursesitegenerator.data.CourseSiteData;
 import coursesitegenerator.workspace.controller.CourseSiteGeneratorController;
 import djf.components.AppWorkspaceComponent;
 import djf.modules.AppFoolproofModule;
@@ -111,8 +112,15 @@ import properties_manager.PropertiesManager;
 import static coursesitegenerator.workspace.style.CSGStyle.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -531,7 +539,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         ComboBox startTime = csjBuilder.buildComboBox(CSG_START_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
         startTime.setEditable(true);
         csjBuilder.buildLabel(CSG_END_TIME_LABEL, officeHoursHeaderBox, CLASS_CSG_HEADER_LABEL, ENABLED);
-        ComboBox endTime = csjBuilder.buildComboBox(CSG_END_TIME_COMBOBOX, CSG_START_TIME_OPTIONS, CSG_START_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
+        ComboBox endTime = csjBuilder.buildComboBox(CSG_END_TIME_COMBOBOX, CSG_END_TIME_OPTIONS, CSG_END_TIME_DEFAULT, officeHoursHeaderBox, CLASS_CSG_COMBOBOX, ENABLED);
         endTime.setEditable(true);
         TableView<TimeSlot> officeHoursTable = csjBuilder.buildTableView(CSG_OFFICE_HOURS_TABLE_VIEW, officeVBox, CLASS_CSG_OFFICE_HOURS_TABLE_VIEW, ENABLED);
         officeHoursLabel.prefWidthProperty().bind(officePane.widthProperty().multiply(1.0 / 5.0));
@@ -649,10 +657,10 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             };
         });
     }
-
+    CourseSiteGeneratorController controller=null;
     public void initControllers() {
         
-        CourseSiteGeneratorController controller = new CourseSiteGeneratorController((CourseSiteGenerator) app);
+        controller = new CourseSiteGeneratorController((CourseSiteGenerator) app);
         AppGUIModule gui = app.getGUIModule();
 
         // FOOLPROOF DESIGN STUFF
@@ -715,14 +723,36 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         undergradRadio.setOnAction(e -> {
             controller.processSelectUndergradTAs();
         });
-        
+        //CourseSiteData data = (CourseSiteData) app.getDataComponent();
         ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
-        startTime.setOnAction(e -> {
-            controller.processSelectTimeRange();
-        });
         ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        startTime.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if(startTime.getValue()!=null){//&&!startTime.getValue().equals(data.getOldStartTime())&&endTime.getValue().equals(data.getOldEndTime())){
+                //controller.setOldStartTime(startTime.getValue().toString());
+                controller.processSelectTimeRange();
+            }
+        });
+        /*
+        EventHandler<ActionEvent> handle = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                CourseSiteData data = (CourseSiteData) app.getDataComponent();
+                if (endTime.getValue() != null && !endTime.getValue().equals(data.getOldEndTime()) && startTime.getValue().equals(data.getOldStartTime())) {
+                    controller.setOldEndTime(endTime.getValue().toString());
+                    controller.processSelectTimeRange();
+                }
+            }
+        };
+        */
         endTime.setOnAction(e -> {
-            controller.processSelectTimeRange();
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            //if (endTime.getValue()!=null&&!endTime.getValue().equals(data.getOldEndTime())&&startTime.getValue().equals(data.getOldStartTime())) {
+            if (endTime.getValue()!=null){
+                //controller.setOldEndTime(endTime.getValue().toString());
+                controller.processSelectTimeRange();
+            }
+            
         });
         Button officeHoursToggle = (Button) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON);
         officeHoursToggle.setOnAction(e -> {
@@ -819,7 +849,31 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         
 
     }
-
+    /*
+    AppGUIModule gui = app.getGUIModule();
+    ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+    ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+    EventHandler<ActionEvent> handle = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                CourseSiteData data = (CourseSiteData) app.getDataComponent();
+                if (endTime.getValue() != null && !endTime.getValue().equals(data.getOldEndTime()) && startTime.getValue().equals(data.getOldStartTime())) {
+                    controller.setOldEndTime(endTime.getValue().toString());
+                    controller.processSelectTimeRange();
+                }
+            }
+        };
+    public void disableEndTimes(){
+         ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        endTime.setOnAction(null);
+        
+    }
+    
+    public void reenableEndTimes(){
+         ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        endTime.setOnAction(handle);
+    }
+*/
     public void initFoolproofDesign() {
         AppGUIModule gui = app.getGUIModule();
         AppFoolproofModule foolproofSettings = app.getFoolproofModule();

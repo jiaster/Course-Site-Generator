@@ -11,8 +11,10 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
 import coursesitegenerator.data.CourseSiteData;
+import coursesitegenerator.workspace.CourseSiteWorkspace;
 import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_TEXT_FIELD;
 import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_TEXT_FIELD_ERROR;
+import djf.components.AppWorkspaceComponent;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import javafx.collections.ObservableList;
@@ -35,7 +37,7 @@ public class CourseSiteFoolproofDesign implements FoolproofDesign {
         updateTimeFoolproofDesign();
     }
     
-    private void updateTimeFoolproofDesign(){
+    public void updateTimeFoolproofDesign(){
         AppGUIModule gui = app.getGUIModule();
         CourseSiteData data = (CourseSiteData) app.getDataComponent();
         ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
@@ -65,7 +67,26 @@ public class CourseSiteFoolproofDesign implements FoolproofDesign {
 
         SortedList<String> sortedTime = new SortedList<>(filteredEndHours);
         //SortedList.comparatorProperty().bind(endTime.comparatorProperty());
-        endTime.setItems(sortedTime);
+        //check if end times are already more than start times
+        
+        /*
+        int firstEndHour=(Integer.parseInt(sortedTime.get(0).substring(0, sortedTime.get(0).indexOf(":"))));
+        if (sortedTime.get(0).contains("p")&&sortedTime.get(0).substring(0,2).equals("12"))
+            firstEndHour+=12;
+        String firstStartTime=(String) startTime.getValue();
+        int firstStartHour = (Integer.parseInt(firstStartTime.substring(0, firstStartTime.indexOf(":"))));
+        if (firstStartTime.contains("p"))
+            firstStartHour+=12;
+        System.out.println(firstStartHour+" "+firstEndHour);
+        if (firstStartHour>firstEndHour)
+            
+        if(endTime.getItems().contains(startTime.getValue()));{
+            System.out.println(endTime.getItems()+" "+startTime.getValue());
+            */
+        CourseSiteWorkspace work = (CourseSiteWorkspace) app.getWorkspaceComponent();
+           //work.disableEndTimes();
+            endTime.setItems(sortedTime);
+            //work.reenableEndTimes();
     }
 
     private void updateAddTAFoolproofDesign() {
