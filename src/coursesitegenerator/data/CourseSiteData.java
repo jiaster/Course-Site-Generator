@@ -125,7 +125,7 @@ public class CourseSiteData implements AppDataComponent {
         startTimeComboBox.setValue(startHour+":00am");
         endTimeComboBox.setValue(endHour-11+":00pm");
         endHours=(endTimeComboBox.getItems());
-        System.out.println(endHours);
+        //System.out.println(endHours);
     }
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mma");
     
@@ -133,7 +133,7 @@ public class CourseSiteData implements AppDataComponent {
         AppGUIModule gui = app.getGUIModule();
         ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
         ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
-        System.out.println("start: " +start+"end: "+end);
+        //System.out.println("start: " +start+"end: "+end);
         if(start>=end)
             return;
         
@@ -144,7 +144,7 @@ public class CourseSiteData implements AppDataComponent {
             if (slot.getStartTime().charAt(slot.getStartTime().length() - 2) == 'p' && slotTime != 12) {
                 slotTime += 12;
             }
-            System.out.println(slotTime);
+            //System.out.println(slotTime);
             if (slotTime>=start && slotTime<end)
                 return true;
             else 

@@ -73,13 +73,13 @@
         <!-- ENGLISH IS THE DEFAULT -->
         <property name="DEFAULT_LANGUAGE"               value="English"></property>
         <property name="ENGLISH_ABBREVIATION"           value="EN"></property>
-        <property name="KLINGON_ABBREVIATION"           value="TLH"></property>
+        <property name="FRENCH_ABBREVIATION"           value="FR"></property>
 
     </property_list>
     <property_options_list>
         <property_options name="LANGUAGE_OPTIONS">
             <option>English</option>
-            <option>Klingon</option>
+            <option>French</option>
         </property_options>
     </property_options_list>
 </properties>

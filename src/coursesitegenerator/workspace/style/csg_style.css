@@ -115,6 +115,12 @@
     -fx-font-size: 16pt;
     -fx-font-weight: bold;
 }
+
+.csj_subheader_label{
+    -fx-font-size: 12pt;
+    -fx-font-weight: bold;
+
+}
 .csj_prompt {
 
 }
@@ -124,8 +130,18 @@
 .csj_text_field {
     -fx-text-fill: black;
 }
+.csj_big_text_field{
+    -fx-min-width: 50;
+    -fx-min-height: 150;
+}
 .csj_text_field_error {
     -fx-text-fill: red;
+}
+.csj_text{
+    -fx-font-size: 10pt;
+}
+.csj_datepicker{
+    
 }
 .csj_button {
     -fx-font-size: 14pt;

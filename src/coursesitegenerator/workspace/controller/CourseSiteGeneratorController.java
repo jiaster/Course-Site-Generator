@@ -31,6 +31,7 @@ import coursesitegenerator.dialogs.TADialog;
 import coursesitegenerator.transactions.AddTA_Transaction;
 import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
+import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
 import javafx.scene.control.ComboBox;
 
@@ -65,6 +66,18 @@ public class CourseSiteGeneratorController {
             nameTF.requestFocus();
         }
         app.getFoolproofModule().updateControls(CSG_FOOLPROOF_SETTINGS);
+    }
+    
+    public void processRemoveTA(){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        if (data.isTASelected()) {
+            TeachingAssistantPrototype taToRemove = data.getSelectedTA();
+            if (taToRemove != null) {
+                RemoveTATransaction removeTA = new RemoveTATransaction(data, taToRemove);
+                app.processTransaction(removeTA);
+            }
+        }
     }
 
     public void processVerifyTA() {
@@ -151,8 +164,8 @@ public class CourseSiteGeneratorController {
             startHour+=12;
         if (endTime.getValue().toString().charAt(endTime.getValue().toString().length()-2)=='p'&&endHour!=12)
             endHour+=12;
-        ChangeTimeRangeTransaction changeTime = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
+        ChangeTimeRangeTransaction transaction = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
                 ,startHour,endHour);
-        app.processTransaction(changeTime);
+        app.processTransaction(transaction);
     }
 }

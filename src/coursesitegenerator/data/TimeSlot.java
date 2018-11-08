@@ -42,7 +42,7 @@ public class TimeSlot {
     public LocalTime getLocalTime() {
         LocalTime localTime = LocalTime.parse(startTime.toString(),
             DateTimeFormatter.ofPattern("hh:mm a"));
-        System.out.println(localTime);
+        //System.out.println(localTime);
         return localTime;
     }
         
