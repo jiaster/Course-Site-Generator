@@ -13,6 +13,8 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_CONTENT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_TITLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_NUMBER_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SUBJECT_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TA_EDIT_DIALOG;
@@ -33,11 +35,30 @@ import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
+import djf.components.AppFileComponent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 
 /**
  *
@@ -191,5 +212,112 @@ public class CourseSiteGeneratorController {
         //        ,startHour,endHour);
         //app.processTransaction(transaction);
        
+    }
+    /*
+    private JsonObject loadJSONFile(String jsonFilePath) throws IOException {
+        InputStream is = new FileInputStream(jsonFilePath);
+        JsonReader jsonReader = Json.createReader(is);
+        JsonObject json = jsonReader.readObject();
+        jsonReader.close();
+        is.close();
+        return json;
+    }
+    public void setSubject() throws IOException{
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        JsonObject json = loadJSONFile("./options/site");
+        JsonArray jsonSubjectsArray = json.getJsonArray("subjects");
+        for (int i = 0; i < jsonSubjectsArray.size(); i++) {
+            JsonObject jsonSubject = jsonSubjectsArray.getJsonObject(i);
+            System.out.println(jsonSubject);
+        }
+        
+    }
+*/
+    public void addSubject(String subject) throws FileNotFoundException{
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ObservableList<String> subjectList = subjectTextField.getItems();
+        JsonArrayBuilder subjectsArrayBuilder = Json.createArrayBuilder();
+        for (String s : subjectList){
+            subjectsArrayBuilder.add(s);
+        }
+        subjectsArrayBuilder.add(subject);
+        JsonArray subjects = subjectsArrayBuilder.build();
+        subjectList.add(subject);
+        
+        ComboBox numberTextField = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ObservableList<String> numberList = numberTextField.getItems();
+        JsonArrayBuilder numbersArrayBuilder = Json.createArrayBuilder();
+        for (String num : numberList) {
+            numbersArrayBuilder.add(num);
+        }
+        JsonArray numbers = numbersArrayBuilder.build();
+
+        JsonObject dataManagerJSO = Json.createObjectBuilder()
+                .add("subjects", subjects)
+                .add("numbers", numbers)
+                .build();
+        
+        
+        Map<String, Object> properties = new HashMap<>(1);
+        properties.put(JsonGenerator.PRETTY_PRINTING, true);
+        JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+        StringWriter sw = new StringWriter();
+        JsonWriter jsonWriter = writerFactory.createWriter(sw);
+        jsonWriter.writeObject(dataManagerJSO);
+        jsonWriter.close();
+
+        // INIT THE WRITER
+        OutputStream os = new FileOutputStream("./options/options.json");
+        JsonWriter jsonFileWriter = Json.createWriter(os);
+        jsonFileWriter.writeObject(dataManagerJSO);
+        String prettyPrinted = sw.toString();
+        PrintWriter pw = new PrintWriter("./options/options.json");
+        pw.write(prettyPrinted);
+        pw.close();
+        
+    }
+    public void addNumber(String number) throws FileNotFoundException{
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ObservableList<String> subjectList = subjectTextField.getItems();
+        JsonArrayBuilder subjectsArrayBuilder = Json.createArrayBuilder();
+        for (String s : subjectList) {
+            subjectsArrayBuilder.add(s);
+        }
+        JsonArray subjects = subjectsArrayBuilder.build();
+
+        ComboBox numberTextField = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ObservableList<String> numberList = numberTextField.getItems();
+        JsonArrayBuilder numbersArrayBuilder = Json.createArrayBuilder();
+        for (String num : numberList) {
+            numbersArrayBuilder.add(num);
+        }
+        numbersArrayBuilder.add(number);
+        JsonArray numbers = numbersArrayBuilder.build();
+        numberList.add(number);
+
+        JsonObject dataManagerJSO = Json.createObjectBuilder()
+                .add("subjects", subjects)
+                .add("numbers", numbers)
+                .build();
+
+        Map<String, Object> properties = new HashMap<>(1);
+        properties.put(JsonGenerator.PRETTY_PRINTING, true);
+        JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+        StringWriter sw = new StringWriter();
+        JsonWriter jsonWriter = writerFactory.createWriter(sw);
+        jsonWriter.writeObject(dataManagerJSO);
+        jsonWriter.close();
+
+        // INIT THE WRITER
+        OutputStream os = new FileOutputStream("./options/options.json");
+        JsonWriter jsonFileWriter = Json.createWriter(os);
+        jsonFileWriter.writeObject(dataManagerJSO);
+        String prettyPrinted = sw.toString();
+        PrintWriter pw = new PrintWriter("./options/options.json");
+        pw.write(prettyPrinted);
+        pw.close();
     }
 }

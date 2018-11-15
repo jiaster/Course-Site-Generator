@@ -112,8 +112,12 @@ import properties_manager.PropertiesManager;
 import static coursesitegenerator.workspace.style.CSGStyle.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
@@ -133,6 +137,11 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
 
 /**
  *
@@ -232,7 +241,8 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         
         //banner box
         GridPane siteBannerBox = csjBuilder.buildGridPane(CSG_SITE_BANNER_BOX, siteVBox, CLASS_CSG_BOX, ENABLED);
-        siteBannerBox.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/4.0));
+        siteBannerBox.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/6.0));
+        siteBannerBox.prefWidthProperty().bind(officePane.widthProperty());
         Label bannerLabel = csjBuilder.buildLabel(CSG_SITE_BANNER_BOX, null, CLASS_CSG_HEADER_LABEL, ENABLED);
         Label subjectLabel = csjBuilder.buildLabel(CSG_SITE_BANNER_SUBJECT, null, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
         Label semesterLabel = csjBuilder.buildLabel(CSG_SITE_BANNER_SEMESTER, null, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
@@ -261,13 +271,14 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         siteBannerBox.add(yearLabel, 2, 4, 1, 1);
         siteBannerBox.add(yearComboBox, 3, 4, 1, 1);
         siteBannerBox.add(titleLabel, 0, 6, 1, 1);
-        siteBannerBox.add(titleBox, 1, 6);
+        siteBannerBox.add(titleBox, 1, 6,3,1);
+        siteBannerBox.prefWidthProperty().bind(siteBannerBox.widthProperty());
         siteBannerBox.add(exportdirLabel, 0, 8, 1, 1);
         siteBannerBox.add(exportDirText,1,8);
         
         //pages box
         GridPane sitePagesBox = csjBuilder.buildGridPane(CSG_SITE_BANNER_BOX, siteVBox, CLASS_CSG_BOX, ENABLED);
-        sitePagesBox.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0 / 8.0));
+        sitePagesBox.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0 / 12.0));
         Label pagesLabel = csjBuilder.buildLabel(CSG_SITE_PAGES_TITLE, sitePagesBox,0,0,1,1, CLASS_CSG_HEADER_LABEL, ENABLED);
         Label pagesHomeLabel = csjBuilder.buildLabel(CSG_SITE_PAGES_HOME, sitePagesBox, 2, 0, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
         Label pagesSyllabusLabel = csjBuilder.buildLabel(CSG_SITE_PAGES_SYLLABUS, sitePagesBox, 4, 0, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
@@ -330,9 +341,9 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
 
         Button instructorOfficeHoursButton = csjBuilder.buildTextButton(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON, siteInstructorBox, 0, 4, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label instructorOfficeHoursLabel = csjBuilder.buildLabel(CSG_SITE_INSTRUCTOR_OFFICEHOURS, siteInstructorBox, 1, 4, 1, 1, CLASS_CSG_HEADER_LABEL, ENABLED);
-        TextField officeHoursTextField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD, siteInstructorBox, 0, 5, 4, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextField officeHoursTextField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD, siteInstructorBox, 0, 5, 5, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         officeHoursTextField.prefWidthProperty().bind(officePane.widthProperty());
-        officeHoursTextField.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/4.0));
+        officeHoursTextField.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/8.0));
         officeHoursTextField.setVisible(false);
         officeHoursTextField.managedProperty().bind(officeHoursTextField.visibleProperty());
 
@@ -617,9 +628,20 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button addButton=csjBuilder.buildTextButton(CSG_SCHEDULE_ADD_BUTTON, scheduleGrid, 0, 10, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Button clearButton = csjBuilder.buildTextButton(CSG_SCHEDULE_ADD_CLEAR_BUTTON, scheduleGrid, 1, 10, 1, 1, CLASS_CSG_BUTTON, ENABLED);
 
-
+        //load values for combo boxes
+        subjectComboBox.getItems().clear();
+        numberComboBox.getItems().clear();
+        yearComboBox.getItems().clear();
         
-
+        try {
+            loadSubjectsAndNumbers();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        yearComboBox.getItems().add(Year.now().getValue());
+        yearComboBox.getItems().add(Year.now().getValue()+1);
+        yearComboBox.setValue(Year.now().getValue());
 
         ((BorderPane) workspace).setCenter(tabPane);
 
@@ -666,6 +688,29 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         // FOOLPROOF DESIGN STUFF
         TextField nameTextField = ((TextField) gui.getGUINode(CSG_NAME_TEXT_FIELD));
         TextField emailTextField = ((TextField) gui.getGUINode(CSG_EMAIL_TEXT_FIELD));
+        ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ComboBox numberTextField = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+
+        
+        subjectTextField.setOnAction(e -> {
+            if (!subjectTextField.getItems().contains(subjectTextField.getValue()))
+                try {
+                    controller.addSubject((String)subjectTextField.getValue());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        numberTextField.setOnAction(e -> {
+            if (!numberTextField.getItems().contains(numberTextField.getValue())) 
+                try {
+                        controller.addNumber((String)numberTextField.getValue());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        
 
         nameTextField.textProperty().addListener(e -> {
             controller.processTypeTA();
@@ -890,4 +935,33 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
     public void showNewDialog() {
         // WE AREN'T USING THIS FOR THIS APPLICATION
     }
+    
+    private JsonObject loadJSONFile(String jsonFilePath) throws IOException {
+        InputStream is = new FileInputStream(jsonFilePath);
+        JsonReader jsonReader = Json.createReader(is);
+        JsonObject json = jsonReader.readObject();
+        jsonReader.close();
+        is.close();
+        return json;
+    }
+    public void loadSubjectsAndNumbers() throws IOException{
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ComboBox numberTextField = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        JsonObject json = loadJSONFile("./options/options.json");
+        JsonArray jsonSubjectsArray = json.getJsonArray("subjects");
+        for (JsonValue jsonSubject : jsonSubjectsArray) {
+            String subject = jsonSubject.toString();
+            subject=subject.replaceAll("\"", "");
+            subjectTextField.getItems().add(subject);
+        }
+        JsonArray jsonNumbersArray = json.getJsonArray("numbers");
+        for (JsonValue jsonNumber : jsonNumbersArray) {
+            String number = jsonNumber.toString();
+            number=number.replaceAll("\"", "");
+            numberTextField.getItems().add(number);
+        }
+    }
 }
+
+

@@ -1,0 +1,20 @@
+
+{
+    "subjects":[
+        "CSE",
+        "AMS",
+        "CHE",
+        "ISE",
+        "MAT",
+        "BIO",
+        "PHI",
+        "EST",
+        "ABC",
+        "CCC"
+    ],
+    "numbers":[
+        "100",
+        "120",
+        "456"
+    ]
+}

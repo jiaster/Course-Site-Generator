@@ -280,11 +280,14 @@
         </property_options>
 		
         <property_options name="CSG_SEMESTER_OPTIONS">
-			<option></option>
+			<option>Fall</option>
+			<option>Winter</option>
+			<option>Spring</option>
+			<option>Summer</option>
         </property_options>
 		
         <property_options name="CSG_SEMESTER_DEFAULT">
-			<option></option>
+			<option>Fall</option>
         </property_options>
 		
         <property_options name="CSG_NUMBER_OPTIONS">
@@ -304,19 +307,21 @@
         </property_options>
 		
 		<property_options name="CSG_SITE_STYLE_CSS_OPTIONS">
-			<option></option>
+			<option>sbuColors.css</option>
         </property_options>
 		
 		<property_options name="CSG_SITE_STYLE_CSS_DEFAULT">
-			<option></option>
+			<option>sbuColors.css</option>
         </property_options>
 		
 		<property_options name="CSG_TYPE_OPTIONS">
 			<option>Lecture</option>
+			<option>HW</option>
+			<option>Holiday</option>
         </property_options>
 		
 		<property_options name="CSG_TYPE_DEFAULT">
-			<option></option>
+			<option>Lecture</option>
         </property_options>
 		
     </property_options_list>
