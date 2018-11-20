@@ -30,6 +30,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_PAGES_SYLLABUS
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SEMESTER_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_STYLE_CSS;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SUBJECT_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_TITLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_YEAR_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_FAVICON;
@@ -133,6 +134,8 @@ public class CourseSiteData implements AppDataComponent {
     private String leftFooterPath =  ("./images/leftFooter.png");
     private String rightFooterPath =  ("./images/rightFooter.png");
     
+    private String startTime="8:00am";
+    private String endTime="10:00pm";
     private String subject="";
     private String number="";
     private String semester="";
@@ -206,6 +209,15 @@ public class CourseSiteData implements AppDataComponent {
     public boolean getHome(){
         return home;
     }
+    public boolean getSyllabus(){
+        return syllabus;
+    }
+    public boolean getSchedule(){
+        return schedule;
+    }
+    public boolean getHWS(){
+        return hws;
+    }
 
     public int getStartHour() {
         return startHour;
@@ -231,11 +243,42 @@ public class CourseSiteData implements AppDataComponent {
         combo.setValue(newSemester);
     }
     
+    public void changeTitle(String newTitle){
+        title=newTitle;
+        AppGUIModule gui = app.getGUIModule();
+        TextField text = (TextField) gui.getGUINode(CSG_SITE_TITLE);
+        text.setText(newTitle);
+    }
+    
     public void changeYear(String newYear){
         year = newYear;
         AppGUIModule gui = app.getGUIModule();
         ComboBox combo = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
         combo.setValue(newYear);
+    }
+    public void changeHome(boolean newHome){
+        home=newHome;
+        AppGUIModule gui = app.getGUIModule();
+        CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HOME_CHECK);
+        homeCheckBox.setSelected(newHome);
+    }
+    public void changeSyllabus(boolean newSyllabus){
+        syllabus=newSyllabus;
+        AppGUIModule gui = app.getGUIModule();
+        CheckBox syllabusCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SYLLABUS_CHECK);
+        syllabusCheckBox.setSelected(newSyllabus);
+    }
+    public void changeSchedule(boolean newSchedule){
+        schedule=newSchedule;
+        AppGUIModule gui = app.getGUIModule();
+        CheckBox scheduleCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SCHEDULE_CHECK);
+        scheduleCheckBox.setSelected(newSchedule);
+    }
+    public void changeHWS(boolean newHWS){
+        hws=newHWS;
+        AppGUIModule gui = app.getGUIModule();
+        CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HWS_CHECK);
+        homeCheckBox.setSelected(newHWS);
     }
     /*
     public String getOldStartTime() {
@@ -489,7 +532,7 @@ public class CourseSiteData implements AppDataComponent {
         ComboBox startTimeComboBox = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
         ComboBox endTimeComboBox = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
         startTimeComboBox.setValue(startHour+":00am");
-        endTimeComboBox.setValue(endHour-11+":00pm");
+        endTimeComboBox.setValue(endHour-12+":00pm");
         //endHours=(endTimeComboBox.getItems());
         endHours=FXCollections.observableArrayList(endTimeComboBox.getItems());
         //System.out.println(endHours);
@@ -498,8 +541,8 @@ public class CourseSiteData implements AppDataComponent {
     
     public void setTimeRanges (int start, int end){
         AppGUIModule gui = app.getGUIModule();
-        ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
-        ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+        ComboBox startTimeBox = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
+        ComboBox endTimeBox = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
         //System.out.println("start: " +start+"end: "+end);
         if(start>=end)
             return;
@@ -524,35 +567,56 @@ public class CourseSiteData implements AppDataComponent {
         officeHoursTableView.setItems(sortedTime);
         
         if(start<12){
-            startTime.setValue(start+":00am");
+            startTime=start+":00am";
+            startTimeBox.setValue(start+":00am");
+            startHour=Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
             //oldStartTime=start+":00am";
         }
         else if (start == 12){
-            startTime.setValue(start + ":00pm");
+            startTime=start+":00pm";
+            startTimeBox.setValue(start + ":00pm");
+            startHour=Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
             //oldStartTime=start+":00pm";
         }
         else{
-            startTime.setValue(start-12+":00pm");
-            //oldStartTime=start-12+":00pm";
+            startTime=start-12+":00pm";
+            startTimeBox.setValue(start-12+":00pm");
+            startHour=Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
+            startHour+=12;
+//oldStartTime=start-12+":00pm";
         }
         if (end < 12) {
-            endTime.setValue(end + ":00am");
+            endTime=start+":00am";
+            endTimeBox.setValue(end + ":00am");
+            endHour=Integer.parseInt(endTime.substring(0, endTime.indexOf(":")));
             //oldEndTime=start+":00am";
         }
         else if(end==12){
-            endTime.setValue(end + ":00pm");
+            endTime=start+":00pm";
+            endTimeBox.setValue(end + ":00pm");
+            endHour=Integer.parseInt(endTime.substring(0, endTime.indexOf(":")));
             //oldEndTime=start+":00pm";
         }
         else {
-            endTime.setValue(end-12 + ":00pm");
-            //oldEndTime=start+":00pm";
+            endTime=end-12 + ":00pm";
+            endTimeBox.setValue(end-12 + ":00pm");
+            endHour=Integer.parseInt(endTime.substring(0, endTime.indexOf(":")));
+            endHour+=12;
+//oldEndTime=start+":00pm";
         }
+        
+        
         
         //startHour=start;
         //endHour=end;
     }
     
-                
+    public String getStartTime(){
+        return startTime;
+    }
+    public String getEndTime(){
+        return endTime;
+    }
     
     
     private String getTimeString(int militaryHour, boolean onHour) {

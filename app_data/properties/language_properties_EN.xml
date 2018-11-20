@@ -268,7 +268,7 @@
             <option>11:00pm</option>
         </property_options>
         <property_options name="CSG_END_TIME_DEFAULT">
-            <option>11:00pm</option>
+            <option>10:00pm</option>
         </property_options>
 		
         <property_options name="CSG_SUBJECT_OPTIONS">

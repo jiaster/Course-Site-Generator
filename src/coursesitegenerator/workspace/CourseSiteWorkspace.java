@@ -755,6 +755,46 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             }
         });
         
+        TextField titleTextField = ((TextField) gui.getGUINode(CSG_SITE_TITLE));
+        //titleTextField.setOnAction(e -> {
+        titleTextField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!titleTextField.getText().equals(data.getTitle())){
+                controller.changeTitle(titleTextField.getText());
+            }
+        });
+
+        CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HOME_CHECK);
+        CheckBox syllabusCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SYLLABUS_CHECK);
+        CheckBox scheduleCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SCHEDULE_CHECK);
+        CheckBox hwsCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HWS_CHECK);
+
+        homeCheckBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if ((homeCheckBox.isSelected()==data.getHome())==false){
+                controller.changeHome(homeCheckBox.isSelected());
+            }
+        });
+        
+        syllabusCheckBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if ((syllabusCheckBox.isSelected()==data.getSyllabus())==false){
+                controller.changeSyllabus(syllabusCheckBox.isSelected());
+            }
+        });
+        scheduleCheckBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if ((scheduleCheckBox.isSelected()==data.getSchedule())==false){
+                controller.changeSchedule(scheduleCheckBox.isSelected());
+            }
+        });
+        hwsCheckBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if ((hwsCheckBox.isSelected()==data.getHWS())==false){
+                controller.changeHWS(hwsCheckBox.isSelected());
+            }
+        });
+        
         nameTextField.textProperty().addListener(e -> {
             controller.processTypeTA();
         });
@@ -816,7 +856,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
 
         startTime.setOnAction(e -> {
             CourseSiteData data = (CourseSiteData) app.getDataComponent();
-            if(startTime.getValue()!=null){//&&!startTime.getValue().equals(data.getOldStartTime())&&endTime.getValue().equals(data.getOldEndTime())){
+            if(startTime.getValue()!=null&&!startTime.getValue().toString().equals(data.getStartTime())){
                 //controller.setOldStartTime(startTime.getValue().toString());
                 controller.processSelectTimeRange();
             }
@@ -837,7 +877,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             CourseSiteData data = (CourseSiteData) app.getDataComponent();
 
             //if (endTime.getValue()!=null&&!endTime.getValue().equals(data.getOldEndTime())&&startTime.getValue().equals(data.getOldStartTime())) {
-            if (endTime.getValue()!=null){
+            if (endTime.getValue()!=null&&!endTime.getValue().toString().equals(data.getEndTime())){
                 //controller.setOldEndTime(endTime.getValue().toString());
                 controller.processSelectTimeRange();
             }

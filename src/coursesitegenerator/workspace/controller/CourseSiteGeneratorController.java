@@ -33,13 +33,18 @@ import coursesitegenerator.data.TimeSlot;
 import coursesitegenerator.dialogs.TADialog;
 import coursesitegenerator.transactions.AddTA_Transaction;
 import coursesitegenerator.transactions.ChangeFaviconTransaction;
+import coursesitegenerator.transactions.ChangeHWSTransaction;
+import coursesitegenerator.transactions.ChangeHomeTransaction;
 import coursesitegenerator.transactions.ChangeLeftFooterTransaction;
 import coursesitegenerator.transactions.ChangeNavbarTransaction;
 import coursesitegenerator.transactions.ChangeNumberTransaction;
 import coursesitegenerator.transactions.ChangeRightFooterTransaction;
+import coursesitegenerator.transactions.ChangeScheduleTransaction;
 import coursesitegenerator.transactions.ChangeSemesterTransaction;
 import coursesitegenerator.transactions.ChangeSubjectTransaction;
+import coursesitegenerator.transactions.ChangeSyllabusTransaction;
 import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
+import coursesitegenerator.transactions.ChangeTitleTransaction;
 import coursesitegenerator.transactions.ChangeYearTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
@@ -83,11 +88,13 @@ import javax.json.stream.JsonGenerator;
 public class CourseSiteGeneratorController {
 
     CourseSiteGenerator app;
-    public String oldStartTime="8:00am";
-    public String oldEndTime="11:00pm";
+    //public String oldStartTime="8:00am";
+    //public String oldEndTime="11:00pm";
             
     public CourseSiteGeneratorController(CourseSiteGenerator initApp) {
         app = initApp;
+    }
+    /*
         oldStartTime="8:00am";
         oldEndTime="11:00pm";
     }
@@ -103,6 +110,7 @@ public class CourseSiteGeneratorController {
     public void setOldEndTime(String time){
         oldEndTime=time;
     }
+    */
     
     public void processAddTA() {
         AppGUIModule gui = app.getGUIModule();
@@ -222,11 +230,11 @@ public class CourseSiteGeneratorController {
             startHour+=12;
         if (endTime.getValue().toString().charAt(endTime.getValue().toString().length()-2)=='p'&&endHour!=12)
             endHour+=12;
-        data.setTimeRanges(startHour, endHour);
+        //data.setTimeRanges(startHour, endHour);
         app.getFoolproofModule().updateControls(CSG_FOOLPROOF_SETTINGS);
-        //ChangeTimeRangeTransaction transaction = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
-        //        ,startHour,endHour);
-        //app.processTransaction(transaction);
+        ChangeTimeRangeTransaction transaction = new ChangeTimeRangeTransaction(data,data.getStartHour(),data.getEndHour()
+                ,startHour,endHour);
+        app.processTransaction(transaction);
        
     }
     /*
@@ -368,6 +376,45 @@ public class CourseSiteGeneratorController {
         ChangeSemesterTransaction change = new ChangeSemesterTransaction(data, data.getSemester(), semester);
         app.processTransaction(change);
         //data.changeNumber(number);
+    }
+    
+    public void changeTitle(String title){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeTitleTransaction change = new ChangeTitleTransaction(data, data.getTitle(), title);
+        app.processTransaction(change);
+    }
+    
+    public void changeHome(boolean home){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeHomeTransaction change = new ChangeHomeTransaction(data, data.getHome(), home);
+        app.processTransaction(change);
+
+    }
+    
+    public void changeSyllabus(boolean syllabus){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeSyllabusTransaction change = new ChangeSyllabusTransaction(data, data.getSyllabus(), syllabus);
+        app.processTransaction(change);
+
+    }
+    
+    public void changeSchedule(boolean schedule){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeScheduleTransaction change = new ChangeScheduleTransaction(data, data.getSchedule(), schedule);
+        app.processTransaction(change);
+
+    }
+    
+    public void changeHWS(boolean hws){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeHWSTransaction change = new ChangeHWSTransaction(data, data.getHWS(), hws);
+        app.processTransaction(change);
+
     }
     
     public void changeFaviconImage(){
