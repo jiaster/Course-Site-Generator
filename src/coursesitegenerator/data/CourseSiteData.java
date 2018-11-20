@@ -18,6 +18,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_GRAD_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_BANNER_EXPORTDIRTEXT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_EMAIL_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_NAME_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON;
@@ -146,12 +147,23 @@ public class CourseSiteData implements AppDataComponent {
     private boolean syllabus=false;
     private boolean schedule=false;
     private boolean hws=false;
-    private String css="";
+    private String css="sbuColors.css";
     private String instructorName="";
     private String instructorRoom="";
     private String instructorEmail="";
     private String instructorHomepage="";
     private String instructorOfficeHours="";
+    
+    private String description="";
+    private String topics = "";
+    private String prereq = "";
+    private String outcomes = "";
+    private String textbooks = "";
+    private String gradedcomp = "";
+    private String gradingNote = "";
+    private String acedemic = "";
+    private String special = "";
+
     
     
 
@@ -218,7 +230,54 @@ public class CourseSiteData implements AppDataComponent {
     public boolean getHWS(){
         return hws;
     }
-
+    public String getCSS(){
+        return css;
+    }
+    
+    public String getInstructorName(){
+        return instructorName;
+    }
+    public String getInstructorRoom(){
+        return instructorRoom;
+    }
+    public String getInstructorEmail(){
+        return instructorEmail;
+    }
+    public String getInstructorHomepage(){
+        return instructorHomepage;
+    }
+    public String getInstructorOfficeHours(){
+        return instructorOfficeHours;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    public String getTopics() {
+        return topics;
+    }
+    public String getPrereq() {
+        return prereq;
+    }
+    public String getOutcomes() {
+        return outcomes;
+    }
+    public String getTextbooks() {
+        return textbooks;
+    }
+    public String getGradedcomp() {
+        return gradedcomp;
+    }
+    public String getGradingNote() {
+        return gradingNote;
+    }
+    public String getAcedemic() {
+        return acedemic;
+    }
+    public String getSpecial() {
+        return special;
+    }
+    
     public int getStartHour() {
         return startHour;
     }
@@ -241,6 +300,13 @@ public class CourseSiteData implements AppDataComponent {
         AppGUIModule gui = app.getGUIModule();
         ComboBox combo = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
         combo.setValue(newSemester);
+    }
+    
+    public void changeCSS(String newCSS){
+        css=newCSS;
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox css = (ComboBox) gui.getGUINode(CSG_SITE_STYLE_CSS);
+        css.setValue(newCSS);
     }
     
     public void changeTitle(String newTitle){
@@ -279,6 +345,92 @@ public class CourseSiteData implements AppDataComponent {
         AppGUIModule gui = app.getGUIModule();
         CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HWS_CHECK);
         homeCheckBox.setSelected(newHWS);
+    }
+    
+    public void changeInstructorEmail(String email){
+        instructorEmail=email;
+        AppGUIModule gui = app.getGUIModule();
+        TextField text = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_EMAIL_FIELD);
+        text.setText(email);
+    }
+    public void changeInstructorHome(String home){
+        instructorHomepage=home;
+        AppGUIModule gui = app.getGUIModule();
+        TextField text = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD);
+        text.setText(home);
+    }
+    public void changeInstructorName(String name){
+        instructorName=name;
+        AppGUIModule gui = app.getGUIModule();
+        TextField text = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD);
+        text.setText(name);
+    }
+    public void changeInstructorOfficeHours(String officeHours){
+        instructorOfficeHours=officeHours;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD);
+        text.setText(officeHours);
+    }
+    public void changeInstructorRoom(String room){
+        instructorRoom=room;
+        AppGUIModule gui = app.getGUIModule();
+        TextField text = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD);
+        text.setText(room);
+    }
+    
+    public void changeDescription(String newDescription){
+        description=newDescription;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BOX);
+        text.setText(newDescription);
+    }
+    public void changeTopics(String newTopics){
+        topics=newTopics;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_TOPICS_BOX);
+        text.setText(newTopics);
+    }
+    public void changePrereq(String newPrereq){
+        prereq=newPrereq;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_PREREQ_BOX);
+        text.setText(newPrereq);
+    }
+    public void changeOutcomes(String newOutcomes){
+        outcomes=newOutcomes;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BOX);
+        text.setText(newOutcomes);
+    }
+    public void changeTextbooks(String newTextbooks){
+        textbooks=newTextbooks;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BOX);
+        text.setText(newTextbooks);
+    }
+    public void changeGradedcomp(String newGradedcomp){
+        gradedcomp=newGradedcomp;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX);
+        text.setText(newGradedcomp);
+    }
+    public void changeGradingNote(String newGradingNote){
+        gradingNote=newGradingNote;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BOX);
+        text.setText(newGradingNote);
+    }
+    public void changeAcedemic(String newAcedemic){
+        acedemic=newAcedemic;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX);
+        text.setText(newAcedemic);
+    }
+    public void changeSpecial(String newSpecial){
+        special=newSpecial;
+        AppGUIModule gui = app.getGUIModule();
+        TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_SPECIALASSISTANCE_BOX);
+        text.setText(newSpecial);
     }
     /*
     public String getOldStartTime() {
@@ -417,7 +569,7 @@ public class CourseSiteData implements AppDataComponent {
                 cssComboBox.getItems().add(file.getName());
             }
         }
-        cssComboBox.setValue(cssComboBox.getItems().get(0));
+        cssComboBox.setValue("sbuColors.css");
         
         TextField nameField =(TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD);
         TextField emailField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD);

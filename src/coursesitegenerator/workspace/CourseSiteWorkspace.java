@@ -354,7 +354,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         TextField nameField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_NAME_FIELD, siteInstructorBox, 1, 1, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
         TextField emailField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_ROOM_FIELD, siteInstructorBox, 1, 2, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
         TextField roomField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_EMAIL_FIELD, siteInstructorBox, 3, 1, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
-        TextField homePageField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_EMAIL_FIELD, siteInstructorBox, 3, 2, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
+        TextField homePageField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD, siteInstructorBox, 3, 2, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
        
         Button instructorOfficeHoursButton = csjBuilder.buildTextButton(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON, siteInstructorBox, 0, 4, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label instructorOfficeHoursLabel = csjBuilder.buildLabel(CSG_SITE_INSTRUCTOR_OFFICEHOURS, siteInstructorBox, 1, 4, 1, 1, CLASS_CSG_HEADER_LABEL, ENABLED);
@@ -755,6 +755,14 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             }
         });
         
+        ComboBox cssComboBox = (ComboBox) gui.getGUINode(CSG_SITE_STYLE_CSS);
+        cssComboBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!cssComboBox.getValue().equals(data.getCSS())){
+                controller.changeCSS(cssComboBox.getValue().toString());
+            }
+        });
+        
         TextField titleTextField = ((TextField) gui.getGUINode(CSG_SITE_TITLE));
         //titleTextField.setOnAction(e -> {
         titleTextField.focusedProperty().addListener((obs, oldVal, newVal) -> {
@@ -763,7 +771,111 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
                 controller.changeTitle(titleTextField.getText());
             }
         });
+        
+        TextField instructorNameField = ((TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD));
+        instructorNameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!instructorNameField.getText().equals(data.getInstructorName())){
+                controller.changeInstructorName(instructorNameField.getText());
+            }
+        });
+        
+        TextField instructorLinkField = ((TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD));
+        instructorLinkField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!instructorLinkField.getText().equals(data.getInstructorHomepage())){
+                controller.changeInstructorHome(instructorLinkField.getText());
+            }
+        });
+        
+        TextField instructorRoomField = ((TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD));
+        instructorRoomField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!instructorRoomField.getText().equals(data.getInstructorRoom())){
+                controller.changeInstructorRoom(instructorRoomField.getText());
+            }
+        });
+        
+        TextField instructorEmailField = ((TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_EMAIL_FIELD));
+        instructorEmailField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!instructorEmailField.getText().equals(data.getInstructorEmail())){
+                controller.changeInstructorEmail(instructorEmailField.getText());
+            }
+        });
 
+        TextArea instructorOfficeHoursField = ((TextArea) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD));
+        instructorOfficeHoursField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!instructorOfficeHoursField.getText().equals(data.getInstructorOfficeHours())){
+                controller.changeInstructorOfficeHours(instructorOfficeHoursField.getText());
+            }
+        });
+        
+        TextArea desctiptionText = (TextArea) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BOX);
+        desctiptionText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!desctiptionText.getText().equals(data.getDescription())){
+                controller.changeDescription(desctiptionText.getText());
+            }
+        });
+        TextArea topicsText = (TextArea) gui.getGUINode(CSG_SYLLABUS_TOPICS_BOX);
+        topicsText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!topicsText.getText().equals(data.getTopics())){
+                controller.changeTopics(topicsText.getText());
+            }
+        });
+        TextArea prereqText = (TextArea) gui.getGUINode(CSG_SYLLABUS_PREREQ_BOX);
+        prereqText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!prereqText.getText().equals(data.getPrereq())){
+                controller.changePrereq(prereqText.getText());
+            }
+        });
+        TextArea outcomesText = (TextArea) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BOX);
+        outcomesText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!outcomesText.getText().equals(data.getOutcomes())){
+                controller.changeOutcomes(outcomesText.getText());
+            }
+        });
+        TextArea textbooksText = (TextArea) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BOX);
+        textbooksText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!textbooksText.getText().equals(data.getTextbooks())){
+                controller.changeTextbooks(textbooksText.getText());
+            }
+        });
+        TextArea gradedcompText = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX);
+        gradedcompText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!gradedcompText.getText().equals(data.getGradedcomp())){
+                controller.changeGradedcomp(gradedcompText.getText());
+            }
+        });
+        TextArea gradingNoteText = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BOX);
+        gradingNoteText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!gradingNoteText.getText().equals(data.getGradingNote())){
+                controller.changeGradingNote(gradingNoteText.getText());
+            }
+        });
+        TextArea acedemicText = (TextArea) gui.getGUINode(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX);
+        acedemicText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!acedemicText.getText().equals(data.getAcedemic())){
+                controller.changeAcedemic(acedemicText.getText());
+            }
+        });
+        TextArea specialText = (TextArea) gui.getGUINode(CSG_SYLLABUS_SPECIALASSISTANCE_BOX);
+        specialText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!specialText.getText().equals(data.getSpecial())){
+                controller.changeSpecial(specialText.getText());
+            }
+        });
+        
         CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HOME_CHECK);
         CheckBox syllabusCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SYLLABUS_CHECK);
         CheckBox scheduleCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SCHEDULE_CHECK);

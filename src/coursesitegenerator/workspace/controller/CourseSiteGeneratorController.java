@@ -32,19 +32,34 @@ import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import coursesitegenerator.dialogs.TADialog;
 import coursesitegenerator.transactions.AddTA_Transaction;
+import coursesitegenerator.transactions.ChangeAcedemicTransaction;
+import coursesitegenerator.transactions.ChangeCSSTransaction;
+import coursesitegenerator.transactions.ChangeDescriptionTransaction;
 import coursesitegenerator.transactions.ChangeFaviconTransaction;
+import coursesitegenerator.transactions.ChangeGradingNoteTransaction;
+import coursesitegenerator.transactions.ChangeGradingcompTransaction;
 import coursesitegenerator.transactions.ChangeHWSTransaction;
 import coursesitegenerator.transactions.ChangeHomeTransaction;
+import coursesitegenerator.transactions.ChangeInstructorEmailTransaction;
+import coursesitegenerator.transactions.ChangeInstructorHomeTransaction;
+import coursesitegenerator.transactions.ChangeInstructorNameTransaction;
+import coursesitegenerator.transactions.ChangeInstructorOfficeHoursTransaction;
+import coursesitegenerator.transactions.ChangeInstructorRoomTransaction;
 import coursesitegenerator.transactions.ChangeLeftFooterTransaction;
 import coursesitegenerator.transactions.ChangeNavbarTransaction;
 import coursesitegenerator.transactions.ChangeNumberTransaction;
+import coursesitegenerator.transactions.ChangeOutcomesTransaction;
+import coursesitegenerator.transactions.ChangePrereqTransaction;
 import coursesitegenerator.transactions.ChangeRightFooterTransaction;
 import coursesitegenerator.transactions.ChangeScheduleTransaction;
 import coursesitegenerator.transactions.ChangeSemesterTransaction;
+import coursesitegenerator.transactions.ChangeSpecialTransaction;
 import coursesitegenerator.transactions.ChangeSubjectTransaction;
 import coursesitegenerator.transactions.ChangeSyllabusTransaction;
+import coursesitegenerator.transactions.ChangeTextbooksTransaction;
 import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
 import coursesitegenerator.transactions.ChangeTitleTransaction;
+import coursesitegenerator.transactions.ChangeTopicsTransaction;
 import coursesitegenerator.transactions.ChangeYearTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
@@ -472,6 +487,102 @@ public class CourseSiteGeneratorController {
                     data.getRightFooterPath(), file.toURI().toString());
             app.processTransaction(change);
         }
+    }
+    public void changeCSS(String css){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeCSSTransaction change = new ChangeCSSTransaction(data, data.getCSS(), css);
+        app.processTransaction(change);
+    }
+    
+    public void changeInstructorName(String name){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeInstructorNameTransaction change = new ChangeInstructorNameTransaction(data, data.getInstructorName(), name);
+        app.processTransaction(change);
+    }
+    
+    public void changeInstructorHome(String home){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeInstructorHomeTransaction change = new ChangeInstructorHomeTransaction(data, data.getInstructorHomepage(), home);
+        app.processTransaction(change);
+    }
+    
+    public void changeInstructorRoom(String room){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeInstructorRoomTransaction change = new ChangeInstructorRoomTransaction(data, data.getInstructorRoom(), room);
+        app.processTransaction(change);
+    }
+    
+    public void changeInstructorEmail(String email){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeInstructorEmailTransaction change = new ChangeInstructorEmailTransaction(data, data.getInstructorEmail(), email);
+        app.processTransaction(change);
+    }
+    
+    public void changeInstructorOfficeHours(String officeHours){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeInstructorOfficeHoursTransaction change = new ChangeInstructorOfficeHoursTransaction(data, data.getInstructorOfficeHours(), officeHours);
+        app.processTransaction(change);
+    }
+    
+    public void changeDescription(String description){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeDescriptionTransaction change = new ChangeDescriptionTransaction(data, data.getDescription(), description);
+        app.processTransaction(change);
+    }
+    public void changeTopics(String topics){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeTopicsTransaction change = new ChangeTopicsTransaction(data, data.getTopics(), topics);
+        app.processTransaction(change);
+    }
+    public void changePrereq(String prereq){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangePrereqTransaction change = new ChangePrereqTransaction(data, data.getPrereq(), prereq);
+        app.processTransaction(change);
+    }
+    public void changeOutcomes(String outcomes){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeOutcomesTransaction change = new ChangeOutcomesTransaction(data, data.getOutcomes(), outcomes);
+        app.processTransaction(change);
+    }
+    public void changeTextbooks(String textbooks){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeTextbooksTransaction change = new ChangeTextbooksTransaction(data, data.getTextbooks(), textbooks);
+        app.processTransaction(change);
+    }
+    public void changeGradedcomp(String gradingcomp){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeGradingcompTransaction change = new ChangeGradingcompTransaction(data, data.getGradedcomp(), gradingcomp);
+        app.processTransaction(change);
+    }
+    public void changeGradingNote(String gradingNote){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeGradingNoteTransaction change = new ChangeGradingNoteTransaction(data, data.getGradingNote(), gradingNote);
+        app.processTransaction(change);
+    }
+    public void changeAcedemic(String acedemic){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeAcedemicTransaction change = new ChangeAcedemicTransaction(data, data.getAcedemic(), acedemic);
+        app.processTransaction(change);
+    }
+    public void changeSpecial(String special){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeSpecialTransaction change = new ChangeSpecialTransaction(data, data.getSpecial(), special);
+        app.processTransaction(change);
     }
     /*
     private void openFile(File file) {
