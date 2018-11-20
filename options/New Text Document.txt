@@ -1,4 +1,0 @@
-{
-	"subjects": ["CSE","AMS","CHE","ISE"],
-	"numbers": ["219"]
-}

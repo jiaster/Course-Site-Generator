@@ -30,10 +30,11 @@ import coursesitegenerator.data.CourseSiteData;
 import coursesitegenerator.data.TAType;
 import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
+import java.math.BigDecimal;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class CourseSiteFiles implements AppFileComponent {
     // THIS IS THE APP ITSELF
@@ -55,6 +56,36 @@ public class CourseSiteFiles implements AppFileComponent {
     static final String JSON_WEDNESDAY = "wednesday";
     static final String JSON_THURSDAY = "thursday";
     static final String JSON_FRIDAY = "friday";
+    static final String JSON_SUBJECT = "subject";
+    static final String JSON_SEMESTER = "semester";
+    static final String JSON_NUMBER = "number";
+    static final String JSON_YEAR = "year";
+    static final String JSON_TITLE = "title";
+    //static final String JSON_EXPORTDIR = "exportdir";
+    static final String JSON_HOME = "home";
+    static final String JSON_SYLLABUS = "syllabus";
+    static final String JSON_SCHEDULE = "schedule";
+    static final String JSON_HWS = "hws";
+    static final String JSON_FAVICON = "favicon";
+    static final String JSON_NAVBAR = "navbar";
+    static final String JSON_LEFTFOOTER = "leftfooter";
+    static final String JSON_RIGHTFOOTER = "rightfooter";
+    static final String JSON_CSS = "css";
+    static final String JSON_ROOM = "instructorroom";
+    static final String JSON_HOMEPAGE = "link";
+    static final String JSON_OFFICEHOURS = "hours";
+    static final String JSON_DESCRIPTION = "description";
+    static final String JSON_PAGES = "pages";
+    static final String JSON_TOPICS = "topics";
+    static final String JSON_PREREQ = "prereq";
+    static final String JSON_OUTCOMES = "outcomes";
+    static final String JSON_TEXTBOOKS = "textbooks";
+    static final String JSON_GRADEDCOMPONENTS = "gradedcomponents";
+    static final String JSON_GRADINGNOTE = "gradingnote";
+    static final String JSON_ACADEMIC = "academic";
+    static final String JSON_SPECIAL = "special";
+    static final String JSON_STARTTIME = "starttime";
+    static final String JSON_ENDTIME = "endtime";
 
     public CourseSiteFiles(CourseSiteGenerator initApp) {
         app = initApp;
@@ -115,10 +146,32 @@ public class CourseSiteFiles implements AppFileComponent {
 
     @Override
     public void saveData(AppDataComponent data, String filePath) throws IOException {
-	// GET THE DATA
 	CourseSiteData dataManager = (CourseSiteData)data;
 
-	// NOW BUILD THE TA JSON OBJCTS TO SAVE
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 	JsonArrayBuilder gradTAsArrayBuilder = Json.createArrayBuilder();
         JsonArrayBuilder undergradTAsArrayBuilder = Json.createArrayBuilder();
 	Iterator<TeachingAssistantPrototype> tasIterator = dataManager.teachingAssistantsIterator();
@@ -158,6 +211,7 @@ public class CourseSiteFiles implements AppFileComponent {
         
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
+                .add(JSON_SUBJECT, ""+dataManager.getNumber())
 		.add(JSON_START_HOUR, "" + dataManager.getStartHour())
 		.add(JSON_END_HOUR, "" + dataManager.getEndHour())
                 .add(JSON_GRAD_TAS, gradTAsArray)

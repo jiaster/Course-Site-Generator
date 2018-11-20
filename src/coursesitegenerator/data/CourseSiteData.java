@@ -16,15 +16,73 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_ALL_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_GRAD_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_BANNER_EXPORTDIRTEXT;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_EMAIL_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_NAME_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_ROOM_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_NUMBER_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_PAGES_HOME_CHECK;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_PAGES_HWS_CHECK;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_PAGES_SCHEDULE_CHECK;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_PAGES_SYLLABUS_CHECK;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SEMESTER_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_STYLE_CSS;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SUBJECT_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_YEAR_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_FAVICON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_LEFTFOOTER;
+import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_NAVBAR;
+import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_RIGHTFOOTER;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_ACDEDEMIC_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_DESCRIPTION_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_DESCRIPTION_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_GRADEDCOMPONENTS_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_GRADEDCOMP_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_GRADINGNOTE_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_GRADINGNOTE_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_OUTCOMES_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_OUTCOMES_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_PREREQ_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_PREREQ_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_SPECIALASSISTANCE_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_SPECIAL_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_TEXTBOOKS_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_TEXTBOOKS_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_TOPICS_BOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SYLLABUS_TOPICS_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import coursesitegenerator.data.TimeSlot.DayOfWeek;
+import coursesitegenerator.workspace.CourseSiteWorkspace;
+import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_BUTTON;
+import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_TEXT_FIELD;
+import static djf.modules.AppGUIModule.ENABLED;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * This is the data component for TAManagerApp. It has all the data needed
@@ -59,6 +117,41 @@ public class CourseSiteData implements AppDataComponent {
     public static final int MIN_START_HOUR = 8;
     public static final int MAX_END_HOUR = 22;
     
+    /*
+    private static final FileInputStream defualtFaviconPath = new FileInputStream("./images/favicon.png");
+    private static final FileInputStream defualtNavPath = new FileInputStream("./images/navbar.png");
+    private static final FileInputStream defualtFaviconPath = new FileInputStream("./images/leftFooter.png");
+    private static final FileInputStream defualtFaviconPath = new FileInputStream("./images/rightFooter.png");
+    */
+    
+    private static final String defualtFaviconPath = ("./images/favicon.png");
+    private static final String defualtNavPath =  ("./images/navbar.png");
+    private static final String defualtLeftFooterPath =  ("./images/leftFooter.png");
+    private static final String defualtRightFooterPath =  ("./images/rightFooter.png");
+    private String faviconPath = ("./images/favicon.png");
+    private String navbarPath =  ("./images/navbar.png");
+    private String leftFooterPath =  ("./images/leftFooter.png");
+    private String rightFooterPath =  ("./images/rightFooter.png");
+    
+    private String subject="";
+    private String number="";
+    private String semester="";
+    private String year="";
+    private String title="";
+    private String exportdir="";
+    private boolean home=false;
+    private boolean syllabus=false;
+    private boolean schedule=false;
+    private boolean hws=false;
+    private String css="";
+    private String instructorName="";
+    private String instructorRoom="";
+    private String instructorEmail="";
+    private String instructorHomepage="";
+    private String instructorOfficeHours="";
+    
+    
+
     //public String oldStartTime="8:00am";
     //public String oldEndTime="11:00pm";
 
@@ -91,9 +184,58 @@ public class CourseSiteData implements AppDataComponent {
     }
     
     // ACCESSOR METHODS
+    
+    public String getSubject(){
+        return subject;
+    }
+    public String getNumber(){
+        return number;
+    }
+    public String getSemester(){
+        return semester;
+    }
+    public String getYear(){
+        return year;
+    }
+    public String getTitle(){
+        return title;
+    }
+    public String getExportdir(){
+        return exportdir;
+    }
+    public boolean getHome(){
+        return home;
+    }
 
     public int getStartHour() {
         return startHour;
+    }
+    public void changeNumber(String newNumber){
+        number=newNumber;
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox combo = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        combo.setValue(newNumber);
+
+    }
+    public void changeSubject(String newSubject){
+        subject=newSubject;
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox combo = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        combo.setValue(newSubject);
+    }
+    
+    public void changeSemester(String newSemester){
+        semester=newSemester;
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox combo = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
+        combo.setValue(newSemester);
+    }
+    
+    public void changeYear(String newYear){
+        year = newYear;
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox combo = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
+        combo.setValue(newYear);
     }
     /*
     public String getOldStartTime() {
@@ -112,6 +254,80 @@ public class CourseSiteData implements AppDataComponent {
         oldEndTime = time;
     }
 */
+    
+    public void setFaviconPath(String path){
+        faviconPath=path;
+    }
+    public void setNavbarPath(String path) {
+        navbarPath = path;
+    }
+    public void setLeftFooterPath(String path) {
+        leftFooterPath = path;
+    }
+    public void setRightFooterPath(String path) {
+        rightFooterPath = path;
+    }
+    public String getFaviconPath() {
+        return faviconPath;
+    }
+    public String getNavbarPath () {
+        return navbarPath;
+    }
+    public String getLeftFooterPath() {
+        return leftFooterPath;
+    }
+    public String getRightFooterPath() {
+        return rightFooterPath;
+    }
+    public void setFavicon(){
+        AppGUIModule gui = app.getGUIModule();
+        ImageView faviconImage = (ImageView) gui.getGUINode(CSG_STYLE_FAVICON);
+        try {
+            FileInputStream input2 = new FileInputStream(faviconPath);
+            Image image= new Image(input2);
+            faviconImage.setImage(image);
+        } catch (FileNotFoundException ex) {
+            Image image= new Image(faviconPath);
+            faviconImage.setImage(image);
+        }
+    }
+    public void setNavbar() {
+        AppGUIModule gui = app.getGUIModule();
+        ImageView navbarImage = (ImageView) gui.getGUINode(CSG_STYLE_NAVBAR);
+        try {
+            FileInputStream input2 = new FileInputStream(navbarPath);
+            Image image = new Image(input2);
+            navbarImage.setImage(image);
+        } catch (FileNotFoundException ex) {
+            Image image = new Image(navbarPath);
+            navbarImage.setImage(image);
+        }
+    }
+    public void setLeftFooter() {
+        AppGUIModule gui = app.getGUIModule();
+        ImageView leftFooterImage = (ImageView) gui.getGUINode(CSG_STYLE_LEFTFOOTER);
+        try {
+            FileInputStream input2 = new FileInputStream(leftFooterPath);
+            Image image = new Image(input2);
+            leftFooterImage.setImage(image);
+        } catch (FileNotFoundException ex) {
+            Image image = new Image(leftFooterPath);
+            leftFooterImage.setImage(image);
+        }
+    }
+    public void setRightFooter() {
+        AppGUIModule gui = app.getGUIModule();
+        ImageView rightFooterImage = (ImageView) gui.getGUINode(CSG_STYLE_RIGHTFOOTER);
+        try {
+            FileInputStream input2 = new FileInputStream(rightFooterPath);
+            Image image = new Image(input2);
+            rightFooterImage.setImage(image);
+        } catch (FileNotFoundException ex) {
+            Image image = new Image(rightFooterPath);
+            rightFooterImage.setImage(image);
+        }
+    }
+    
     public int getEndHour() {
         return endHour;
     }
@@ -125,8 +341,138 @@ public class CourseSiteData implements AppDataComponent {
         Collections.sort(teachingAssistants);
     }
     
+    private void resetSite(){//TODO add all fields
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ComboBox semesterComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
+        ComboBox numberComboBox = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ComboBox yearComboBox = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
+        subjectComboBox.setValue("");
+        semesterComboBox.setValue("");
+        numberComboBox.setValue("");
+        yearComboBox.setValue("");
+        Label exportDirText = (Label) gui.getGUINode(CSG_SITE_BANNER_EXPORTDIRTEXT);
+        exportDirText.setText(".\\export");
+        CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HOME_CHECK);
+        CheckBox syllabusCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SYLLABUS_CHECK);
+        CheckBox scheduleCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SCHEDULE_CHECK);
+        CheckBox hwsCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HWS_CHECK);
+        homeCheckBox.setSelected(false);
+        syllabusCheckBox.setSelected(false);
+        scheduleCheckBox.setSelected(false);
+        hwsCheckBox.setSelected(false);
+        
+        resetImages();
+        
+        ComboBox cssComboBox = (ComboBox) gui.getGUINode(CSG_SITE_STYLE_CSS);
+        cssComboBox.getItems().clear();
+        File folder = new File("./work/css");
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                cssComboBox.getItems().add(file.getName());
+            }
+        }
+        cssComboBox.setValue(cssComboBox.getItems().get(0));
+        
+        TextField nameField =(TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD);
+        TextField emailField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD);
+        TextField roomField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_EMAIL_FIELD);
+        TextField homePageField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_EMAIL_FIELD);
+        TextArea officeHoursTextField = (TextArea) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD);
+        
+        nameField.clear();
+        emailField.clear();
+        roomField.clear();
+        homePageField.clear();
+        officeHoursTextField.clear();
+        officeHoursTextField.setVisible(false);
+        Button instructorOfficeHoursButton = (Button) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON);
+        instructorOfficeHoursButton.setText("+");
+    }
+    
+    public void resetImages(){
+        AppGUIModule gui = app.getGUIModule();
+
+        ImageView faviconImage = (ImageView) gui.getGUINode(CSG_STYLE_FAVICON);
+        ImageView navbarImage = (ImageView) gui.getGUINode(CSG_STYLE_NAVBAR);
+        ImageView leftFooterImage = (ImageView) gui.getGUINode(CSG_STYLE_LEFTFOOTER);
+        ImageView rightFooterImage = (ImageView) gui.getGUINode(CSG_STYLE_RIGHTFOOTER);
+        
+        try {
+            FileInputStream input = new FileInputStream(defualtFaviconPath);
+            Image image = new Image(input);
+            faviconImage.setImage(image);
+            FileInputStream input2 = new FileInputStream(defualtNavPath);
+            Image image2 = new Image(input2);
+            navbarImage.setImage(image2);
+            FileInputStream input3 = new FileInputStream(defualtLeftFooterPath);
+            Image image3 = new Image(input3);
+            leftFooterImage.setImage(image3);
+            FileInputStream input4 = new FileInputStream(defualtRightFooterPath);
+            Image image4 = new Image(input4);
+            rightFooterImage.setImage(image4);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CourseSiteData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void resetSyllabus(){
+        AppGUIModule gui = app.getGUIModule();
+        Button descriptionButton = (Button) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BUTTON);
+        Button topicsButton = (Button) gui.getGUINode(CSG_SYLLABUS_TOPICS_BUTTON);
+        Button prereqButton = (Button) gui.getGUINode(CSG_SYLLABUS_PREREQ_BUTTON);
+        Button outcomesButton = (Button) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BUTTON);
+        Button textbooksButton = (Button) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BUTTON);
+        Button gradedcompButton = (Button) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMP_BUTTON);
+        Button gradingNoteButton = (Button) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BUTTON);
+        Button acedemicButton = (Button) gui.getGUINode(CSG_SYLLABUS_ACDEDEMIC_BUTTON);
+        Button specialButton = (Button) gui.getGUINode(CSG_SYLLABUS_SPECIAL_BUTTON);
+        TextArea descriptionTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BOX);
+        TextArea topicsTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_TOPICS_BOX);
+        TextArea prereqTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_PREREQ_BOX);
+        TextArea outcomesTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BOX);
+        TextArea textbooksTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BOX);
+        TextArea gradingcompTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX);
+        TextArea gradingNoteTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BOX);
+        TextArea acedemicTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX);
+        TextArea specialTextField = (TextArea) gui.getGUINode(CSG_SYLLABUS_SPECIALASSISTANCE_BOX);
+        
+        descriptionTextField.setVisible(true);
+        topicsTextField.setVisible(false);
+        prereqTextField.setVisible(false);
+        outcomesTextField.setVisible(false);
+        textbooksTextField.setVisible(false);
+        gradingcompTextField.setVisible(false);
+        gradingNoteTextField.setVisible(false);
+        acedemicTextField.setVisible(false);
+        specialTextField.setVisible(false);
+
+        descriptionTextField.clear();
+        topicsTextField.clear();
+        prereqTextField.clear();
+        outcomesTextField.clear();
+        textbooksTextField.clear();
+        gradingcompTextField.clear();
+        gradingNoteTextField.clear();
+        acedemicTextField.clear();
+        specialTextField.clear();
+        
+        descriptionButton.setText("-");
+        topicsButton.setText("+");
+        prereqButton.setText("+");
+        outcomesButton.setText("+");
+        textbooksButton.setText("+");
+        gradedcompButton.setText("+");
+        gradingNoteButton.setText("+");
+        acedemicButton.setText("+");
+        specialButton.setText("+");
+    }
+    
     private void resetOfficeHours() {
         //THIS WILL STORE OUR OFFICE HOURS
+        
         AppGUIModule gui = app.getGUIModule();
         TableView<TimeSlot> officeHoursTableView = (TableView)gui.getGUINode(CSG_OFFICE_HOURS_TABLE_VIEW);
         officeHours = officeHoursTableView.getItems(); 
@@ -244,6 +590,8 @@ public class CourseSiteData implements AppDataComponent {
         for (TimeSlot timeSlot : officeHours) {
             timeSlot.reset();
         }
+        resetSite();
+        resetSyllabus();
     }
     
     // SERVICE METHODS

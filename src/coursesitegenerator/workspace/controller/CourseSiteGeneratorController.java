@@ -16,6 +16,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_NUMBER_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SUBJECT_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
+import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_FAVICON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TA_EDIT_DIALOG;
 import coursesitegenerator.data.CourseSiteData;
@@ -31,11 +32,21 @@ import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import coursesitegenerator.dialogs.TADialog;
 import coursesitegenerator.transactions.AddTA_Transaction;
+import coursesitegenerator.transactions.ChangeFaviconTransaction;
+import coursesitegenerator.transactions.ChangeLeftFooterTransaction;
+import coursesitegenerator.transactions.ChangeNavbarTransaction;
+import coursesitegenerator.transactions.ChangeNumberTransaction;
+import coursesitegenerator.transactions.ChangeRightFooterTransaction;
+import coursesitegenerator.transactions.ChangeSemesterTransaction;
+import coursesitegenerator.transactions.ChangeSubjectTransaction;
 import coursesitegenerator.transactions.ChangeTimeRangeTransaction;
+import coursesitegenerator.transactions.ChangeYearTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
 import djf.components.AppFileComponent;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,9 +59,14 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -236,6 +252,7 @@ public class CourseSiteGeneratorController {
 */
     public void addSubject(String subject) throws FileNotFoundException{
         AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
         ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
         ObservableList<String> subjectList = subjectTextField.getItems();
         JsonArrayBuilder subjectsArrayBuilder = Json.createArrayBuilder();
@@ -280,6 +297,7 @@ public class CourseSiteGeneratorController {
     }
     public void addNumber(String number) throws FileNotFoundException{
         AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
         ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
         ObservableList<String> subjectList = subjectTextField.getItems();
         JsonArrayBuilder subjectsArrayBuilder = Json.createArrayBuilder();
@@ -319,5 +337,102 @@ public class CourseSiteGeneratorController {
         PrintWriter pw = new PrintWriter("./options/options.json");
         pw.write(prettyPrinted);
         pw.close();
+        
     }
+    public void changeNumber(String number){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeNumberTransaction change= new ChangeNumberTransaction(data,data.getNumber() ,number);
+        app.processTransaction(change);
+        //data.changeNumber(number);
+    }
+    //private Desktop desktop = Desktop.getDesktop();
+    
+    public void changeSubject(String subject) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeSubjectTransaction change = new ChangeSubjectTransaction(data, data.getSubject(), subject);
+        app.processTransaction(change);
+        //data.changeNumber(number);
+    }
+    public void changeYear(String year) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeYearTransaction change = new ChangeYearTransaction(data, data.getYear(), year);
+        app.processTransaction(change);
+        //data.changeNumber(number);
+    }
+    public void changeSemester(String semester) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeSemesterTransaction change = new ChangeSemesterTransaction(data, data.getSemester(), semester);
+        app.processTransaction(change);
+        //data.changeNumber(number);
+    }
+    
+    public void changeFaviconImage(){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        FileChooser fileChooser = new FileChooser();
+        /*
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPG Files", "*.txt"),
+                new FileChooser.ExtensionFilter("PNG Files", "*.htm"),
+                new FileChooser.ExtensionFilter("BMP Files", "*.htm")
+        );
+*/
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            //openFile(file); 
+            //System.out.print(file.toURI().toString());
+            //Image image = new Image(file.toURI().toString());
+            //ImageView faviconImage = (ImageView) gui.getGUINode(CSG_STYLE_FAVICON);
+            //faviconImage.setImage(image);
+            ChangeFaviconTransaction change= new ChangeFaviconTransaction(data,
+                    data.getFaviconPath(), file.toURI().toString());
+            app.processTransaction(change);
+        }
+    }
+    public void changeNavbarImage() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            ChangeNavbarTransaction change = new ChangeNavbarTransaction(data,
+                    data.getNavbarPath(), file.toURI().toString());
+            app.processTransaction(change);
+        }
+    }
+    public void changeLeftFooterImage() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            ChangeLeftFooterTransaction change = new ChangeLeftFooterTransaction(data,
+                    data.getLeftFooterPath(), file.toURI().toString());
+            app.processTransaction(change);
+        }
+    }
+    public void changeRightFooterImage() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            ChangeRightFooterTransaction change = new ChangeRightFooterTransaction(data,
+                    data.getRightFooterPath(), file.toURI().toString());
+            app.processTransaction(change);
+        }
+    }
+    /*
+    private void openFile(File file) {
+        try {
+            desktop.open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(CourseSiteGeneratorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+*/
 }

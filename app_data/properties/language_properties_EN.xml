@@ -307,11 +307,11 @@
         </property_options>
 		
 		<property_options name="CSG_SITE_STYLE_CSS_OPTIONS">
-			<option>sbuColors.css</option>
+			<option></option>
         </property_options>
 		
 		<property_options name="CSG_SITE_STYLE_CSS_DEFAULT">
-			<option>sbuColors.css</option>
+			<option></option>
         </property_options>
 		
 		<property_options name="CSG_TYPE_OPTIONS">

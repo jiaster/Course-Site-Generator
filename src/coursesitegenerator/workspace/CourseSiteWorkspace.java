@@ -126,6 +126,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -134,6 +135,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -243,6 +245,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         GridPane siteBannerBox = csjBuilder.buildGridPane(CSG_SITE_BANNER_BOX, siteVBox, CLASS_CSG_BOX, ENABLED);
         siteBannerBox.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/6.0));
         siteBannerBox.prefWidthProperty().bind(officePane.widthProperty());
+        //siteBannerBox.setPadding(Insets.EMPTY);
         Label bannerLabel = csjBuilder.buildLabel(CSG_SITE_BANNER_BOX, null, CLASS_CSG_HEADER_LABEL, ENABLED);
         Label subjectLabel = csjBuilder.buildLabel(CSG_SITE_BANNER_SUBJECT, null, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
         Label semesterLabel = csjBuilder.buildLabel(CSG_SITE_BANNER_SEMESTER, null, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
@@ -301,20 +304,34 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         try {
             FileInputStream input = new FileInputStream("./images/favicon.png");
             Image image = new Image(input);
-            ImageView faviconImage = new ImageView(image);
-            siteStyleBox.add(faviconImage, 1, 1, 1, 1 );
+            //ImageView faviconImage = new ImageView(image);
+            //siteStyleBox.add(faviconImage, 1, 1, 1, 1 );
+            ImageView faviconImage = csjBuilder.buildImageView(CSG_STYLE_FAVICON, siteStyleBox, 1, 1, 1, 1, CLASS_CSG_IMAGEVIEW, ENABLED, image);
+            faviconImage.fitHeightProperty().bind(siteScrollPane.prefHeightProperty().multiply(1.0/20.0));
+            
             FileInputStream input2 = new FileInputStream("./images/navbar.png");
             Image image2 = new Image(input2);
-            ImageView navbarImage = new ImageView(image2);
-            siteStyleBox.add(navbarImage, 1, 2, 1, 1 );
+            //ImageView navbarImage = new ImageView(image2);
+            //siteStyleBox.add(navbarImage, 1, 2, 1, 1 );
+            ImageView navbarImage = csjBuilder.buildImageView(CSG_STYLE_NAVBAR, siteStyleBox, 1, 2, 1, 1, CLASS_CSG_IMAGEVIEW, ENABLED, image2);
+            navbarImage.fitHeightProperty().bind(siteScrollPane.prefHeightProperty().multiply(1.0 / 20.0));
+
+            
             FileInputStream input3 = new FileInputStream("./images/leftFooter.png");
             Image image3 = new Image(input3);
-            ImageView leftFooterImage = new ImageView(image3);
-            siteStyleBox.add(leftFooterImage, 1, 3, 1, 1 );
+            //ImageView leftFooterImage = new ImageView(image3);
+            //siteStyleBox.add(leftFooterImage, 1, 3, 1, 1 );
+            ImageView leftFooterImage = csjBuilder.buildImageView(CSG_STYLE_LEFTFOOTER, siteStyleBox, 1, 3, 1, 1, CLASS_CSG_IMAGEVIEW, ENABLED, image3);
+            leftFooterImage.fitHeightProperty().bind(siteScrollPane.prefHeightProperty().multiply(1.0 / 20.0));
+
+            
             FileInputStream input4 = new FileInputStream("./images/rightFooter.png");
             Image image4 = new Image(input4);
-            ImageView rightFooterImage = new ImageView(image4);
-            siteStyleBox.add(rightFooterImage, 1, 4, 1, 1 );
+            //ImageView rightFooterImage = new ImageView(image4);
+            //siteStyleBox.add(rightFooterImage, 1, 4, 1, 1 );
+            ImageView rightFooterImage = csjBuilder.buildImageView(CSG_STYLE_RIGHTFOOTER, siteStyleBox, 1, 4, 1, 1, CLASS_CSG_IMAGEVIEW, ENABLED, image4);
+            rightFooterImage.fitHeightProperty().bind(siteScrollPane.prefHeightProperty().multiply(1.0 / 20.0));
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CourseSiteWorkspace.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -338,15 +355,15 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         TextField emailField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_ROOM_FIELD, siteInstructorBox, 1, 2, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
         TextField roomField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_EMAIL_FIELD, siteInstructorBox, 3, 1, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
         TextField homePageField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_EMAIL_FIELD, siteInstructorBox, 3, 2, 1, 1, CLASS_CSG_TEXT_FIELD, ENABLED);
-
+       
         Button instructorOfficeHoursButton = csjBuilder.buildTextButton(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON, siteInstructorBox, 0, 4, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label instructorOfficeHoursLabel = csjBuilder.buildLabel(CSG_SITE_INSTRUCTOR_OFFICEHOURS, siteInstructorBox, 1, 4, 1, 1, CLASS_CSG_HEADER_LABEL, ENABLED);
-        TextField officeHoursTextField = csjBuilder.buildTextField(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD, siteInstructorBox, 0, 5, 5, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
-        officeHoursTextField.prefWidthProperty().bind(officePane.widthProperty());
-        officeHoursTextField.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/8.0));
-        officeHoursTextField.setVisible(false);
-        officeHoursTextField.managedProperty().bind(officeHoursTextField.visibleProperty());
-
+        TextArea officeHoursTextArea = csjBuilder.buildTextArea(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD, siteInstructorBox, 0, 5, 5, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        officeHoursTextArea.prefWidthProperty().bind(officePane.widthProperty());
+        officeHoursTextArea.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/8.0));
+        officeHoursTextArea.setVisible(false);
+        officeHoursTextArea.managedProperty().bind(officeHoursTextArea.visibleProperty());
+                
         //syllabus Tab
         ScrollPane syllabusScrollPane = new ScrollPane();
         syllabusScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
@@ -369,48 +386,48 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button gradingNoteButton = csjBuilder.buildTextButton(CSG_SYLLABUS_GRADINGNOTE_BUTTON, syllabusGrid, 0, 12, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Button acedemicButton = csjBuilder.buildTextButton(CSG_SYLLABUS_ACDEDEMIC_BUTTON, syllabusGrid, 0, 14, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Button specialButton = csjBuilder.buildTextButton(CSG_SYLLABUS_SPECIAL_BUTTON, syllabusGrid, 0, 16, 1, 1, CLASS_CSG_BUTTON, ENABLED);
-        TextField descriptionTextField = csjBuilder.buildTextField(CSG_SYLLABUS_DESCRIPTION_BOX, syllabusGrid, 0, 1, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea descriptionTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_DESCRIPTION_BOX, syllabusGrid, 0, 1, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         descriptionTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //descriptionTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         //descriptionTextField.setPrefHeight(syllabusVBox.getHeight()/2.0);
         descriptionTextField.setVisible(true);
         descriptionTextField.managedProperty().bind(descriptionTextField.visibleProperty());
-        TextField topicsTextField = csjBuilder.buildTextField(CSG_SYLLABUS_TOPICS_BOX, syllabusGrid, 0, 3, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea topicsTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_TOPICS_BOX, syllabusGrid, 0, 3, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         topicsTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //topicsTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         topicsTextField.setVisible(false);
         topicsTextField.managedProperty().bind(topicsTextField.visibleProperty());
-        TextField prereqTextField = csjBuilder.buildTextField(CSG_SYLLABUS_PREREQ_BOX, syllabusGrid, 0, 5, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea prereqTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_PREREQ_BOX, syllabusGrid, 0, 5, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         prereqTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //prereqTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         prereqTextField.setVisible(false);
         prereqTextField.managedProperty().bind(prereqTextField.visibleProperty());
-        TextField outcomesTextField = csjBuilder.buildTextField(CSG_SYLLABUS_OUTCOMES_BOX, syllabusGrid, 0, 7, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea outcomesTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_OUTCOMES_BOX, syllabusGrid, 0, 7, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         outcomesTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //outcomesTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         outcomesTextField.setVisible(false);
         outcomesTextField.managedProperty().bind(outcomesTextField.visibleProperty());
-        TextField textbooksTextField = csjBuilder.buildTextField(CSG_SYLLABUS_TEXTBOOKS_BOX, syllabusGrid, 0, 9, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea textbooksTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_TEXTBOOKS_BOX, syllabusGrid, 0, 9, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         textbooksTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //textbooksTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         textbooksTextField.setVisible(false);
         textbooksTextField.managedProperty().bind(textbooksTextField.visibleProperty());
-        TextField gradingcompTextField = csjBuilder.buildTextField(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX, syllabusGrid, 0, 11, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea gradingcompTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX, syllabusGrid, 0, 11, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         gradingcompTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //gradingcompTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         gradingcompTextField.setVisible(false);
         gradingcompTextField.managedProperty().bind(gradingcompTextField.visibleProperty());
-        TextField gradingNoteTextField = csjBuilder.buildTextField(CSG_SYLLABUS_GRADINGNOTE_BOX, syllabusGrid, 0, 13, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea gradingNoteTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_GRADINGNOTE_BOX, syllabusGrid, 0, 13, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         gradingNoteTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //gradingNoteTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         gradingNoteTextField.setVisible(false);
         gradingNoteTextField.managedProperty().bind(gradingNoteTextField.visibleProperty());
-        TextField acedemicTextField = csjBuilder.buildTextField(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX, syllabusGrid, 0, 15, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea acedemicTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX, syllabusGrid, 0, 15, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         acedemicTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //acedemicTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         acedemicTextField.setVisible(false);
         acedemicTextField.managedProperty().bind(acedemicTextField.visibleProperty());
-        TextField specialTextField = csjBuilder.buildTextField(CSG_SYLLABUS_SPECIALASSISTANCE_BOX, syllabusGrid, 0, 17, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        TextArea specialTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_SPECIALASSISTANCE_BOX, syllabusGrid, 0, 17, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         specialTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //specialTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         specialTextField.setVisible(false);
@@ -688,30 +705,56 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         // FOOLPROOF DESIGN STUFF
         TextField nameTextField = ((TextField) gui.getGUINode(CSG_NAME_TEXT_FIELD));
         TextField emailTextField = ((TextField) gui.getGUINode(CSG_EMAIL_TEXT_FIELD));
-        ComboBox subjectTextField = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
-        ComboBox numberTextField = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ComboBox subjectComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ComboBox numberComboBox = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ComboBox yearComboBox = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
+        ComboBox semesterComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
 
         
-        subjectTextField.setOnAction(e -> {
-            if (!subjectTextField.getItems().contains(subjectTextField.getValue()))
+        subjectComboBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!subjectComboBox.getValue().equals(data.getSubject())){
+            if (subjectComboBox.getValue()!=""&&!subjectComboBox.getItems().contains(subjectComboBox.getValue()))
                 try {
-                    controller.addSubject((String)subjectTextField.getValue());
+                    controller.addSubject((String)subjectComboBox.getValue());
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
-        });
-        
-        numberTextField.setOnAction(e -> {
-            if (!numberTextField.getItems().contains(numberTextField.getValue())) 
-                try {
-                        controller.addNumber((String)numberTextField.getValue());
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
+            controller.changeSubject(subjectComboBox.getValue().toString());
+            updateExportDir();
             }
         });
         
+        numberComboBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!numberComboBox.getValue().equals(data.getNumber())){
+            if (numberComboBox.getValue()!=""&&!numberComboBox.getItems().contains(numberComboBox.getValue())) 
+                try {
+                        controller.addNumber((String)numberComboBox.getValue());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            controller.changeNumber(numberComboBox.getValue().toString());
+            updateExportDir();
+            }
+        });
         
-
+        yearComboBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!yearComboBox.getValue().toString().equals(data.getYear().toString())){
+                controller.changeYear(yearComboBox.getValue().toString());
+                updateExportDir();
+            }
+        });
+        
+        semesterComboBox.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            if (!semesterComboBox.getValue().equals(data.getSemester())){
+                controller.changeSemester(semesterComboBox.getValue().toString());
+                updateExportDir();
+            }
+        });
+        
         nameTextField.textProperty().addListener(e -> {
             controller.processTypeTA();
         });
@@ -768,9 +811,9 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         undergradRadio.setOnAction(e -> {
             controller.processSelectUndergradTAs();
         });
-        //CourseSiteData data = (CourseSiteData) app.getDataComponent();
         ComboBox startTime = (ComboBox) gui.getGUINode(CSG_START_TIME_COMBOBOX);
         ComboBox endTime = (ComboBox) gui.getGUINode(CSG_END_TIME_COMBOBOX);
+
         startTime.setOnAction(e -> {
             CourseSiteData data = (CourseSiteData) app.getDataComponent();
             if(startTime.getValue()!=null){//&&!startTime.getValue().equals(data.getOldStartTime())&&endTime.getValue().equals(data.getOldEndTime())){
@@ -792,6 +835,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         */
         endTime.setOnAction(e -> {
             CourseSiteData data = (CourseSiteData) app.getDataComponent();
+
             //if (endTime.getValue()!=null&&!endTime.getValue().equals(data.getOldEndTime())&&startTime.getValue().equals(data.getOldStartTime())) {
             if (endTime.getValue()!=null){
                 //controller.setOldEndTime(endTime.getValue().toString());
@@ -801,8 +845,8 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button officeHoursToggle = (Button) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON);
         officeHoursToggle.setOnAction(e -> {
-            TextField officeHoursTextField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD);
-            officeHoursTextField.setVisible(!officeHoursTextField.isVisible());
+            TextArea officeHoursTextArea = (TextArea) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD);
+            officeHoursTextArea.setVisible(!officeHoursTextArea.isVisible());
             if( officeHoursToggle.getText().equals("+"))
                 officeHoursToggle.setText("-");
             else
@@ -811,8 +855,8 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         
         Button descriptionButton = (Button) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BUTTON);
         descriptionButton.setOnAction(e -> {
-            TextField officeHoursTextField = (TextField) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BOX);
-            officeHoursTextField.setVisible(!officeHoursTextField.isVisible());
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_DESCRIPTION_BOX);
+            text.setVisible(!text.isVisible());
             if( descriptionButton.getText().equals("+"))
                 descriptionButton.setText("-");
             else
@@ -820,7 +864,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button topicsButton = (Button) gui.getGUINode(CSG_SYLLABUS_TOPICS_BUTTON);
         topicsButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_TOPICS_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_TOPICS_BOX);
             text.setVisible(!text.isVisible());
             if( topicsButton.getText().equals("+"))
                 topicsButton.setText("-");
@@ -829,7 +873,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button prereqButton = (Button) gui.getGUINode(CSG_SYLLABUS_PREREQ_BUTTON);
         prereqButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_PREREQ_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_PREREQ_BOX);
             text.setVisible(!text.isVisible());
             if( prereqButton.getText().equals("+"))
                 prereqButton.setText("-");
@@ -838,7 +882,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button outcomesButton = (Button) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BUTTON);
         outcomesButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_OUTCOMES_BOX);
             text.setVisible(!text.isVisible());
             if( outcomesButton.getText().equals("+"))
                 outcomesButton.setText("-");
@@ -847,7 +891,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button textbooksButton = (Button) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BUTTON);
         textbooksButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_TEXTBOOKS_BOX);
             text.setVisible(!text.isVisible());
             if( textbooksButton.getText().equals("+"))
                 textbooksButton.setText("-");
@@ -856,7 +900,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button gradedcompButton = (Button) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMP_BUTTON);
         gradedcompButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX);
             text.setVisible(!text.isVisible());
             if( gradedcompButton.getText().equals("+"))
                 gradedcompButton.setText("-");
@@ -865,7 +909,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button gradingNoteButton = (Button) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BUTTON);
         gradingNoteButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_GRADINGNOTE_BOX);
             text.setVisible(!text.isVisible());
             if( gradingNoteButton.getText().equals("+"))
                 gradingNoteButton.setText("-");
@@ -874,7 +918,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button acedemicButton = (Button) gui.getGUINode(CSG_SYLLABUS_ACDEDEMIC_BUTTON);
         acedemicButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_ACEDEMICDISHONESTY_BOX);
             text.setVisible(!text.isVisible());
             if( acedemicButton.getText().equals("+"))
                 acedemicButton.setText("-");
@@ -883,12 +927,29 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         });
         Button specialButton = (Button) gui.getGUINode(CSG_SYLLABUS_SPECIAL_BUTTON);
         specialButton.setOnAction(e -> {
-            TextField text = (TextField) gui.getGUINode(CSG_SYLLABUS_SPECIALASSISTANCE_BOX);
+            TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_SPECIALASSISTANCE_BOX);
             text.setVisible(!text.isVisible());
             if( specialButton.getText().equals("+"))
                 specialButton.setText("-");
             else
                 specialButton.setText("+");
+        });
+        
+        Button faviconButton= (Button) gui.getGUINode(CSG_SITE_STYLE_FAVICON);
+        faviconButton.setOnAction(e -> {
+            controller.changeFaviconImage();
+        });
+        Button navbarButton = (Button) gui.getGUINode(CSG_SITE_STYLE_NAVBAR);
+        navbarButton.setOnAction(e -> {
+            controller.changeNavbarImage();
+        });
+        Button leftFooterButton = (Button) gui.getGUINode(CSG_SITE_STYLE_LEFTFOOT);
+        leftFooterButton.setOnAction(e -> {
+            controller.changeLeftFooterImage();
+        });
+        Button rightFooter = (Button) gui.getGUINode(CSG_SITE_STYLE_RIGHTFOOT);
+        rightFooter.setOnAction(e -> {
+            controller.changeRightFooterImage();
         });
 
         
@@ -961,6 +1022,22 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             number=number.replaceAll("\"", "");
             numberTextField.getItems().add(number);
         }
+    }
+    public void updateExportDir(){
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ComboBox semesterComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
+        ComboBox numberComboBox = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ComboBox yearComboBox = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
+        Label exportDir = (Label) gui.getGUINode(CSG_SITE_BANNER_EXPORTDIRTEXT);
+        
+        String pre = ".\\export";
+        String post = "\\public_html";
+        if (subjectComboBox.getValue()!=null&&numberComboBox.getValue()!=null&&semesterComboBox.getValue()!=null&&yearComboBox.getValue()!=null){
+            String mid = subjectComboBox.getValue().toString()+"_"+numberComboBox.getValue()+"_"+semesterComboBox.getValue()+"_"+yearComboBox.getValue();
+            exportDir.setText(pre+"\\"+mid+post);
+        }
+        
     }
 }
 

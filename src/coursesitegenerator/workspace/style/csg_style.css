@@ -1,21 +1,3 @@
-/*
-    This style sheet manages the layout and style for all controls inside the
-    OH JavaFX application. Note that the stylesheet has been setup such that
-    all colors in use are declared first as swatch colors inside the root 
-    and so one can change the color theme used by the app simply by changing
-    these colors.
-
-    Note that Material Design icons are being employed for all icon buttons
-    in this application, both for the Desktop Java Framework's top toolbar
-    as well as for icon buttons in the M3's edit toolbar. Note that this
-    app uses icons from https://material.io/icons/ and icon image sizes in
-    use are as follows:
-        djf top toolbar buttons: 36x36
-        
-
-    @author Richard McKenna
-    @version 1.0
-*/
 .root{
     /* 
         FIRST WE'LL DEFINE OUR SWATCHES, i.e. THE COMPLEMENTARY
@@ -106,10 +88,20 @@
 }
 
 .csj_pane {
+
     -fx-padding: 10;
 }
 .csj_box {
-
+	-fx-background-color:    #F0F8FF;
+    -fx-border-color:       blue;
+    -fx-border-width:       2;
+    -fx-border-radius:      15;
+}
+.csj_table_view{
+    -fx-border-color:       black;
+    -fx-border-width:       2;
+    -fx-border-radius:      15;
+	
 }
 .csj_header_label {
     -fx-font-size: 16pt;
@@ -170,6 +162,23 @@
 .csj_table_view .column-header{
     -fx-background-color: SWATCH_NEUTRAL;
     -fx-font-size: 14pt;
+}
+
+.tab {
+  -fx-font-family: Arial;
+  -fx-font-size: 18;
+  -fx-background-color:	#F8F8FF ;
+}
+
+.tab:selected {
+    -fx-background-color:	#DCDCDC ;
+}
+
+
+.csj_office_hours_table_view{
+	-fx-border-color:       black;
+    -fx-border-width:       2;
+    -fx-border-radius:      15;
 }
 .csj_office_hours_table_view .column-header {
     -fx-background-color: SWATCH_NEUTRAL;

@@ -52,5 +52,6 @@ public class CSGStyle {
     public static final String CLASS_CSG_DIALOG_BUTTON = "csj_dialog_button";
     
     public static final String CLASS_CSG_COMBOBOX = "csj_combobox";
-    
+    public static final String CLASS_CSG_IMAGEVIEW = "csj_imageview";
+
 }
