@@ -10,7 +10,7 @@ import jtps.jTPS_Transaction;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class ChangeInstructorHomeTransaction implements jTPS_Transaction {
     CourseSiteData data;

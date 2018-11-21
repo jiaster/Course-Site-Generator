@@ -147,7 +147,7 @@ import javax.json.JsonValue;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class CourseSiteWorkspace extends AppWorkspaceComponent {
 
@@ -758,8 +758,12 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         ComboBox cssComboBox = (ComboBox) gui.getGUINode(CSG_SITE_STYLE_CSS);
         cssComboBox.setOnAction(e -> {
             CourseSiteData data = (CourseSiteData) app.getDataComponent();
-            if (!cssComboBox.getValue().equals(data.getCSS())){
+            try{
+                    if (!cssComboBox.getValue().equals(data.getCSS())){
                 controller.changeCSS(cssComboBox.getValue().toString());
+            }
+            }catch(NullPointerException ex){
+                
             }
         });
         

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class CourseSiteClipboard implements AppClipboardComponent {
     CourseSiteGenerator app;

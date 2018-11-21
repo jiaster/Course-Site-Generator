@@ -6,7 +6,7 @@ import coursesitegenerator.data.TeachingAssistantPrototype;
 
 /**
  *
- * @author McKillaGorilla
+ * @author Jia Wei Zheng
  */
 public class AddTA_Transaction implements jTPS_Transaction {
     CourseSiteData data;

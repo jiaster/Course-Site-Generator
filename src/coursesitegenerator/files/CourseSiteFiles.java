@@ -71,7 +71,8 @@ public class CourseSiteFiles implements AppFileComponent {
     static final String JSON_LEFTFOOTER = "leftfooter";
     static final String JSON_RIGHTFOOTER = "rightfooter";
     static final String JSON_CSS = "css";
-    static final String JSON_ROOM = "instructorroom";
+    static final String JSON_ROOM = "room";
+    static final String JSON_INSTRUCTOR = "instructor";
     static final String JSON_HOMEPAGE = "link";
     static final String JSON_OFFICEHOURS = "hours";
     static final String JSON_DESCRIPTION = "description";
@@ -120,6 +121,45 @@ public class CourseSiteFiles implements AppFileComponent {
             TimeSlot timeSlot = dataManager.getTimeSlot(startTime);
             timeSlot.toggleTA(dow, ta);
         }
+        dataManager.changeSubject(json.getString(JSON_SUBJECT));
+        dataManager.changeNumber(json.getString(JSON_NUMBER));
+        dataManager.changeSemester(json.getString(JSON_SEMESTER));
+        dataManager.changeYear(json.getString(JSON_YEAR));
+        dataManager.changeTitle(json.getString(JSON_TITLE));
+        dataManager.updateExportDir();
+
+        dataManager.changeHome(json.getBoolean(JSON_HOME));
+        dataManager.changeSyllabus(json.getBoolean(JSON_SYLLABUS));
+        dataManager.changeSchedule(json.getBoolean(JSON_SCHEDULE));
+        dataManager.changeHWS(json.getBoolean(JSON_HWS));
+        
+        dataManager.setFaviconPath(json.getString(JSON_FAVICON));
+        dataManager.setFavicon();
+        dataManager.setNavbarPath(json.getString(JSON_NAVBAR));
+        dataManager.setNavbar();
+        dataManager.setLeftFooterPath(json.getString(JSON_LEFTFOOTER));
+        dataManager.setLeftFooter();
+        dataManager.setRightFooterPath(json.getString(JSON_RIGHTFOOTER));
+        dataManager.setRightFooter();
+        
+        dataManager.changeCSS(json.getString(JSON_CSS));
+        
+        JsonObject instructor = json.getJsonObject(JSON_INSTRUCTOR);
+        dataManager.changeInstructorName(instructor.getString(JSON_NAME));
+        dataManager.changeInstructorEmail(instructor.getString(JSON_EMAIL));
+        dataManager.changeInstructorHome(instructor.getString(JSON_HOMEPAGE));
+        dataManager.changeInstructorRoom(instructor.getString(JSON_ROOM));
+        dataManager.changeInstructorOfficeHours(instructor.getString(JSON_OFFICEHOURS));
+        
+        dataManager.changeDescription(json.getString(JSON_DESCRIPTION));
+        dataManager.changeTopics(json.getString(JSON_TOPICS));
+        dataManager.changePrereq(json.getString(JSON_PREREQ));
+        dataManager.changeOutcomes(json.getString(JSON_OUTCOMES));
+        dataManager.changeTextbooks(json.getString(JSON_TEXTBOOKS));
+        dataManager.changeGradedcomp(json.getString(JSON_GRADEDCOMPONENTS));
+        dataManager.changeGradingNote(json.getString(JSON_GRADINGNOTE));
+        dataManager.changeAcedemic(json.getString(JSON_ACADEMIC));
+        dataManager.changeSpecial(json.getString(JSON_SPECIAL));
     }
     
     private void loadTAs(CourseSiteData data, JsonObject json, String tas) {
@@ -147,31 +187,6 @@ public class CourseSiteFiles implements AppFileComponent {
     @Override
     public void saveData(AppDataComponent data, String filePath) throws IOException {
 	CourseSiteData dataManager = (CourseSiteData)data;
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 	JsonArrayBuilder gradTAsArrayBuilder = Json.createArrayBuilder();
         JsonArrayBuilder undergradTAsArrayBuilder = Json.createArrayBuilder();
 	Iterator<TeachingAssistantPrototype> tasIterator = dataManager.teachingAssistantsIterator();
@@ -209,9 +224,40 @@ public class CourseSiteFiles implements AppFileComponent {
 	}
 	JsonArray officeHoursArray = officeHoursArrayBuilder.build();
         
+        JsonObject instructor = Json.createObjectBuilder()
+                .add(JSON_NAME, dataManager.getInstructorName())
+                .add(JSON_EMAIL, dataManager.getInstructorEmail())
+                .add(JSON_ROOM, dataManager.getInstructorRoom())
+                .add(JSON_HOMEPAGE, dataManager.getInstructorHomepage())
+                .add(JSON_OFFICEHOURS, dataManager.getInstructorOfficeHours())
+                .build();
+        
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
-                .add(JSON_SUBJECT, ""+dataManager.getNumber())
+                .add(JSON_SUBJECT, ""+dataManager.getSubject())
+                .add(JSON_NUMBER, ""+dataManager.getNumber())
+                .add(JSON_SEMESTER, ""+dataManager.getSemester())
+                .add(JSON_YEAR, ""+dataManager.getYear())
+                .add(JSON_TITLE, ""+dataManager.getTitle())
+                .add(JSON_HOME, dataManager.getHome())
+                .add(JSON_SYLLABUS, dataManager.getSyllabus())
+                .add(JSON_SCHEDULE, dataManager.getSchedule())
+                .add(JSON_HWS, dataManager.getHWS())
+                .add(JSON_FAVICON,""+dataManager.getFaviconPath())
+                .add(JSON_NAVBAR, "" + dataManager.getNavbarPath())
+                .add(JSON_LEFTFOOTER, "" + dataManager.getLeftFooterPath())
+                .add(JSON_RIGHTFOOTER, "" + dataManager.getRightFooterPath())
+                .add(JSON_CSS, dataManager.getCSS())
+                .add(JSON_INSTRUCTOR, instructor)
+                .add(JSON_DESCRIPTION, "" + dataManager.getDescription())
+                .add(JSON_TOPICS, "" + dataManager.getTopics())
+                .add(JSON_PREREQ, "" + dataManager.getPrereq())
+                .add(JSON_OUTCOMES, "" + dataManager.getOutcomes())
+                .add(JSON_TEXTBOOKS, "" + dataManager.getTextbooks())
+                .add(JSON_GRADEDCOMPONENTS, "" + dataManager.getGradedcomp())
+                .add(JSON_GRADINGNOTE, "" + dataManager.getGradingNote())
+                .add(JSON_ACADEMIC, "" + dataManager.getAcedemic())
+                .add(JSON_SPECIAL, "" + dataManager.getSpecial())
 		.add(JSON_START_HOUR, "" + dataManager.getStartHour())
 		.add(JSON_END_HOUR, "" + dataManager.getEndHour())
                 .add(JSON_GRAD_TAS, gradTAsArray)

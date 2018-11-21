@@ -5,7 +5,7 @@ package coursesitegenerator;
  * setting up To Do List Maker workspace controls including language-dependent
  * text.
  * 
- * @author Richard McKenna
+ * @author Jia Wei Zheng
  * @version 1.0
  */
 public enum CourseSitePropertyType {

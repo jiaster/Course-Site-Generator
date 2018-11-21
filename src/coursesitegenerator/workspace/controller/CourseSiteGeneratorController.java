@@ -98,7 +98,7 @@ import javax.json.stream.JsonGenerator;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class CourseSiteGeneratorController {
 

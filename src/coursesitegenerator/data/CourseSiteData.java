@@ -70,6 +70,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,7 +92,7 @@ import javafx.scene.image.ImageView;
  * to be set by the user via the User Interface and file I/O can set and get
  * all the data from this object
  * 
- * @author Richard McKenna
+ * @author Jia Wei Zheng
  */
 public class CourseSiteData implements AppDataComponent {
 
@@ -545,7 +546,10 @@ public class CourseSiteData implements AppDataComponent {
         subjectComboBox.setValue("");
         semesterComboBox.setValue("");
         numberComboBox.setValue("");
-        yearComboBox.setValue("");
+        //yearComboBox.setValue("");
+        yearComboBox.setValue(Year.now().getValue());
+        TextField titleField = (TextField) gui.getGUINode(CSG_SITE_TITLE);
+        titleField.setText("");
         Label exportDirText = (Label) gui.getGUINode(CSG_SITE_BANNER_EXPORTDIRTEXT);
         exportDirText.setText(".\\export");
         CheckBox homeCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HOME_CHECK);
@@ -574,7 +578,7 @@ public class CourseSiteData implements AppDataComponent {
         TextField nameField =(TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD);
         TextField emailField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD);
         TextField roomField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_EMAIL_FIELD);
-        TextField homePageField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_EMAIL_FIELD);
+        TextField homePageField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD);
         TextArea officeHoursTextField = (TextArea) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD);
         
         nameField.clear();
@@ -802,6 +806,7 @@ public class CourseSiteData implements AppDataComponent {
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
         teachingAssistants.clear();
+        allTAs.forEach((key,value)->value.clear());
         
         for (TimeSlot timeSlot : officeHours) {
             timeSlot.reset();
@@ -1094,5 +1099,21 @@ public class CourseSiteData implements AppDataComponent {
             else
                 return null;
         }
+    }
+    public void updateExportDir(){
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox subjectComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SUBJECT_COMBOBOX);
+        ComboBox semesterComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
+        ComboBox numberComboBox = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
+        ComboBox yearComboBox = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
+        Label exportDir = (Label) gui.getGUINode(CSG_SITE_BANNER_EXPORTDIRTEXT);
+        
+        String pre = ".\\export";
+        String post = "\\public_html";
+        if (subjectComboBox.getValue()!=null&&numberComboBox.getValue()!=null&&semesterComboBox.getValue()!=null&&yearComboBox.getValue()!=null){
+            String mid = subjectComboBox.getValue().toString()+"_"+numberComboBox.getValue()+"_"+semesterComboBox.getValue()+"_"+yearComboBox.getValue();
+            exportDir.setText(pre+"\\"+mid+post);
+        }
+        
     }
 }

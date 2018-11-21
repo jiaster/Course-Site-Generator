@@ -21,7 +21,7 @@ import coursesitegenerator.files.CourseSiteFiles;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class CourseSiteGenerator extends AppTemplate{
 

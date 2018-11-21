@@ -8,7 +8,7 @@ import coursesitegenerator.data.TimeSlot.DayOfWeek;
 
 /**
  *
- * @author McKillaGorilla
+ * @author Jia Wei Zheng
  */
 public class ToggleOfficeHours_Transaction implements jTPS_Transaction {
     CourseSiteData data;

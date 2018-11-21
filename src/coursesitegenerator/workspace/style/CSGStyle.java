@@ -5,8 +5,7 @@ package coursesitegenerator.workspace.style;
  * are used by JavaFX to apply style properties to controls like
  * buttons, labels, and panes.
 
- * @author Richard McKenna
- * @author ?
+ * @author Jia Wei Zheng
  * @version 1.0
  */
 public class CSGStyle {

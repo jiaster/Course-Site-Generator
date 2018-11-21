@@ -10,7 +10,7 @@ import jtps.jTPS_Transaction;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class ChangeTimeRangeTransaction implements jTPS_Transaction {
     int oldStartHour,oldEndHour,newStartHour,newEndHour;
