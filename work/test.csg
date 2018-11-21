@@ -1,0 +1,53 @@
+
+{
+    "subject":"CHE",
+    "number":"500",
+    "semester":"Winter",
+    "year":"",
+    "title":"sadasd",
+    "home":true,
+    "syllabus":false,
+    "schedule":true,
+    "hws":false,
+    "favicon":"file:/J:/Google%20Drive/Google%20Photos/Black%20Desert/2016-10-12_43343492.BMP",
+    "navbar":"file:/J:/Google%20Drive/Google%20Photos/1310259685513.jpg",
+    "leftfooter":"file:/J:/Google%20Drive/Google%20Photos/1312257167623.jpg",
+    "rightfooter":"file:/J:/Google%20Drive/Google%20Photos/IMG_20150828_145740.jpg",
+    "css":"halloween.css",
+    "instructor":{
+        "name":"asd asd",
+        "email":"asd324",
+        "room":"asd@asd.dsf",
+        "link":"sad.dsf",
+        "hours":"asfasfas"
+    },
+    "description":"1",
+    "topics":"2",
+    "prereq":"3",
+    "outcomes":"4",
+    "textbooks":"5",
+    "gradedcomponents":"6",
+    "gradingnote":"7",
+    "academic":"8",
+    "special":"9",
+    "startHour":"9",
+    "endHour":"21",
+    "starttime":"9:00am",
+    "endtime":"9:00pm",
+    "grad_tas":[
+        {
+            "name":"grad",
+            "email":"grad@grad.asd",
+            "type":"Graduate"
+        }
+    ],
+    "undergrad_tas":[
+    ],
+    "officeHours":[
+        {
+            "time":"9_30am",
+            "day":"MONDAY",
+            "name":"grad"
+        }
+    ]
+}

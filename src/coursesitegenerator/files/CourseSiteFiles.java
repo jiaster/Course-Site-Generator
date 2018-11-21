@@ -31,6 +31,7 @@ import coursesitegenerator.data.TAType;
 import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 
 /**
  *
@@ -160,6 +161,18 @@ public class CourseSiteFiles implements AppFileComponent {
         dataManager.changeGradingNote(json.getString(JSON_GRADINGNOTE));
         dataManager.changeAcedemic(json.getString(JSON_ACADEMIC));
         dataManager.changeSpecial(json.getString(JSON_SPECIAL));
+        
+        String start= json.getString(JSON_STARTTIME);
+        int startH=Integer.parseInt(start.substring(0,start.indexOf(":")));
+        if (start.contains("p")&&!start.contains("12"))
+            startH+=12;
+        
+        String end= json.getString(JSON_ENDTIME);
+        int endH=Integer.parseInt(end.substring(0,end.indexOf(":")));
+        if (end.contains("p")&&!end.contains("12"))
+            endH+=12;
+        
+        dataManager.setTimeRanges(startH,endH);
     }
     
     private void loadTAs(CourseSiteData data, JsonObject json, String tas) {
@@ -258,8 +271,10 @@ public class CourseSiteFiles implements AppFileComponent {
                 .add(JSON_GRADINGNOTE, "" + dataManager.getGradingNote())
                 .add(JSON_ACADEMIC, "" + dataManager.getAcedemic())
                 .add(JSON_SPECIAL, "" + dataManager.getSpecial())
-		.add(JSON_START_HOUR, "" + dataManager.getStartHour())
-		.add(JSON_END_HOUR, "" + dataManager.getEndHour())
+		.add(JSON_START_HOUR, "" + 8)
+		.add(JSON_END_HOUR, "" + 23)
+                .add(JSON_STARTTIME, ""+dataManager.getStartTime())
+                .add(JSON_ENDTIME, ""+dataManager.getEndTime())
                 .add(JSON_GRAD_TAS, gradTAsArray)
                 .add(JSON_UNDERGRAD_TAS, undergradTAsArray)
                 .add(JSON_OFFICE_HOURS, officeHoursArray)
