@@ -1,10 +1,10 @@
 
 {
     "subject":"AMS",
-    "number":"310",
-    "semester":"Winter",
-    "year":"2019",
-    "title":"CSE310",
+    "number":"300",
+    "semester":"Fall",
+    "year":"2018",
+    "title":"AMS300",
     "home":true,
     "syllabus":true,
     "schedule":true,
@@ -22,10 +22,10 @@
         "hours":"[\n            { \"day\": \"Tuesday\",     \"time\": \"1:00pm-2:20pm\"    },\n            { \"day\": \"Wednesday\",   \"time\": \"2pm-3pm\"       },\n            { \"day\": \"Thursday\",      \"time\": \"1:00pm-2:20pm\"    }\n]"
     },
     "description":"Development of the basic concepts and techniques from Computer Science I and II into practical programming skills tha",
-    "topics":"[\n        \"Programming style and its impact on readability, reliability, maintainability, and portability.\",\n        \"Decomposing problems into modular designs with simple, narrow interfaces.\",\n        \"Determining the proper objects in an object-oriented design.\",\n        \"Selecting appropriate algorithms and data structures.\",\n        \"Reusing code, including external libraries designed and built by others.\",\n        \"Learning systematic testing and debugging techniques.\",\n        \"Maintaining a repository of code during incremental development of a software project.\",\n        \"Learning how to use threads to synchronize several tasks.\",\n        \"Improving program performance.\",\n        \"Making effective use of a programming environment, including:<br /><ul><li>Syntax-directed editor</li><li>Build tools</li><li>Debugging tools</li><li>Testing tools</li><li>Source code management tools</li><li>Profiling tools</li></ul>\"\n    ]",
+    "topics":"[\n        \"teasadasdfasdafsdfy.\",\n        \"Decomposing problems into modular designs with simple, narrow interfaces.\",\n        \"Determining the proper objects in an object-oriented design.\",\n        \"Selecting appropriate algorithms and data structures.\",\n        \"Reusing code, including external libraries designed and built by others.\",\n        \"Learning systematic testing and debugging techniques.\",\n        \"Maintaining a repository of code during incremental development of a software project.\",\n        \"Learning how to use threads to synchronize several tasks.\",\n        \"Improving program performance.\",\n        \"Making effective use of a programming environment, including:<br /><ul><li>Syntax-directed editor</li><li>Build tools</li><li>Debugging tools</li><li>Testing tools</li><li>Source code management tools</li><li>Profiling tools</li></ul>\"\n    ]",
     "prereq":"You must have taken CSE 214 and received a grade of 'C' or better in or",
-    "outcomes":"[\n        \"Ability to systematically design, code, debug, and test programs of about two thousand lines of code.\",\n        \"Sensitivity to the issues of programming style and modularity and their relationship to the construction and evolution of robust software.\",\n        \"Knowledge of basic ideas and techniques of object-oriented programming.\",\n        \"Familiarity with the capabilities and use of programming tools such as syntax-directed editors, debuggers, execution profilers, documentation generators, and revison-control systems.\"\n    ]",
-    "textbooks":"[\n        {\n            \"title\": \"Head First Object Oriented Analysis and Design\",\n            \"link\": \"http://proquestcombo.safaribooksonline.com.proxy.library.stonybrook.edu/0596008678\",\n            \"photo\": \"./images/HeadFirstOOAAD.jpg\",\n            \"authors\": [\n                \"Brett McLaughlin\", \"Gary Pollice\", \"David West\"\n            ],\n            \"publisher\": \"O'Reilly Media, Inc.\",\n            \"year\": \"2006\"\n        },\n        {\n            \"title\": \"Head First Design Patterns\",\n            \"link\": \"http://proquestcombo.safaribooksonline.com.proxy.library.stonybrook.edu/0596007124\",\n            \"photo\": \"./images/HeadFirstDesignPatterns.gif\",\n            \"authors\": [\n                \"Eric T Freeman\", \"Elisabeth Robson\", \"Bert Bates\", \"Kathy Sierra\"\n            ],\n            \"publisher\": \"O'Reilly Media, Inc.\",\n            \"year\": \"2004\"\n        }\n    ]",
+    "outcomes":"[\n        \"vbncvbnvcbn of about two thousand lines of code.\",\n        \"Sensitivity to the issues of programming style and modularity and their relationship to the construction and evolution of robust software.\",\n        \"Knowledge of basic ideas and techniques of object-oriented programming.\",\n        \"Familiarity with the capabilities and use of programming tools such as syntax-directed editors, debuggers, execution profilers, documentation generators, and revison-control systems.\"\n    ]",
+    "textbooks":"[\n        {\n            \"title\": \"nbmcnvis and Design\",\n            \"link\": \"http://proquestcombo.safaribooksonline.com.proxy.library.stonybrook.edu/0596008678\",\n            \"photo\": \"./images/HeadFirstOOAAD.jpg\",\n            \"authors\": [\n                \"Brett McLaughlin\", \"Gary Pollice\", \"David West\"\n            ],\n            \"publisher\": \"O'Reilly Media, Inc.\",\n            \"year\": \"2006\"\n        },\n        {\n            \"title\": \"Head First Design Patterns\",\n            \"link\": \"http://proquestcombo.safaribooksonline.com.proxy.library.stonybrook.edu/0596007124\",\n            \"photo\": \"./images/HeadFirstDesignPatterns.gif\",\n            \"authors\": [\n                \"Eric T Freeman\", \"Elisabeth Robson\", \"Bert Bates\", \"Kathy Sierra\"\n            ],\n            \"publisher\": \"O'Reilly Media, Inc.\",\n            \"year\": \"2004\"\n        }\n    ]",
     "gradedcomponents":"[\n        {\n            \"name\": \"Recitations\",\n            \"description\": \"Students will attend weekly recitations that will introduce use of essential development tools and will require completion of an exercise for submission.\",\n            \"weight\": \"10\"\n        },\n        {\n            \"name\": \"Homework Assignments\",\n            \"description\": \"The assignments will develop a students ability to design and implement object-oriented systems. Grading will be based on functionality and proper use specific tools. Submitted code that does not compile will receive no credit. Late submissions will NOT be accepted. Programming assignments will be handed in electronically, instructions for which will be provided early in the semester.\",\n            \"weight\": \"20\"\n        },\n        {\n            \"name\": \"Final Project\",\n            \"description\": \"The assignments will build to the final project, which will be a fully functioning application.\",\n            \"weight\": \"20\"\n        },\n        {\n            \"name\": \"Midterm Exam\",\n            \"description\": \"The midterm will cover all lecture, quizzes, and homework materials covered during the first 1/2 of the semester.\",\n            \"weight\": \"20\"\n        },\n        {\n            \"name\": \"Final Exam\",\n            \"description\": \"The final will be cumulative and will cover all lecture, reading, and homework material.\",\n            \"weight\": \"30\"\n        }\n    ]",
     "gradingnote":"<strong>Note CEAS Policy:</strong> The Pass/No Credit (P/NC) option is not available for ",
     "academic":"ou may <em>discuss</em> the homework in this course with anyone you like, however",
@@ -173,8 +173,8 @@
             "month":"12",
             "day":"12",
             "title":"asd",
-            "link":"xvcb",
-            "topic":"cxv"
+            "link":"cxv",
+            "topic":"xvcb"
         }
     ],
     "lectures":[
@@ -182,8 +182,8 @@
             "month":"12",
             "day":"18",
             "title":"asdf",
-            "link":"cvbn",
-            "topic":"bvcn"
+            "link":"bvcn",
+            "topic":"cvbn"
         }
     ],
     "references":[
@@ -191,8 +191,8 @@
             "month":"12",
             "day":"20",
             "title":"bvcn",
-            "link":"sdf",
-            "topic":"mnbv"
+            "link":"mnbv",
+            "topic":"sdf"
         }
     ],
     "recitations":[
@@ -202,22 +202,22 @@
             "month":"12",
             "day":"19",
             "title":"HW1",
-            "link":"Topic",
-            "topic":""
+            "link":"",
+            "topic":"Topic"
         },
         {
             "month":"12",
             "day":"20",
             "title":"HW2",
-            "link":"Topic",
-            "topic":""
+            "link":"",
+            "topic":"Topic"
         },
         {
             "month":"12",
             "day":"13",
             "title":"HW3",
-            "link":"Topic3",
-            "topic":""
+            "link":"",
+            "topic":"Topic3"
         }
     ]
 }

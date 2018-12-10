@@ -300,7 +300,10 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         CheckBox syllabusCheckBox = csjBuilder.buildCheckBox(CSG_SITE_PAGES_SYLLABUS_CHECK, sitePagesBox, 3, 0, 1, 1, CLASS_CSG_CHECKBOX, ENABLED);
         CheckBox scheduleCheckBox = csjBuilder.buildCheckBox(CSG_SITE_PAGES_SCHEDULE_CHECK, sitePagesBox, 5, 0, 1, 1, CLASS_CSG_CHECKBOX, ENABLED);
         CheckBox hwsCheckBox = csjBuilder.buildCheckBox(CSG_SITE_PAGES_HWS_CHECK, sitePagesBox, 7, 0, 1, 1, CLASS_CSG_CHECKBOX, ENABLED);
-        
+        homeCheckBox.setSelected(true);
+        syllabusCheckBox.setSelected(true);
+        scheduleCheckBox.setSelected(true);
+        hwsCheckBox.setSelected(true);
         //style
         GridPane siteStyleBox = csjBuilder.buildGridPane(CSG_SITE_STYLE_BOX, siteVBox, CLASS_CSG_BOX, ENABLED);
         siteStyleBox.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0 / 4.0));
@@ -368,6 +371,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button instructorOfficeHoursButton = csjBuilder.buildTextButton(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON, siteInstructorBox, 0, 4, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label instructorOfficeHoursLabel = csjBuilder.buildLabel(CSG_SITE_INSTRUCTOR_OFFICEHOURS, siteInstructorBox, 1, 4, 1, 1, CLASS_CSG_HEADER_LABEL, ENABLED);
         TextArea officeHoursTextArea = csjBuilder.buildTextArea(CSG_SITE_INSTRUCTOR_OFFICEHOURSFIELD, siteInstructorBox, 0, 5, 5, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
+        officeHoursTextArea.setText("[\n]");
         officeHoursTextArea.prefWidthProperty().bind(officePane.widthProperty());
         officeHoursTextArea.prefHeightProperty().bind(officePane.heightProperty().multiply(1.0/8.0));
         officeHoursTextArea.setVisible(false);
@@ -406,6 +410,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         //topicsTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         topicsTextField.setVisible(false);
         topicsTextField.managedProperty().bind(topicsTextField.visibleProperty());
+        topicsTextField.setText("[\n]");
         TextArea prereqTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_PREREQ_BOX, syllabusGrid, 0, 5, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         prereqTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //prereqTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
@@ -416,16 +421,19 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         //outcomesTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         outcomesTextField.setVisible(false);
         outcomesTextField.managedProperty().bind(outcomesTextField.visibleProperty());
+        outcomesTextField.setText("[\n]");
         TextArea textbooksTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_TEXTBOOKS_BOX, syllabusGrid, 0, 9, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         textbooksTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //textbooksTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         textbooksTextField.setVisible(false);
         textbooksTextField.managedProperty().bind(textbooksTextField.visibleProperty());
+        textbooksTextField.setText("[\n]");
         TextArea gradingcompTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_GRADEDCOMPONENTS_BOX, syllabusGrid, 0, 11, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         gradingcompTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //gradingcompTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
         gradingcompTextField.setVisible(false);
         gradingcompTextField.managedProperty().bind(gradingcompTextField.visibleProperty());
+        gradingcompTextField.setText("[\n]");
         TextArea gradingNoteTextField = csjBuilder.buildTextArea(CSG_SYLLABUS_GRADINGNOTE_BOX, syllabusGrid, 0, 13, 2, 1, CLASS_CSG_BIG_TEXT_FIELD, ENABLED);
         gradingNoteTextField.prefWidthProperty().bind(syllabusGrid.widthProperty());
         //gradingNoteTextField.prefHeightProperty().bind(syllabusVBox.heightProperty().multiply(1.0 / 4.0));
@@ -636,6 +644,8 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Label endLabel = csjBuilder.buildLabel(CSG_SCHEDULE_ENDING_FRIDAY, scheduleGrid, 2, 1, 1, 1, CLASS_CSG_TEXT_LABEL, ENABLED);
         DatePicker startDatePicker = csjBuilder.buildDatePicker(CSG_SCHEDULE_START_DATEPICKER, scheduleGrid, 1, 1, 1, 1, CLASS_CSG_DATEPICKER, ENABLED);
         DatePicker endDatePicker = csjBuilder.buildDatePicker(CSG_SCHEDULE_END_DATEPICKER, scheduleGrid, 3, 1, 1, 1, CLASS_CSG_DATEPICKER, ENABLED);
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now().plusDays(1));
         //schedule box
         Button scheduleRemoveButton = csjBuilder.buildTextButton(CSG_SCHEDULE_REMOVE_SCHEDULE_ITEM_BUTTON, scheduleGrid, 0, 2, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label scheduleLabel = csjBuilder.buildLabel(CSG_SCHEDULE_SCHEDULE_TITLE, scheduleGrid, 1, 2, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);

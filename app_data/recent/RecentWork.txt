@@ -1,3 +1,5 @@
+cxvzzb-work/cxvzzb.csg
+vbcn-work/vbcn.csg
 3-work/3.csg
 2-work/2.csg
 test-work/test.csg

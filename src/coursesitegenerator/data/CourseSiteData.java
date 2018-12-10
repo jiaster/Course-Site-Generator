@@ -606,10 +606,10 @@ public class CourseSiteData implements AppDataComponent {
         CheckBox syllabusCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SYLLABUS_CHECK);
         CheckBox scheduleCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_SCHEDULE_CHECK);
         CheckBox hwsCheckBox = (CheckBox) gui.getGUINode(CSG_SITE_PAGES_HWS_CHECK);
-        homeCheckBox.setSelected(false);
-        syllabusCheckBox.setSelected(false);
-        scheduleCheckBox.setSelected(false);
-        hwsCheckBox.setSelected(false);
+        homeCheckBox.setSelected(true);
+        syllabusCheckBox.setSelected(true);
+        scheduleCheckBox.setSelected(true);
+        hwsCheckBox.setSelected(true);
         
         resetImages();
         
@@ -635,7 +635,7 @@ public class CourseSiteData implements AppDataComponent {
         emailField.clear();
         roomField.clear();
         homePageField.clear();
-        officeHoursTextField.clear();
+        officeHoursTextField.setText("[\n]");
         officeHoursTextField.setVisible(false);
         Button instructorOfficeHoursButton = (Button) gui.getGUINode(CSG_SITE_INSTRUCTOR_OFFICEHOURS_BUTTON);
         instructorOfficeHoursButton.setText("+");
@@ -699,11 +699,11 @@ public class CourseSiteData implements AppDataComponent {
         specialTextField.setVisible(false);
 
         descriptionTextField.clear();
-        topicsTextField.clear();
+        topicsTextField.setText("[\n]");
         prereqTextField.clear();
-        outcomesTextField.clear();
-        textbooksTextField.clear();
-        gradingcompTextField.clear();
+        outcomesTextField.setText("[\n]");
+        textbooksTextField.setText("[\n]");
+        gradingcompTextField.setText("[\n]");
         gradingNoteTextField.clear();
         acedemicTextField.clear();
         specialTextField.clear();
