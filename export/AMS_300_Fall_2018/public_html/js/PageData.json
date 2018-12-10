@@ -1,10 +1,10 @@
 
 {
-    "subject":"AMS",
-    "number":"300",
+    "subject":"CHE",
+    "number":"100",
     "semester":"Fall",
     "year":"2018",
-    "title":"AMS300",
+    "title":"CHE300",
     "logos":{
         "favicon":{
             "href":"./images/favicon.png",

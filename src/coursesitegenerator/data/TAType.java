@@ -2,7 +2,7 @@ package coursesitegenerator.data;
 
 /**
  *
- * @author McKillaGorilla
+ * @author Jia Wei Zheng
  */
 public enum TAType {
     All,

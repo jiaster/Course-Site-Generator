@@ -10,7 +10,7 @@ import javafx.beans.property.StringProperty;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class Recitation {
     private final StringProperty section;

@@ -1,10 +1,10 @@
 
 {
-    "subject":"AMS",
-    "number":"300",
+    "subject":"CHE",
+    "number":"100",
     "semester":"Fall",
     "year":"2018",
-    "title":"AMS300",
+    "title":"CHE300",
     "home":true,
     "syllabus":true,
     "schedule":true,
@@ -173,8 +173,8 @@
             "month":"12",
             "day":"12",
             "title":"asd",
-            "link":"cxv",
-            "topic":"xvcb"
+            "link":"xvcb",
+            "topic":"cxv"
         }
     ],
     "lectures":[
@@ -182,8 +182,8 @@
             "month":"12",
             "day":"18",
             "title":"asdf",
-            "link":"bvcn",
-            "topic":"cvbn"
+            "link":"cvbn",
+            "topic":"bvcn"
         }
     ],
     "references":[
@@ -191,8 +191,8 @@
             "month":"12",
             "day":"20",
             "title":"bvcn",
-            "link":"mnbv",
-            "topic":"sdf"
+            "link":"sdf",
+            "topic":"mnbv"
         }
     ],
     "recitations":[
@@ -202,22 +202,22 @@
             "month":"12",
             "day":"19",
             "title":"HW1",
-            "link":"",
-            "topic":"Topic"
+            "link":"Topic",
+            "topic":""
         },
         {
             "month":"12",
             "day":"20",
             "title":"HW2",
-            "link":"",
-            "topic":"Topic"
+            "link":"Topic",
+            "topic":""
         },
         {
             "month":"12",
             "day":"13",
             "title":"HW3",
-            "link":"",
-            "topic":"Topic3"
+            "link":"Topic3",
+            "topic":""
         }
     ]
 }

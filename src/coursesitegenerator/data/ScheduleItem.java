@@ -12,7 +12,7 @@ import javafx.beans.property.StringProperty;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class ScheduleItem {
     private final StringProperty type;

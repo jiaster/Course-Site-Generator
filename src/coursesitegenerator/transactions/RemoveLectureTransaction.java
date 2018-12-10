@@ -11,7 +11,7 @@ import jtps.jTPS_Transaction;
 
 /**
  *
- * @author Jiaster
+ * @author Jia Wei Zheng
  */
 public class RemoveLectureTransaction implements jTPS_Transaction {
     CourseSiteData data;

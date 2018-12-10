@@ -25,7 +25,7 @@ import coursesitegenerator.workspace.foolproof.CourseSiteFoolproofDesign;
 
 /**
  *
- * @author McKillaGorilla
+ * @author Jia Wei Zheng
  */
 public class TADialog extends Stage {
     CourseSiteGenerator app;
