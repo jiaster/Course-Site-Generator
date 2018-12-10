@@ -9,7 +9,9 @@ import coursesitegenerator.CourseSiteGenerator;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_FOOLPROOF_SETTINGS;
+import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LAB_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LECTURE_TABLE;
+import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_RECITATION_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_CONTENT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_TITLE;
@@ -21,7 +23,9 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_FAVICON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TA_EDIT_DIALOG;
 import coursesitegenerator.data.CourseSiteData;
+import coursesitegenerator.data.Lab;
 import coursesitegenerator.data.Lecture;
+import coursesitegenerator.data.Recitation;
 import djf.modules.AppGUIModule;
 import djf.ui.dialogs.AppDialogsFacade;
 import javafx.collections.ObservableList;
@@ -33,7 +37,9 @@ import coursesitegenerator.data.TAType;
 import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import coursesitegenerator.dialogs.TADialog;
+import coursesitegenerator.transactions.AddLabTransaction;
 import coursesitegenerator.transactions.AddLectureTransaction;
+import coursesitegenerator.transactions.AddRecitationTransaction;
 import coursesitegenerator.transactions.AddTA_Transaction;
 import coursesitegenerator.transactions.ChangeAcedemicTransaction;
 import coursesitegenerator.transactions.ChangeCSSTransaction;
@@ -48,12 +54,14 @@ import coursesitegenerator.transactions.ChangeInstructorHomeTransaction;
 import coursesitegenerator.transactions.ChangeInstructorNameTransaction;
 import coursesitegenerator.transactions.ChangeInstructorOfficeHoursTransaction;
 import coursesitegenerator.transactions.ChangeInstructorRoomTransaction;
+import coursesitegenerator.transactions.ChangeLabTransaction;
 import coursesitegenerator.transactions.ChangeLectureTransaction;
 import coursesitegenerator.transactions.ChangeLeftFooterTransaction;
 import coursesitegenerator.transactions.ChangeNavbarTransaction;
 import coursesitegenerator.transactions.ChangeNumberTransaction;
 import coursesitegenerator.transactions.ChangeOutcomesTransaction;
 import coursesitegenerator.transactions.ChangePrereqTransaction;
+import coursesitegenerator.transactions.ChangeRecitationTransaction;
 import coursesitegenerator.transactions.ChangeRightFooterTransaction;
 import coursesitegenerator.transactions.ChangeScheduleTransaction;
 import coursesitegenerator.transactions.ChangeSemesterTransaction;
@@ -66,7 +74,9 @@ import coursesitegenerator.transactions.ChangeTitleTransaction;
 import coursesitegenerator.transactions.ChangeTopicsTransaction;
 import coursesitegenerator.transactions.ChangeYearTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
+import coursesitegenerator.transactions.RemoveLabTransaction;
 import coursesitegenerator.transactions.RemoveLectureTransaction;
+import coursesitegenerator.transactions.RemoveRecitationTransaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
 import djf.components.AppFileComponent;
@@ -592,15 +602,9 @@ public class CourseSiteGeneratorController {
     public void addLecture() {
         AppGUIModule gui = app.getGUIModule();
         CourseSiteData data = (CourseSiteData) app.getDataComponent();
-        System.out.println("2");
-
         Lecture lecture = new Lecture();
         AddLectureTransaction newLecture = new AddLectureTransaction(data, lecture);
-        System.out.println("3");
         app.processTransaction(newLecture);
-        System.out.println("4");
-        //ChangeSpecialTransaction change = new ChangeSpecialTransaction(data, data.getSpecial(), special);
-        //app.processTransaction(change);
     }
     public void editLecture(String type, String oldVal, String newVal){
         AppGUIModule gui = app.getGUIModule();
@@ -621,20 +625,48 @@ public class CourseSiteGeneratorController {
     public void addRecitation() {
         AppGUIModule gui = app.getGUIModule();
         CourseSiteData data = (CourseSiteData) app.getDataComponent();
-        //ChangeSpecialTransaction change = new ChangeSpecialTransaction(data, data.getSpecial());
-        //app.processTransaction(change);
+        Recitation recitation = new Recitation();
+        AddRecitationTransaction newRecitation = new AddRecitationTransaction(data, recitation);
+        app.processTransaction(newRecitation);
+    }
+    public void editRecitation(String type, String oldVal, String newVal) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<Recitation> recitationTable = (TableView) gui.getGUINode(CSG_MEETING_RECITATION_TABLE);
+        Recitation recitation = recitationTable.getSelectionModel().getSelectedItem();
+        ChangeRecitationTransaction editRecitation = new ChangeRecitationTransaction(data, recitation, type, oldVal, newVal);
+        app.processTransaction(editRecitation);
     }
     public void removeRecitation( ) {
         AppGUIModule gui = app.getGUIModule();
         CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<Recitation> recitationTable = (TableView) gui.getGUINode(CSG_MEETING_RECITATION_TABLE);
+        Recitation recitation = recitationTable.getSelectionModel().getSelectedItem();
+        RemoveRecitationTransaction remove = new RemoveRecitationTransaction(data, recitation);
+        app.processTransaction(remove);
     }
     public void addLab() {
         AppGUIModule gui = app.getGUIModule();
         CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        Lab lab = new Lab();
+        AddLabTransaction newLab = new AddLabTransaction(data, lab);
+        app.processTransaction(newLab);
+    }
+    public void editLab(String type, String oldVal, String newVal) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<Lab> labTable = (TableView) gui.getGUINode(CSG_MEETING_LAB_TABLE);
+        Lab lab = labTable.getSelectionModel().getSelectedItem();
+        ChangeLabTransaction editLab = new ChangeLabTransaction(data, lab, type, oldVal, newVal);
+        app.processTransaction(editLab);
     }
     public void removeLab() {
         AppGUIModule gui = app.getGUIModule();
         CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<Lab> labTable = (TableView) gui.getGUINode(CSG_MEETING_LAB_TABLE);
+        Lab lab = labTable.getSelectionModel().getSelectedItem();
+        RemoveLabTransaction remove = new RemoveLabTransaction(data, lab);
+        app.processTransaction(remove);
     }
     
     /*

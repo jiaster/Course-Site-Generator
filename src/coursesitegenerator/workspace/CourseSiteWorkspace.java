@@ -495,6 +495,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         TableView<Recitation> recitationTable = csjBuilder.buildTableView(CSG_MEETING_RECITATION_TABLE, meetingGrid, 0, 3, 3, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
         recitationTable.prefWidthProperty().bind(meetingPane.widthProperty());
         recitationTable.getSelectionModel().cellSelectionEnabledProperty().set(true);
+        recitationTable.setEditable(true);
         TableColumn recitationSectionColumn = csjBuilder.buildTableColumn(CSG_MEETING_RECITATION_SECTION, recitationTable, CLASS_CSG_COLUMN);
         TableColumn recitationDayTimeColumn = csjBuilder.buildTableColumn(CSG_MEETING_RECITATION_DAYTIME, recitationTable, CLASS_CSG_COLUMN);
         TableColumn recitationRoomColumn = csjBuilder.buildTableColumn(CSG_MEETING_RECITATION_ROOM, recitationTable, CLASS_CSG_CENTERED_COLUMN);
@@ -503,8 +504,13 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         recitationSectionColumn.setCellValueFactory(new PropertyValueFactory<String, String>("section"));
         recitationDayTimeColumn.setCellValueFactory(new PropertyValueFactory<String, String>("daytime"));
         recitationRoomColumn.setCellValueFactory(new PropertyValueFactory<String, String>("room"));
-        recitationTA1Column.setCellValueFactory(new PropertyValueFactory<String, String>("ta1"));
-        recitationTA2Column.setCellValueFactory(new PropertyValueFactory<String, String>("ta2"));
+        recitationTA1Column.setCellValueFactory(new PropertyValueFactory<String, String>("taone"));
+        recitationTA2Column.setCellValueFactory(new PropertyValueFactory<String, String>("tatwo"));
+        recitationSectionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        recitationDayTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        recitationRoomColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        recitationTA1Column.setCellFactory(TextFieldTableCell.forTableColumn());
+        recitationTA2Column.setCellFactory(TextFieldTableCell.forTableColumn());
         recitationSectionColumn.prefWidthProperty().bind(recitationTable.widthProperty().multiply(1.0 / 5.0));
         recitationDayTimeColumn.prefWidthProperty().bind(recitationTable.widthProperty().multiply(1.0 / 5.0));
         recitationRoomColumn.prefWidthProperty().bind(recitationTable.widthProperty().multiply(1.0 / 5.0));
@@ -517,6 +523,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         TableView<Lab> labTable = csjBuilder.buildTableView(CSG_MEETING_LAB_TABLE, meetingGrid, 0, 5, 3, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
         labTable.prefWidthProperty().bind(meetingPane.widthProperty());
         labTable.getSelectionModel().cellSelectionEnabledProperty().set(true);
+        labTable.setEditable(true);
         TableColumn labSectionColumn = csjBuilder.buildTableColumn(CSG_MEETING_LAB_SECTION, labTable, CLASS_CSG_COLUMN);
         TableColumn labDayTimeColumn = csjBuilder.buildTableColumn(CSG_MEETING_LAB_DAYTIME, labTable, CLASS_CSG_COLUMN);
         TableColumn labRoomColumn = csjBuilder.buildTableColumn(CSG_MEETING_LAB_ROOM, labTable, CLASS_CSG_CENTERED_COLUMN);
@@ -525,8 +532,13 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         labSectionColumn.setCellValueFactory(new PropertyValueFactory<String, String>("section"));
         labDayTimeColumn.setCellValueFactory(new PropertyValueFactory<String, String>("daytime"));
         labRoomColumn.setCellValueFactory(new PropertyValueFactory<String, String>("room"));
-        labTA1Column.setCellValueFactory(new PropertyValueFactory<String, String>("ta1"));
-        labTA2Column.setCellValueFactory(new PropertyValueFactory<String, String>("ta2"));
+        labTA1Column.setCellValueFactory(new PropertyValueFactory<String, String>("taone"));
+        labTA2Column.setCellValueFactory(new PropertyValueFactory<String, String>("tatwo"));
+        labSectionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        labDayTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        labRoomColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        labTA1Column.setCellFactory(TextFieldTableCell.forTableColumn());
+        labTA2Column.setCellFactory(TextFieldTableCell.forTableColumn());
         labSectionColumn.prefWidthProperty().bind(labTable.widthProperty().multiply(1.0 / 5.0));
         labDayTimeColumn.prefWidthProperty().bind(labTable.widthProperty().multiply(1.0 / 5.0));
         labRoomColumn.prefWidthProperty().bind(labTable.widthProperty().multiply(1.0 / 5.0));
@@ -1128,6 +1140,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         lectureRemove.setOnAction(e -> {
             controller.removeLecture();
         });
+        
         TableView<Lecture> lectureTable = (TableView) gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
         TableColumn lectureSection = lectureTable.getColumns().get(0);
         TableColumn lectureDays = lectureTable.getColumns().get(1);
@@ -1161,6 +1174,34 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             controller.removeRecitation();
         });
         
+        TableView<Recitation> recitationTable = (TableView) gui.getGUINode(CSG_MEETING_RECITATION_TABLE);
+        TableColumn recitationSection = recitationTable.getColumns().get(0);
+        TableColumn recitationDaytime = recitationTable.getColumns().get(1);
+        TableColumn recitationTA1 = recitationTable.getColumns().get(3);
+        TableColumn recitationTA2 = recitationTable.getColumns().get(4);
+        TableColumn recitationRoom = recitationTable.getColumns().get(2);
+
+        recitationSection.setOnEditCommit(t -> {
+            CellEditEvent<Recitation, String> evt = (CellEditEvent<Recitation, String>) t;
+            controller.editRecitation("section", evt.getOldValue(), evt.getNewValue());
+        });
+        recitationDaytime.setOnEditCommit(t -> {
+            CellEditEvent<Recitation, String> evt = (CellEditEvent<Recitation, String>) t;
+            controller.editRecitation("daytime", evt.getOldValue(), evt.getNewValue());
+        });
+        recitationTA1.setOnEditCommit(t -> {
+            CellEditEvent<Recitation, String> evt = (CellEditEvent<Recitation, String>) t;
+            controller.editRecitation("ta1", evt.getOldValue(), evt.getNewValue());
+        });
+        recitationTA2.setOnEditCommit(t -> {
+            CellEditEvent<Recitation, String> evt = (CellEditEvent<Recitation, String>) t;
+            controller.editRecitation("ta2", evt.getOldValue(), evt.getNewValue());
+        });
+        recitationRoom.setOnEditCommit(t -> {
+            CellEditEvent<Recitation, String> evt = (CellEditEvent<Recitation, String>) t;
+            controller.editRecitation("room", evt.getOldValue(), evt.getNewValue());
+        });
+        
         Button labAdd = (Button) gui.getGUINode(CSG_MEETING_LAB_ADD_BUTTON);
         labAdd.setOnAction(e -> {
             controller.addLab();
@@ -1168,6 +1209,34 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button labRemove = (Button) gui.getGUINode(CSG_MEETING_LAB_REMOVE_BUTTON);
         labRemove.setOnAction(e -> {
             controller.removeLab();
+        });
+        
+        TableView<Lab> labTable = (TableView) gui.getGUINode(CSG_MEETING_LAB_TABLE);
+        TableColumn labSection = labTable.getColumns().get(0);
+        TableColumn labDaytime = labTable.getColumns().get(1);
+        TableColumn labTA1 = labTable.getColumns().get(3);
+        TableColumn labTA2 = labTable.getColumns().get(4);
+        TableColumn labRoom = labTable.getColumns().get(2);
+
+        labSection.setOnEditCommit(t -> {
+            CellEditEvent<Lab, String> evt = (CellEditEvent<Lab, String>) t;
+            controller.editLab("section", evt.getOldValue(), evt.getNewValue());
+        });
+        labDaytime.setOnEditCommit(t -> {
+            CellEditEvent<Lab, String> evt = (CellEditEvent<Lab, String>) t;
+            controller.editLab("daytime", evt.getOldValue(), evt.getNewValue());
+        });
+        labTA1.setOnEditCommit(t -> {
+            CellEditEvent<Lab, String> evt = (CellEditEvent<Lab, String>) t;
+            controller.editLab("ta1", evt.getOldValue(), evt.getNewValue());
+        });
+        labTA2.setOnEditCommit(t -> {
+            CellEditEvent<Lab, String> evt = (CellEditEvent<Lab, String>) t;
+            controller.editLab("ta2", evt.getOldValue(), evt.getNewValue());
+        });
+        labRoom.setOnEditCommit(t -> {
+            CellEditEvent<Lab, String> evt = (CellEditEvent<Lab, String>) t;
+            controller.editLab("room", evt.getOldValue(), evt.getNewValue());
         });
 
     }

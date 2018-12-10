@@ -16,23 +16,23 @@ public class Recitation {
     private final StringProperty section;
     private final StringProperty dayTime;
     private final StringProperty room;
-    private final StringProperty ta1;
-    private final StringProperty ta2;
+    private final StringProperty taone;
+    private final StringProperty tatwo;
     
     public Recitation(){
         section = new SimpleStringProperty("-");
         dayTime = new SimpleStringProperty("-");
         room = new SimpleStringProperty("-");
-        ta1 = new SimpleStringProperty("-");
-        ta2 = new SimpleStringProperty("-");
+        taone = new SimpleStringProperty("-");
+        tatwo = new SimpleStringProperty("-");
     }
     
     public Recitation(String initSection, String initDaytime, String initRoom, String initTA1,String initTA2) {
         section = new SimpleStringProperty(initSection);
         dayTime = new SimpleStringProperty(initDaytime);
         room = new SimpleStringProperty(initRoom);
-        ta1 = new SimpleStringProperty(initTA1);
-        ta2 = new SimpleStringProperty(initTA2);
+        taone = new SimpleStringProperty(initTA1);
+        tatwo = new SimpleStringProperty(initTA2);
     }
     
     public String getSection(){
@@ -41,11 +41,11 @@ public class Recitation {
     public String getDaytime(){
         return dayTime.get();
     }
-    public String getTA1(){
-        return ta1.get();
+    public String getTaone(){
+        return taone.get();
     }
-    public String getTA2(){
-        return ta2.get();
+    public String getTatwo(){
+        return tatwo.get();
     }
     public String getRoom(){
         return room.get();
@@ -56,11 +56,11 @@ public class Recitation {
     public void setDaytime(String newDaytime){
         dayTime.setValue(newDaytime);
     }
-    public void setTA1(String ta){
-        ta1.setValue(ta);
+    public void setTaone(String ta){
+        taone.setValue(ta);
     }
-    public void setTA2(String ta){
-        ta2.setValue(ta);
+    public void setTatwo(String ta){
+        tatwo.setValue(ta);
     }
     public void setRoom(String newRoom){
         room.setValue(newRoom);

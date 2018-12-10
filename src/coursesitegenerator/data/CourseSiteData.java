@@ -1100,6 +1100,22 @@ public class CourseSiteData implements AppDataComponent {
         lectures.remove(lecture);
     }
     
+    public void addRecitation(Recitation recitation) {
+        recitations.add(recitation);
+    }
+
+    public void removeRecitation(Recitation recitation) {
+        recitations.remove(recitation);
+    }
+    
+    public void addLab(Lab lab) {
+        labs.add(lab);
+    }
+
+    public void removeLab(Lab lab) {
+        labs.remove(lab);
+    }
+    
     private class AllTAsIterator implements Iterator {
         Iterator gradIt = allTAs.get(TAType.Graduate).iterator();
         Iterator undergradIt = allTAs.get(TAType.Undergraduate).iterator();
