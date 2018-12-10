@@ -19,6 +19,9 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LAB_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LECTURE_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_RECITATION_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_EDIT_DATEPICKER;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_END_DATEPICKER;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_START_DATEPICKER;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_BANNER_EXPORTDIRTEXT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_EMAIL_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD;
@@ -72,6 +75,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
@@ -84,6 +88,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -171,7 +176,10 @@ public class CourseSiteData implements AppDataComponent {
     private String acedemic = "";
     private String special = "";
 
-    
+    private LocalDate startDate = null;
+    private LocalDate endDate = null;
+    private LocalDate editDate = null;
+
     
 
     //public String oldStartTime="8:00am";
@@ -247,7 +255,15 @@ public class CourseSiteData implements AppDataComponent {
     public String getCSS(){
         return css;
     }
-    
+    public LocalDate getStartDate(){
+        return startDate;
+    }
+    public LocalDate getEndDate(){
+        return endDate;
+    }
+    public LocalDate getEditDate(){
+        return editDate;
+    }
     public String getInstructorName(){
         return instructorName;
     }
@@ -446,6 +462,24 @@ public class CourseSiteData implements AppDataComponent {
         TextArea text = (TextArea) gui.getGUINode(CSG_SYLLABUS_SPECIALASSISTANCE_BOX);
         text.setText(newSpecial);
     }
+    public void changeStartDate(LocalDate date){
+        startDate=date;
+        AppGUIModule gui = app.getGUIModule();
+        DatePicker startDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_START_DATEPICKER);
+        startDatePicker.setValue(date);
+    }
+    public void changeEndDate(LocalDate date){
+        endDate=date;
+        AppGUIModule gui = app.getGUIModule();
+        DatePicker endDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_END_DATEPICKER);
+        endDatePicker.setValue(date);
+    }
+    public void changeEditDate(LocalDate date){
+        editDate=date;
+        AppGUIModule gui = app.getGUIModule();
+        DatePicker editDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_EDIT_DATEPICKER);
+        editDatePicker.setValue(date);
+    }
     /*
     public String getOldStartTime() {
         return oldStartTime;
@@ -556,10 +590,9 @@ public class CourseSiteData implements AppDataComponent {
         ComboBox semesterComboBox = (ComboBox) gui.getGUINode(CSG_SITE_SEMESTER_COMBOBOX);
         ComboBox numberComboBox = (ComboBox) gui.getGUINode(CSG_SITE_NUMBER_COMBOBOX);
         ComboBox yearComboBox = (ComboBox) gui.getGUINode(CSG_SITE_YEAR_COMBOBOX);
-        subjectComboBox.setValue("");
-        semesterComboBox.setValue("");
-        numberComboBox.setValue("");
-        //yearComboBox.setValue("");
+        changeSubject("");
+        changeSemester("");
+        changeNumber("");
         yearComboBox.setValue(Year.now().getValue());
         TextField titleField = (TextField) gui.getGUINode(CSG_SITE_TITLE);
         titleField.setText("");
@@ -586,7 +619,7 @@ public class CourseSiteData implements AppDataComponent {
                 cssComboBox.getItems().add(file.getName());
             }
         }
-        cssComboBox.setValue("sbuColors.css");
+        changeCSS("sbuColors.css");
         
         TextField nameField =(TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD);
         TextField emailField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD);
@@ -706,6 +739,13 @@ public class CourseSiteData implements AppDataComponent {
         endHours=FXCollections.observableArrayList(endTimeComboBox.getItems());
         //System.out.println(endHours);
     }
+        private void resetSchedule() {
+            startDate=null;
+            endDate=null;
+            editDate=null;
+            
+        }
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mma");
     
     public void setTimeRanges (int start, int end){
@@ -823,6 +863,7 @@ public class CourseSiteData implements AppDataComponent {
         lectures.clear();
         recitations.clear();
         labs.clear();
+        
         
         for (TimeSlot timeSlot : officeHours) {
             timeSlot.reset();

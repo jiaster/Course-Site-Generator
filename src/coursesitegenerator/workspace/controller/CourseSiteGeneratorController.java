@@ -44,6 +44,8 @@ import coursesitegenerator.transactions.AddTA_Transaction;
 import coursesitegenerator.transactions.ChangeAcedemicTransaction;
 import coursesitegenerator.transactions.ChangeCSSTransaction;
 import coursesitegenerator.transactions.ChangeDescriptionTransaction;
+import coursesitegenerator.transactions.ChangeEditDateTransaction;
+import coursesitegenerator.transactions.ChangeEndDateTransaction;
 import coursesitegenerator.transactions.ChangeFaviconTransaction;
 import coursesitegenerator.transactions.ChangeGradingNoteTransaction;
 import coursesitegenerator.transactions.ChangeGradingcompTransaction;
@@ -66,6 +68,7 @@ import coursesitegenerator.transactions.ChangeRightFooterTransaction;
 import coursesitegenerator.transactions.ChangeScheduleTransaction;
 import coursesitegenerator.transactions.ChangeSemesterTransaction;
 import coursesitegenerator.transactions.ChangeSpecialTransaction;
+import coursesitegenerator.transactions.ChangeStartDateTransaction;
 import coursesitegenerator.transactions.ChangeSubjectTransaction;
 import coursesitegenerator.transactions.ChangeSyllabusTransaction;
 import coursesitegenerator.transactions.ChangeTextbooksTransaction;
@@ -90,6 +93,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -667,6 +671,25 @@ public class CourseSiteGeneratorController {
         Lab lab = labTable.getSelectionModel().getSelectedItem();
         RemoveLabTransaction remove = new RemoveLabTransaction(data, lab);
         app.processTransaction(remove);
+    }
+    
+    public void changeStartDate(LocalDate date){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeStartDateTransaction change = new ChangeStartDateTransaction(data, data.getStartDate(),date);
+        app.processTransaction(change);
+    }
+    public void changeEndDate(LocalDate date) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeEndDateTransaction change = new ChangeEndDateTransaction(data, data.getEndDate(), date);
+        app.processTransaction(change);
+    }
+    public void changeEditDate(LocalDate date) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ChangeEditDateTransaction change = new ChangeEditDateTransaction(data, data.getEditDate(), date);
+        app.processTransaction(change);
     }
     
     /*

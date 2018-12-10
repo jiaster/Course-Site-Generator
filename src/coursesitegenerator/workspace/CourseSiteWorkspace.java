@@ -117,6 +117,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
@@ -1238,7 +1239,37 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             CellEditEvent<Lab, String> evt = (CellEditEvent<Lab, String>) t;
             controller.editLab("room", evt.getOldValue(), evt.getNewValue());
         });
-
+        
+        DatePicker startDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_START_DATEPICKER);
+        startDatePicker.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            try{
+            if (!startDatePicker.getValue().equals(data.getStartDate())) {
+                controller.changeStartDate(startDatePicker.getValue());
+            }
+            }catch(NullPointerException ex){
+            }
+        });
+        DatePicker endDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_END_DATEPICKER);
+        endDatePicker.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            try{
+            if (!endDatePicker.getValue().equals(data.getEndDate())) {
+                controller.changeEndDate(endDatePicker.getValue());
+            }
+            }catch(NullPointerException ex){
+            }
+        });
+        DatePicker editDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_EDIT_DATEPICKER);
+        editDatePicker.setOnAction(e -> {
+            CourseSiteData data = (CourseSiteData) app.getDataComponent();
+            try{
+            if (!editDatePicker.getValue().equals(data.getEditDate())) {
+                controller.changeEditDate(editDatePicker.getValue());
+            }
+            }catch(NullPointerException ex){
+            }
+        });
     }
     /*
     AppGUIModule gui = app.getGUIModule();
