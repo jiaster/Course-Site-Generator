@@ -32,6 +32,8 @@ import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 /**
  *
@@ -309,6 +311,10 @@ public class CourseSiteFiles implements AppFileComponent {
 
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final WebView browser = new WebView();
+        final WebEngine webEngine = browser.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+        webEngine.load("https://www.oracle.com/products/index.html");
+        
     }
 }

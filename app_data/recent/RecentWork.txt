@@ -1,3 +1,4 @@
+2-work/2.csg
 3-work/3.csg
 test-work/test.csg
 test2-work/test2.csg

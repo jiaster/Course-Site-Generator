@@ -16,6 +16,13 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_CONTENT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_TITLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_ADD_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_EDIT_DATEPICKER;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_LINK_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_TABLE;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_TITLE_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_TOPIC_FIELD;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_TYPE_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_NUMBER_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_SUBJECT_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_START_TIME_COMBOBOX;
@@ -26,6 +33,7 @@ import coursesitegenerator.data.CourseSiteData;
 import coursesitegenerator.data.Lab;
 import coursesitegenerator.data.Lecture;
 import coursesitegenerator.data.Recitation;
+import coursesitegenerator.data.ScheduleItem;
 import djf.modules.AppGUIModule;
 import djf.ui.dialogs.AppDialogsFacade;
 import javafx.collections.ObservableList;
@@ -40,6 +48,7 @@ import coursesitegenerator.dialogs.TADialog;
 import coursesitegenerator.transactions.AddLabTransaction;
 import coursesitegenerator.transactions.AddLectureTransaction;
 import coursesitegenerator.transactions.AddRecitationTransaction;
+import coursesitegenerator.transactions.AddScheduleItemTransaction;
 import coursesitegenerator.transactions.AddTA_Transaction;
 import coursesitegenerator.transactions.ChangeAcedemicTransaction;
 import coursesitegenerator.transactions.ChangeCSSTransaction;
@@ -65,6 +74,7 @@ import coursesitegenerator.transactions.ChangeOutcomesTransaction;
 import coursesitegenerator.transactions.ChangePrereqTransaction;
 import coursesitegenerator.transactions.ChangeRecitationTransaction;
 import coursesitegenerator.transactions.ChangeRightFooterTransaction;
+import coursesitegenerator.transactions.ChangeScheduleItemTransaction;
 import coursesitegenerator.transactions.ChangeScheduleTransaction;
 import coursesitegenerator.transactions.ChangeSemesterTransaction;
 import coursesitegenerator.transactions.ChangeSpecialTransaction;
@@ -80,9 +90,13 @@ import coursesitegenerator.transactions.EditTA_Transaction;
 import coursesitegenerator.transactions.RemoveLabTransaction;
 import coursesitegenerator.transactions.RemoveLectureTransaction;
 import coursesitegenerator.transactions.RemoveRecitationTransaction;
+import coursesitegenerator.transactions.RemoveScheduleItemTransaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
+import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_BUTTON;
+import static coursesitegenerator.workspace.style.CSGStyle.CLASS_CSG_TABLE_VIEW;
 import djf.components.AppFileComponent;
+import static djf.modules.AppGUIModule.ENABLED;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
@@ -102,7 +116,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -691,7 +707,75 @@ public class CourseSiteGeneratorController {
         ChangeEditDateTransaction change = new ChangeEditDateTransaction(data, data.getEditDate(), date);
         app.processTransaction(change);
     }
-    
+    public void addEditScheduleItem(){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        ComboBox typeComboBox = (ComboBox) gui.getGUINode(CSG_SCHEDULE_TYPE_COMBOBOX);
+        DatePicker editDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_EDIT_DATEPICKER);
+        TextField titleField = (TextField) gui.getGUINode(CSG_SCHEDULE_TITLE_FIELD);
+        TextField topicField = (TextField) gui.getGUINode(CSG_SCHEDULE_TOPIC_FIELD);
+        TextField linkField = (TextField) gui.getGUINode(CSG_SCHEDULE_LINK_FIELD);
+        TableView<ScheduleItem> scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
+        ScheduleItem item = scheduleTable.getSelectionModel().getSelectedItem();
+        if (item==null){//add new item
+            ScheduleItem newItem = new ScheduleItem(typeComboBox.getValue().toString(),editDatePicker.getValue().toString(),titleField.getText(),topicField.getText(),linkField.getText());
+            AddScheduleItemTransaction add = new AddScheduleItemTransaction(data, newItem);
+            app.processTransaction(add);
+        }
+        else{ //update slected item
+            ChangeScheduleItemTransaction edit = new ChangeScheduleItemTransaction(data, item,typeComboBox.getValue().toString(),editDatePicker.getValue().toString(),titleField.getText(),topicField.getText(),linkField.getText());
+            app.processTransaction(edit);
+            data.refreshTables();
+        }
+    }
+    public void fillInScheduleInfo(){
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox typeComboBox = (ComboBox) gui.getGUINode(CSG_SCHEDULE_TYPE_COMBOBOX);
+        DatePicker editDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_EDIT_DATEPICKER);
+        TextField titleField = (TextField) gui.getGUINode(CSG_SCHEDULE_TITLE_FIELD);
+        TextField topicField = (TextField) gui.getGUINode(CSG_SCHEDULE_TOPIC_FIELD);
+        TextField linkField = (TextField) gui.getGUINode(CSG_SCHEDULE_LINK_FIELD);
+        TableView<ScheduleItem> scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
+        ScheduleItem item = scheduleTable.getSelectionModel().getSelectedItem();
+        if (item!=null){
+            Button addButton = (Button) gui.getGUINode(CSG_SCHEDULE_ADD_BUTTON);
+            addButton.setText("Update");
+            typeComboBox.setValue(item.getType());
+            editDatePicker.setValue(LocalDate.parse(item.getDate()));
+            titleField.setText(item.getTitle());
+            topicField.setText(item.getTopic());
+            linkField.setText(item.getLink());
+        }
+    }
+    public void clearScheduleItem(){
+        AppGUIModule gui = app.getGUIModule();
+        ComboBox typeComboBox = (ComboBox) gui.getGUINode(CSG_SCHEDULE_TYPE_COMBOBOX);
+        DatePicker editDatePicker = (DatePicker) gui.getGUINode(CSG_SCHEDULE_EDIT_DATEPICKER);
+        TextField titleField = (TextField) gui.getGUINode(CSG_SCHEDULE_TITLE_FIELD);
+        TextField topicField = (TextField) gui.getGUINode(CSG_SCHEDULE_TOPIC_FIELD);
+        TextField linkField = (TextField) gui.getGUINode(CSG_SCHEDULE_LINK_FIELD);
+        TableView<ScheduleItem> scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
+        Button addButton = (Button) gui.getGUINode(CSG_SCHEDULE_ADD_BUTTON);
+        addButton.setText("Add");
+        typeComboBox.setValue("Lecture");
+        editDatePicker.setValue(null);
+        titleField.setText("");
+        topicField.setText("");
+        linkField.setText("");
+        scheduleTable.getSelectionModel().clearSelection();
+    }
+    public void removeScheduleItem(){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<ScheduleItem> scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
+        ScheduleItem item = scheduleTable.getSelectionModel().getSelectedItem();
+        RemoveScheduleItemTransaction remove = new RemoveScheduleItemTransaction(data,item);
+        app.processTransaction(remove);
+    }
+            
+            
+        
+            //clearScheduleItem
     /*
     private void openFile(File file) {
         try {

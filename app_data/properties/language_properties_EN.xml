@@ -168,7 +168,7 @@
 		<property name="CSG_SCHEDULE_CALENDER_TITLE_TEXT"        value="Calender Boundaries"></property>
 		<property name="CSG_SCHEDULE_STARTING_MONDAY_TEXT"        value="Starting Monday"></property>
 		<property name="CSG_SCHEDULE_ENDING_FRIDAY_TEXT"        value="Ending Friday"></property>
-		<property name="CSG_SCHEDULE_REMOVE_SCHEDULE_ITEM_BUTTON_TEXT"        value="+"></property>
+		<property name="CSG_SCHEDULE_REMOVE_SCHEDULE_ITEM_BUTTON_TEXT"        value="-"></property>
 		<property name="CSG_SCHEDULE_SCHEDULE_TITLE_TEXT"        value="Schedule Items"></property>
 		<property name="CSG_SCHEDULE_SCHEDULE_TYPE_TEXT"        value="Type"></property>
 		<property name="CSG_SCHEDULE_SCHEDULE_DATE_TEXT"        value="Date"></property>
@@ -180,7 +180,7 @@
 		<property name="CSG_SCHEDULE_ADD_TITLE_TEXT"        value="Title"></property>
 		<property name="CSG_SCHEDULE_ADD_TOPIC_TEXT"        value="Topic"></property>
 		<property name="CSG_SCHEDULE_ADD_LINK_TEXT"        value="Link"></property>
-		<property name="CSG_SCHEDULE_ADD_BUTTON_TEXT"        value="Add/Update"></property>
+		<property name="CSG_SCHEDULE_ADD_BUTTON_TEXT"        value="Add"></property>
 		<property name="CSG_SCHEDULE_ADD_CLEAR_BUTTON_TEXT"        value="Clear"></property>
 		
 		<property name="CSG_OFFICE_REMOVE_BUTTON_TEXT"        value="-"></property>

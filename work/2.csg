@@ -1,0 +1,43 @@
+
+{
+    "subject":"AMS",
+    "number":"",
+    "semester":"",
+    "year":"",
+    "title":"",
+    "home":false,
+    "syllabus":false,
+    "schedule":false,
+    "hws":false,
+    "favicon":"./images/favicon.png",
+    "navbar":"./images/navbar.png",
+    "leftfooter":"./images/leftFooter.png",
+    "rightfooter":"./images/rightFooter.png",
+    "css":"sbuColors.css",
+    "instructor":{
+        "name":"",
+        "email":"",
+        "room":"",
+        "link":"",
+        "hours":""
+    },
+    "description":"",
+    "topics":"",
+    "prereq":"",
+    "outcomes":"",
+    "textbooks":"",
+    "gradedcomponents":"",
+    "gradingnote":"",
+    "academic":"",
+    "special":"",
+    "startHour":"8",
+    "endHour":"23",
+    "starttime":"8:00am",
+    "endtime":"10:00pm",
+    "grad_tas":[
+    ],
+    "undergrad_tas":[
+    ],
+    "officeHours":[
+    ]
+}

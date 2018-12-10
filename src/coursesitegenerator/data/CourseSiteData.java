@@ -22,6 +22,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_
 import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_EDIT_DATEPICKER;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_END_DATEPICKER;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_START_DATEPICKER;
+import static coursesitegenerator.CourseSitePropertyType.CSG_SCHEDULE_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_BANNER_EXPORTDIRTEXT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_EMAIL_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_HOMEPAGE_FIELD;
@@ -118,6 +119,7 @@ public class CourseSiteData implements AppDataComponent {
     ObservableList<Lecture> lectures;
     ObservableList<Recitation> recitations;
     ObservableList<Lab> labs;
+    ObservableList<ScheduleItem> scheduleList;
 
 
     // THESE ARE THE TIME BOUNDS FOR THE OFFICE HOURS GRID. NOTE
@@ -212,6 +214,8 @@ public class CourseSiteData implements AppDataComponent {
         recitations = recitationTableView.getItems();
         TableView<Lab> labTableView = (TableView)gui.getGUINode(CSG_MEETING_LAB_TABLE);
         labs = labTableView.getItems();
+        TableView<ScheduleItem> scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
+        scheduleList = scheduleTable.getItems();
         
         // THESE ARE THE DEFAULT OFFICE HOURS
         startHour = MIN_START_HOUR;
@@ -863,6 +867,7 @@ public class CourseSiteData implements AppDataComponent {
         lectures.clear();
         recitations.clear();
         labs.clear();
+        scheduleList.clear();
         
         
         for (TimeSlot timeSlot : officeHours) {
@@ -927,6 +932,13 @@ public class CourseSiteData implements AppDataComponent {
                 timeSlot.removeTA(dow, ta);
             }
         }    
+    }
+    public void addScheduleItem(ScheduleItem item){
+        scheduleList.add(item);
+    }
+    
+    public void removeScheduleItem(ScheduleItem item){
+        scheduleList.remove(item);
     }
     
     public DayOfWeek getColumnDayOfWeek(int columnNumber) {
@@ -1202,9 +1214,11 @@ public class CourseSiteData implements AppDataComponent {
         TableView<Lecture> lectureTable = (TableView) gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
         TableView<Recitation> recitationTable = (TableView) gui.getGUINode(CSG_MEETING_RECITATION_TABLE);
         TableView<Lab> labTable = (TableView) gui.getGUINode(CSG_MEETING_LAB_TABLE);
+        TableView<ScheduleItem> scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
         lectureTable.refresh();
         recitationTable.refresh();
         labTable.refresh();
+        scheduleTable.refresh();
     }
     
 }

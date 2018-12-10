@@ -83,6 +83,7 @@ import coursesitegenerator.data.CourseSiteData;
 import coursesitegenerator.data.Lab;
 import coursesitegenerator.data.Lecture;
 import coursesitegenerator.data.Recitation;
+import coursesitegenerator.data.ScheduleItem;
 import coursesitegenerator.workspace.controller.CourseSiteGeneratorController;
 import djf.components.AppWorkspaceComponent;
 import djf.modules.AppFoolproofModule;
@@ -638,7 +639,7 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         //schedule box
         Button scheduleRemoveButton = csjBuilder.buildTextButton(CSG_SCHEDULE_REMOVE_SCHEDULE_ITEM_BUTTON, scheduleGrid, 0, 2, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label scheduleLabel = csjBuilder.buildLabel(CSG_SCHEDULE_SCHEDULE_TITLE, scheduleGrid, 1, 2, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
-        TableView<String> scheduleTable = csjBuilder.buildTableView(CSG_SCHEDULE_TABLE, scheduleGrid, 0, 3, 4, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
+        TableView<ScheduleItem> scheduleTable = csjBuilder.buildTableView(CSG_SCHEDULE_TABLE, scheduleGrid, 0, 3, 4, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
         scheduleTable.prefWidthProperty().bind(schedulePane.widthProperty());
         scheduleTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         TableColumn scheduleSectionColumn = csjBuilder.buildTableColumn(CSG_SCHEDULE_SCHEDULE_TYPE, scheduleTable, CLASS_CSG_COLUMN);
@@ -1270,6 +1271,25 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             }catch(NullPointerException ex){
             }
         });
+        Button addButton = (Button)gui.getGUINode(CSG_SCHEDULE_ADD_BUTTON);
+        Button clearButton = (Button)gui.getGUINode(CSG_SCHEDULE_ADD_CLEAR_BUTTON);
+        addButton.setOnAction(e -> {
+            controller.addEditScheduleItem();
+        });
+        clearButton.setOnAction(e -> {
+            controller.clearScheduleItem();
+        });
+        
+        TableView scheduleTable = (TableView) gui.getGUINode(CSG_SCHEDULE_TABLE);
+        scheduleTable.setOnMouseClicked(e -> {
+            controller.fillInScheduleInfo();
+        });
+        Button removeButton = (Button) gui.getGUINode(CSG_SCHEDULE_REMOVE_SCHEDULE_ITEM_BUTTON);
+        removeButton.setOnAction(e -> {
+            controller.removeScheduleItem();
+        });
+
+        
     }
     /*
     AppGUIModule gui = app.getGUIModule();
