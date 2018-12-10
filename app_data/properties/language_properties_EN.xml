@@ -315,9 +315,11 @@
         </property_options>
 		
 		<property_options name="CSG_TYPE_OPTIONS">
-			<option>Lecture</option>
+			<option>Holidays</option>
+			<option>Lectures</option>
+			<option>References</option>
+			<option>Recitations</option>
 			<option>HW</option>
-			<option>Holiday</option>
         </property_options>
 		
 		<property_options name="CSG_TYPE_DEFAULT">

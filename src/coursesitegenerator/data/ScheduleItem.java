@@ -6,6 +6,7 @@
 package coursesitegenerator.data;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -39,6 +40,13 @@ public class ScheduleItem {
     public ScheduleItem(String initType, String initDate, String initTitle, String initTopic, String initLink) {
         type = new SimpleStringProperty(initType);
         date = new SimpleStringProperty(initDate);
+        title = new SimpleStringProperty(initTitle);
+        topic = new SimpleStringProperty(initTopic);
+        link = initLink;
+    }
+    public ScheduleItem(String month, String day, String initType, String initTitle, String initTopic, String initLink) {
+        type = new SimpleStringProperty(initType);
+        date = new SimpleStringProperty((Calendar.getInstance().get(Calendar.YEAR))+"-"+month+"-"+day);
         title = new SimpleStringProperty(initTitle);
         topic = new SimpleStringProperty(initTopic);
         link = initLink;

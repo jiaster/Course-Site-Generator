@@ -1,0 +1,42 @@
+
+{
+    "lectures":[
+        {
+            "section":"01",
+            "days":"MTW",
+            "time":"1pm-2pm",
+            "room":"123"
+        },
+        {
+            "section":"02",
+            "days":"MW",
+            "time":"11am-12pm",
+            "room":"333"
+        }
+    ],
+    "labs":[
+        {
+            "section":"01",
+            "day_time":"MTW",
+            "location":"41",
+            "ta_1":"asd",
+            "ta_2":"cxv"
+        }
+    ],
+    "recitations":[
+        {
+            "section":"02",
+            "day_time":"MT",
+            "location":"111",
+            "ta_1":"name",
+            "ta_2":"name2"
+        },
+        {
+            "section":"03",
+            "day_time":"MTW",
+            "location":"1231",
+            "ta_1":"asd",
+            "ta_2":"xcv"
+        }
+    ]
+}

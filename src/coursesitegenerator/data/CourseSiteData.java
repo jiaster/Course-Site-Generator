@@ -161,7 +161,7 @@ public class CourseSiteData implements AppDataComponent {
     private boolean syllabus=false;
     private boolean schedule=false;
     private boolean hws=false;
-    private String css="sbuColors.css";
+    private String css="sea_wolf.css";
     private String instructorName="";
     private String instructorRoom="";
     private String instructorEmail="";
@@ -623,7 +623,7 @@ public class CourseSiteData implements AppDataComponent {
                 cssComboBox.getItems().add(file.getName());
             }
         }
-        changeCSS("sbuColors.css");
+        changeCSS("sea_wolf.css");
         
         TextField nameField =(TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_NAME_FIELD);
         TextField emailField = (TextField) gui.getGUINode(CSG_SITE_INSTRUCTOR_ROOM_FIELD);
@@ -1144,6 +1144,18 @@ public class CourseSiteData implements AppDataComponent {
     public Iterator<TeachingAssistantPrototype> teachingAssistantsIterator() {
         return new AllTAsIterator();
     }
+    public Iterator<ScheduleItem> scheduleIterator() {
+        return scheduleList.iterator();
+    }
+    public Iterator<Lecture> lectureIterator() {
+        return lectures.iterator();
+    }
+    public Iterator<Recitation> recitationIterator() {
+        return recitations.iterator();
+    }
+    public Iterator<Lab> labIterator() {
+        return labs.iterator();
+    }
 
     public void addLecture(Lecture lecture) {
         lectures.add(lecture);
@@ -1206,6 +1218,7 @@ public class CourseSiteData implements AppDataComponent {
         if (subjectComboBox.getValue()!=null&&numberComboBox.getValue()!=null&&semesterComboBox.getValue()!=null&&yearComboBox.getValue()!=null){
             String mid = subjectComboBox.getValue().toString()+"_"+numberComboBox.getValue()+"_"+semesterComboBox.getValue()+"_"+yearComboBox.getValue();
             exportDir.setText(pre+"\\"+mid+post);
+            exportdir=exportDir.getText();
         }
         
     }
