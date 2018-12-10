@@ -80,6 +80,9 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_WEDNESDAY_TABLE_COL
 import static coursesitegenerator.CourseSitePropertyType.CSG_YEAR_DEFAULT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_YEAR_OPTIONS;
 import coursesitegenerator.data.CourseSiteData;
+import coursesitegenerator.data.Lab;
+import coursesitegenerator.data.Lecture;
+import coursesitegenerator.data.Recitation;
 import coursesitegenerator.workspace.controller.CourseSiteGeneratorController;
 import djf.components.AppWorkspaceComponent;
 import djf.modules.AppFoolproofModule;
@@ -118,6 +121,7 @@ import java.time.LocalTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
@@ -135,7 +139,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -461,17 +468,22 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button lectureAddButton = csjBuilder.buildTextButton(CSG_MEETING_LECTURE_ADD_BUTTON, meetingGrid, 0, 0, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Button lectureRemoveButton = csjBuilder.buildTextButton(CSG_MEETING_LECTURE_REMOVE_BUTTON, meetingGrid, 1, 0, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label lectureLabel = csjBuilder.buildLabel(CSG_MEETING_LECTURE_TITLE, meetingGrid, 2, 0, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
-        TableView<String> lectureTable = csjBuilder.buildTableView(CSG_MEETING_LECTURE_TABLE, meetingGrid, 0, 1, 3, 1,CLASS_CSG_TABLE_VIEW, ENABLED);
+        TableView<Lecture> lectureTable = csjBuilder.buildTableView(CSG_MEETING_LECTURE_TABLE, meetingGrid, 0, 1, 3, 1,CLASS_CSG_TABLE_VIEW, ENABLED);
         lectureTable.prefWidthProperty().bind(meetingPane.widthProperty());
-        lectureTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        lectureTable.getSelectionModel().cellSelectionEnabledProperty().set(true);
+        lectureTable.setEditable(true);
         TableColumn lectureSectionColumn = csjBuilder.buildTableColumn(CSG_MEETING_LECTURE_SECTION, lectureTable, CLASS_CSG_COLUMN);
         TableColumn lectureDaysColumn = csjBuilder.buildTableColumn(CSG_MEETING_LECTURE_DAYS, lectureTable, CLASS_CSG_COLUMN);
         TableColumn lectureTimeColumn = csjBuilder.buildTableColumn(CSG_MEETING_LECTURE_TIME, lectureTable, CLASS_CSG_CENTERED_COLUMN);
         TableColumn lectureRoomColumn = csjBuilder.buildTableColumn(CSG_MEETING_LECTURE_ROOM, lectureTable, CLASS_CSG_COLUMN);
         lectureSectionColumn.setCellValueFactory(new PropertyValueFactory<String, String>("section"));
-        lectureDaysColumn.setCellValueFactory(new PropertyValueFactory<String, String>("day"));
+        lectureDaysColumn.setCellValueFactory(new PropertyValueFactory<String, String>("days"));
         lectureTimeColumn.setCellValueFactory(new PropertyValueFactory<String, String>("time"));
         lectureRoomColumn.setCellValueFactory(new PropertyValueFactory<String, String>("room"));
+        lectureSectionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        lectureDaysColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        lectureTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        lectureRoomColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         lectureSectionColumn.prefWidthProperty().bind(lectureTable.widthProperty().multiply(1.0 / 5.0));
         lectureDaysColumn.prefWidthProperty().bind(lectureTable.widthProperty().multiply(1.0 / 5.0));
         lectureTimeColumn.prefWidthProperty().bind(lectureTable.widthProperty().multiply(2.0 / 5.0));
@@ -480,9 +492,9 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button recitationAddButton = csjBuilder.buildTextButton(CSG_MEETING_RECITATION_ADD_BUTTON, meetingGrid, 0, 2, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Button recitationRemoveButton = csjBuilder.buildTextButton(CSG_MEETING_RECITATION_REMOVE_BUTTON, meetingGrid, 1, 2, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label recitationLabel = csjBuilder.buildLabel(CSG_MEETING_RECITATION_TITLE, meetingGrid, 2, 2, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
-        TableView<String> recitationTable = csjBuilder.buildTableView(CSG_MEETING_RECITATION_TABLE, meetingGrid, 0, 3, 3, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
+        TableView<Recitation> recitationTable = csjBuilder.buildTableView(CSG_MEETING_RECITATION_TABLE, meetingGrid, 0, 3, 3, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
         recitationTable.prefWidthProperty().bind(meetingPane.widthProperty());
-        recitationTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        recitationTable.getSelectionModel().cellSelectionEnabledProperty().set(true);
         TableColumn recitationSectionColumn = csjBuilder.buildTableColumn(CSG_MEETING_RECITATION_SECTION, recitationTable, CLASS_CSG_COLUMN);
         TableColumn recitationDayTimeColumn = csjBuilder.buildTableColumn(CSG_MEETING_RECITATION_DAYTIME, recitationTable, CLASS_CSG_COLUMN);
         TableColumn recitationRoomColumn = csjBuilder.buildTableColumn(CSG_MEETING_RECITATION_ROOM, recitationTable, CLASS_CSG_CENTERED_COLUMN);
@@ -502,9 +514,9 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
         Button labAddButton = csjBuilder.buildTextButton(CSG_MEETING_LAB_ADD_BUTTON, meetingGrid, 0, 4, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Button labRemoveButton = csjBuilder.buildTextButton(CSG_MEETING_LAB_REMOVE_BUTTON, meetingGrid, 1, 4, 1, 1, CLASS_CSG_BUTTON, ENABLED);
         Label labLabel = csjBuilder.buildLabel(CSG_MEETING_LAB_TITLE, meetingGrid, 2, 4, 1, 1, CLASS_CSG_SUBHEADER_LABEL, ENABLED);
-        TableView<String> labTable = csjBuilder.buildTableView(CSG_MEETING_LAB_TABLE, meetingGrid, 0, 5, 3, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
+        TableView<Lab> labTable = csjBuilder.buildTableView(CSG_MEETING_LAB_TABLE, meetingGrid, 0, 5, 3, 1, CLASS_CSG_TABLE_VIEW, ENABLED);
         labTable.prefWidthProperty().bind(meetingPane.widthProperty());
-        labTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        labTable.getSelectionModel().cellSelectionEnabledProperty().set(true);
         TableColumn labSectionColumn = csjBuilder.buildTableColumn(CSG_MEETING_LAB_SECTION, labTable, CLASS_CSG_COLUMN);
         TableColumn labDayTimeColumn = csjBuilder.buildTableColumn(CSG_MEETING_LAB_DAYTIME, labTable, CLASS_CSG_COLUMN);
         TableColumn labRoomColumn = csjBuilder.buildTableColumn(CSG_MEETING_LAB_ROOM, labTable, CLASS_CSG_CENTERED_COLUMN);
@@ -1108,7 +1120,55 @@ public class CourseSiteWorkspace extends AppWorkspaceComponent {
             controller.changeRightFooterImage();
         });
 
+        Button lectureAdd = (Button) gui.getGUINode(CSG_MEETING_LECTURE_ADD_BUTTON);
+        lectureAdd.setOnAction(e -> {
+            controller.addLecture();
+        });
+        Button lectureRemove = (Button) gui.getGUINode(CSG_MEETING_LECTURE_REMOVE_BUTTON);
+        lectureRemove.setOnAction(e -> {
+            controller.removeLecture();
+        });
+        TableView<Lecture> lectureTable = (TableView) gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
+        TableColumn lectureSection = lectureTable.getColumns().get(0);
+        TableColumn lectureDays = lectureTable.getColumns().get(1);
+        TableColumn lectureTime = lectureTable.getColumns().get(2);
+        TableColumn lectureRoom = lectureTable.getColumns().get(3);
+
+        lectureSection.setOnEditCommit(t -> {
+            CellEditEvent<Lecture, String> evt = (CellEditEvent<Lecture, String>) t;
+            controller.editLecture("section",evt.getOldValue(),evt.getNewValue());
+        });
+        lectureDays.setOnEditCommit(t -> {
+            CellEditEvent<Lecture, String> evt = (CellEditEvent<Lecture, String>) t;
+            controller.editLecture("days", evt.getOldValue(), evt.getNewValue());
+        });
+        lectureTime.setOnEditCommit(t -> {
+            CellEditEvent<Lecture, String> evt = (CellEditEvent<Lecture, String>) t;
+            controller.editLecture("time", evt.getOldValue(), evt.getNewValue());
+        });
+        lectureRoom.setOnEditCommit(t -> {
+            CellEditEvent<Lecture, String> evt = (CellEditEvent<Lecture, String>) t;
+            controller.editLecture("room", evt.getOldValue(), evt.getNewValue());
+        });
         
+        
+        Button recitationAdd = (Button) gui.getGUINode(CSG_MEETING_RECITATION_ADD_BUTTON);
+        recitationAdd.setOnAction(e -> {
+            controller.addRecitation();
+        });
+        Button recitationRemove = (Button) gui.getGUINode(CSG_MEETING_RECITATION_REMOVE_BUTTON);
+        recitationRemove.setOnAction(e -> {
+            controller.removeRecitation();
+        });
+        
+        Button labAdd = (Button) gui.getGUINode(CSG_MEETING_LAB_ADD_BUTTON);
+        labAdd.setOnAction(e -> {
+            controller.addLab();
+        });
+        Button labRemove = (Button) gui.getGUINode(CSG_MEETING_LAB_REMOVE_BUTTON);
+        labRemove.setOnAction(e -> {
+            controller.removeLab();
+        });
 
     }
     /*

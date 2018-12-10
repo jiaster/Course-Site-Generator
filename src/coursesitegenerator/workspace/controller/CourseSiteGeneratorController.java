@@ -9,6 +9,7 @@ import coursesitegenerator.CourseSiteGenerator;
 import static coursesitegenerator.CourseSitePropertyType.CSG_EMAIL_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_FOOLPROOF_SETTINGS;
+import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LECTURE_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NAME_TEXT_FIELD;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_CONTENT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_NO_TA_SELECTED_TITLE;
@@ -20,6 +21,7 @@ import static coursesitegenerator.CourseSitePropertyType.CSG_STYLE_FAVICON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TAS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_TA_EDIT_DIALOG;
 import coursesitegenerator.data.CourseSiteData;
+import coursesitegenerator.data.Lecture;
 import djf.modules.AppGUIModule;
 import djf.ui.dialogs.AppDialogsFacade;
 import javafx.collections.ObservableList;
@@ -31,6 +33,7 @@ import coursesitegenerator.data.TAType;
 import coursesitegenerator.data.TeachingAssistantPrototype;
 import coursesitegenerator.data.TimeSlot;
 import coursesitegenerator.dialogs.TADialog;
+import coursesitegenerator.transactions.AddLectureTransaction;
 import coursesitegenerator.transactions.AddTA_Transaction;
 import coursesitegenerator.transactions.ChangeAcedemicTransaction;
 import coursesitegenerator.transactions.ChangeCSSTransaction;
@@ -45,6 +48,7 @@ import coursesitegenerator.transactions.ChangeInstructorHomeTransaction;
 import coursesitegenerator.transactions.ChangeInstructorNameTransaction;
 import coursesitegenerator.transactions.ChangeInstructorOfficeHoursTransaction;
 import coursesitegenerator.transactions.ChangeInstructorRoomTransaction;
+import coursesitegenerator.transactions.ChangeLectureTransaction;
 import coursesitegenerator.transactions.ChangeLeftFooterTransaction;
 import coursesitegenerator.transactions.ChangeNavbarTransaction;
 import coursesitegenerator.transactions.ChangeNumberTransaction;
@@ -62,6 +66,7 @@ import coursesitegenerator.transactions.ChangeTitleTransaction;
 import coursesitegenerator.transactions.ChangeTopicsTransaction;
 import coursesitegenerator.transactions.ChangeYearTransaction;
 import coursesitegenerator.transactions.EditTA_Transaction;
+import coursesitegenerator.transactions.RemoveLectureTransaction;
 import coursesitegenerator.transactions.RemoveTATransaction;
 import coursesitegenerator.transactions.ToggleOfficeHours_Transaction;
 import djf.components.AppFileComponent;
@@ -584,6 +589,54 @@ public class CourseSiteGeneratorController {
         ChangeSpecialTransaction change = new ChangeSpecialTransaction(data, data.getSpecial(), special);
         app.processTransaction(change);
     }
+    public void addLecture() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        System.out.println("2");
+
+        Lecture lecture = new Lecture();
+        AddLectureTransaction newLecture = new AddLectureTransaction(data, lecture);
+        System.out.println("3");
+        app.processTransaction(newLecture);
+        System.out.println("4");
+        //ChangeSpecialTransaction change = new ChangeSpecialTransaction(data, data.getSpecial(), special);
+        //app.processTransaction(change);
+    }
+    public void editLecture(String type, String oldVal, String newVal){
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<Lecture> lectureTable = (TableView) gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
+        Lecture lecture = lectureTable.getSelectionModel().getSelectedItem();
+        ChangeLectureTransaction editLecture = new ChangeLectureTransaction(data, lecture, type, oldVal, newVal);
+        app.processTransaction(editLecture);
+    }
+    public void removeLecture() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        TableView<Lecture> lectureTable = (TableView) gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
+        Lecture lecture = lectureTable.getSelectionModel().getSelectedItem();
+        RemoveLectureTransaction remove = new RemoveLectureTransaction(data, lecture);
+        app.processTransaction(remove);
+    }
+    public void addRecitation() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+        //ChangeSpecialTransaction change = new ChangeSpecialTransaction(data, data.getSpecial());
+        //app.processTransaction(change);
+    }
+    public void removeRecitation( ) {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+    }
+    public void addLab() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+    }
+    public void removeLab() {
+        AppGUIModule gui = app.getGUIModule();
+        CourseSiteData data = (CourseSiteData) app.getDataComponent();
+    }
+    
     /*
     private void openFile(File file) {
         try {

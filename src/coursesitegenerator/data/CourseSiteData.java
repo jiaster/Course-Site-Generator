@@ -15,6 +15,9 @@ import coursesitegenerator.CourseSiteGenerator;
 import static coursesitegenerator.CourseSitePropertyType.CSG_ALL_RADIO_BUTTON;
 import static coursesitegenerator.CourseSitePropertyType.CSG_END_TIME_COMBOBOX;
 import static coursesitegenerator.CourseSitePropertyType.CSG_GRAD_RADIO_BUTTON;
+import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LAB_TABLE;
+import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_LECTURE_TABLE;
+import static coursesitegenerator.CourseSitePropertyType.CSG_MEETING_RECITATION_TABLE;
 import static coursesitegenerator.CourseSitePropertyType.CSG_OFFICE_HOURS_TABLE_VIEW;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_BANNER_EXPORTDIRTEXT;
 import static coursesitegenerator.CourseSitePropertyType.CSG_SITE_INSTRUCTOR_EMAIL_FIELD;
@@ -107,6 +110,9 @@ public class CourseSiteData implements AppDataComponent {
     ObservableList<TeachingAssistantPrototype> teachingAssistants;
     ObservableList<TimeSlot> officeHours;
     ObservableList<String> endHours;
+    ObservableList<Lecture> lectures;
+    ObservableList<Recitation> recitations;
+    ObservableList<Lab> labs;
 
 
     // THESE ARE THE TIME BOUNDS FOR THE OFFICE HOURS GRID. NOTE
@@ -191,7 +197,14 @@ public class CourseSiteData implements AppDataComponent {
         // GET THE LIST OF TAs FOR THE LEFT TABLE
         TableView<TeachingAssistantPrototype> taTableView = (TableView)gui.getGUINode(CSG_TAS_TABLE_VIEW);
         teachingAssistants = taTableView.getItems();
-
+        
+        TableView<Lecture> lectureTableView = (TableView)gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
+        lectures = lectureTableView.getItems();
+        TableView<Recitation> recitationTableView = (TableView)gui.getGUINode(CSG_MEETING_RECITATION_TABLE);
+        recitations = recitationTableView.getItems();
+        TableView<Lab> labTableView = (TableView)gui.getGUINode(CSG_MEETING_LAB_TABLE);
+        labs = labTableView.getItems();
+        
         // THESE ARE THE DEFAULT OFFICE HOURS
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
@@ -807,6 +820,9 @@ public class CourseSiteData implements AppDataComponent {
         endHour = MAX_END_HOUR;
         teachingAssistants.clear();
         allTAs.forEach((key,value)->value.clear());
+        lectures.clear();
+        recitations.clear();
+        labs.clear();
         
         for (TimeSlot timeSlot : officeHours) {
             timeSlot.reset();
@@ -1075,6 +1091,14 @@ public class CourseSiteData implements AppDataComponent {
     public Iterator<TeachingAssistantPrototype> teachingAssistantsIterator() {
         return new AllTAsIterator();
     }
+
+    public void addLecture(Lecture lecture) {
+        lectures.add(lecture);
+    }
+    
+    public void removeLecture(Lecture lecture) {
+        lectures.remove(lecture);
+    }
     
     private class AllTAsIterator implements Iterator {
         Iterator gradIt = allTAs.get(TAType.Graduate).iterator();
@@ -1116,4 +1140,14 @@ public class CourseSiteData implements AppDataComponent {
         }
         
     }
+    public void refreshTables(){
+        AppGUIModule gui = app.getGUIModule();
+        TableView<Lecture> lectureTable = (TableView) gui.getGUINode(CSG_MEETING_LECTURE_TABLE);
+        TableView<Recitation> recitationTable = (TableView) gui.getGUINode(CSG_MEETING_RECITATION_TABLE);
+        TableView<Lab> labTable = (TableView) gui.getGUINode(CSG_MEETING_LAB_TABLE);
+        lectureTable.refresh();
+        recitationTable.refresh();
+        labTable.refresh();
+    }
+    
 }
