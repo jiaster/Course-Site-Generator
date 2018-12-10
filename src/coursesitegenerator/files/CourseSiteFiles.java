@@ -886,7 +886,8 @@ public class CourseSiteFiles implements AppFileComponent {
         
         AppWebDialog dialog = new AppWebDialog(app);
         try {
-            dialog.showInternetDialog("http://127.0.0.1:8887/index.html");
+            //dialog.showInternetDialog("http://127.0.0.1:8887/index.html");
+            dialog.showWebDialog(destDir+"/index.html");
         } catch (MalformedURLException murle) {
             AppDialogsFacade.showMessageDialog(app.getGUIModule().getWindow(), HELP_DIALOG_ERROR_TITLE, HELP_DIALOG_ERROR_CONTENT);
         }
